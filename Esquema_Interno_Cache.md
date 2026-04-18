@@ -12,46 +12,46 @@ skinparam ranksep 60
 
 title Organización Interna MIPS (2 Vías, 4 Conjuntos, Bloques de 4 Palabras)
 
-note top
+card AddressBlock [
 **Formato del Address (32 bits):**
-[      TAG (26 bits)      ] [ CONJUNTO (2 bits) ] [ PALABRA (2 bits) ] [ BO (2 bits) ]
-end note
+| TAG (26 bits) | CONJUNTO (2 bits) | PALABRA (2 bits) | BO (2 bits) |
+]
 
 rectangle "Lógica de Control Físico" {
-  component "Selector de Conjunto\n(Lee los 2 bits de Conjunto)" as DecSet
-  component "Comparador Vía 0\n¿Tag Memoria == Tag CPU?" as Comp0
-  component "Comparador Vía 1\n¿Tag Memoria == Tag CPU?" as Comp1
-  component "Mux 4 a 1\n(Lee los 2 bits de Palabra)" as MuxPal
+  component "Selector de Conjunto\n(Bits de Conjunto)" as DecSet
+  component "Comparador Vía 0" as Comp0
+  component "Comparador Vía 1" as Comp1
+  component "Mux 4 a 1\n(Bits de Palabra)" as MuxPal
 }
 
-package "Almacenamiento Físico (128 Bytes totales)" {
-    
-    rectangle "VÍA 0 (Matriz de 16 Palabras)" {
-        usecase "Conj. 00: [Tag_0A | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V0C0
-        usecase "Conj. 01: [Tag_1A | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V0C1
-        usecase "Conj. 10: [Tag_2A | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V0C2
-        usecase "Conj. 11: [Tag_3A | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V0C3
+package "Almacenamiento Físico (128 Bytes)" {
+    rectangle "VÍA 0 (16 Palabras)" {
+        card "Conj 00: Tag_0A ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V0C0
+        card "Conj 01: Tag_1A ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V0C1
+        card "Conj 10: Tag_2A ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V0C2
+        card "Conj 11: Tag_3A ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V0C3
     }
     
-    rectangle "VÍA 1 (Matriz de 16 Palabras)" {
-        usecase "Conj. 00: [Tag_0B | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V1C0
-        usecase "Conj. 01: [Tag_1B | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V1C1
-        usecase "Conj. 10: [Tag_2B | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V1C2
-        usecase "Conj. 11: [Tag_3B | Val | Dirty] ⇨ (Pal_0 | Pal_1 | Pal_2 | Pal_3)" as V1C3
+    rectangle "VÍA 1 (16 Palabras)" {
+        card "Conj 00: Tag_0B ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V1C0
+        card "Conj 01: Tag_1B ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V1C1
+        card "Conj 10: Tag_2B ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V1C2
+        card "Conj 11: Tag_3B ⇨ Pal0 | Pal1 | Pal2 | Pal3" as V1C3
     }
 }
 
-' Flujo de un ejemplo Address:
-DecSet -down-> V0C2 : "Ej. Supongamos\nConjunto = 10"
+AddressBlock -down-> DecSet
+
+DecSet -down-> V0C2 : "Ejemplo\nDir a Conj 10"
 DecSet -down-> V1C2
 
-V0C2 .left.> Comp0 : "Expulsa su Tag"
-V1C2 .right.> Comp1 : "Expulsa su Tag"
+V0C2 .right.> Comp0 : "Envía Tag"
+V1C2 .left.> Comp1 : "Envía Tag"
 
-Comp0 -down-> MuxPal : "Si Hit=1\nEntrega el Bloque"
-Comp1 -down-> MuxPal : "Si Hit=1\nEntrega el Bloque"
+Comp0 -down-> MuxPal : "Si Hit=1\nPasa el Bloque"
+Comp1 -down-> MuxPal : "Si Hit=1\nPasa el Bloque"
 
-MuxPal -down-> [Procesador MIPS (Registro 32b)] : "Pincha y entrega 1 Sola Palabra\n(Basado en el índice)"
+MuxPal -down-> [Registro MIPS (32b)] : "Pincha y entrega\n1 sola Palabra"
 
 @enduml
 ```
