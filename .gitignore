@@ -1,0 +1,39 @@
+# Intel Quartus y ModelSim ignores
+*.rpt
+*.smsg
+*.summary
+*.qws
+*.mif
+*.qdf
+*.done
+*.pin
+*.pof
+*.sof
+*.ttf
+*.jdi
+*.sld
+*.csv
+*.cmp
+*.qws
+*.bsf
+*.dpf
+*.eqn
+*.html
+
+# ModelSim Simulation
+db/
+incremental_db/
+simulation/
+greybox_tmp/
+timing/
+output_files/
+*.vcd
+*.wlf
+*.mti
+*.mpf
+modelsim.ini
+
+# Project Files locales
+*.bak
+*.orig
+*~
