@@ -2,8 +2,13 @@
 
 set -euo pipefail
 
-TEST_NAME="${1:-default}"
-VIEW_WAVEFORM=""
+TEST_NAME="default"
+VIEW_WAVEFORM="--view"
+STOP_TIME="50000ns"
+WAVE_FORMAT="ghw"
+COMPILE_ONLY=0
+CLEAN_ONLY=0
+RAM_TEST="1_Scratchpad"
 STOP_TIME="50000ns"
 WAVE_FORMAT="ghw"
 COMPILE_ONLY=0
@@ -30,10 +35,16 @@ show_help() {
     echo "  clean              Limpia artefactos de GHDL y ondas"
     echo ""
     echo "Opciones:"
-    echo "  --view             Abre GTKWave al final si hay onda generada"
+    echo "  --view             Abre GTKWave al final si hay onda generada (activado por defecto)"
     echo "  --stop-time=TIME   Ej: 5us, 5000ns, 50000ns"
     echo "  --vcd              Genera VCD en lugar de GHW"
     echo "  --ghw              Genera GHW (por defecto)"
+    echo "  --test-ram=X       Elige la prueba a ejecutar. Opciones disponibles:"
+    echo "                         1_Scratchpad"
+    echo "                         2_Lecturas"
+    echo "                         3_Escrituras"
+    echo "                         4_CopyBack"
+    echo "                         5_Errores"
     echo "  --help             Muestra esta ayuda"
     echo ""
     echo "Notas:"
@@ -100,6 +111,11 @@ compile_project() {
                     continue
                 fi
                 ;;
+            *memoriaRAM_I_Test_*.vhd)
+                if [[ "$file" != *"${RAM_TEST}"* ]]; then
+                    continue
+                fi
+                ;;
         esac
         filtered_files+=("$file")
     done
@@ -145,13 +161,21 @@ view_waveforms() {
     fi
 
     if [ -f "$wave_file" ]; then
-        gtkwave "$wave_file" >/dev/null 2>&1 &
-        echo -e "${GREEN}✓ GTKWave abierto con: $wave_file${NC}"
+        if [ -f "proyecto2/ondas_cache.gtkw" ]; then
+            gtkwave "$wave_file" "proyecto2/ondas_cache.gtkw" >/dev/null 2>&1 &
+            echo -e "${GREEN}✓ GTKWave abierto con: $wave_file y ondas_cache.gtkw${NC}"
+        else
+            gtkwave "$wave_file" >/dev/null 2>&1 &
+            echo -e "${GREEN}✓ GTKWave abierto con: $wave_file${NC}"
+        fi
     else
         echo -e "${RED}✗ No existe el fichero de onda para visualizar${NC}"
         exit 1
     fi
 }
+
+# Variables globales para detectar si el flag se paso
+RAM_TEST_PROVIDED=0
 
 for arg in "$@"; do
     case "$arg" in
@@ -171,10 +195,12 @@ for arg in "$@"; do
         --ghw)
             WAVE_FORMAT="ghw"
             ;;
+        --test-ram=*)
+            RAM_TEST="${arg#*=}"
+            RAM_TEST_PROVIDED=1
+            ;;
         *)
-            if [ "$arg" = "$TEST_NAME" ]; then
-                :
-            else
+            if [[ "$arg" != --* ]]; then
                 TEST_NAME="$arg"
             fi
             ;;
@@ -196,6 +222,26 @@ elif [ "$TEST_NAME_NORMALIZED" = "clean" ]; then
     CLEAN_ONLY=1
 fi
 
+# Menu interactivo si no es clean y no se ha especificado RAM_TEST
+if [ "$CLEAN_ONLY" -eq 0 ] && [ "$RAM_TEST_PROVIDED" -eq 0 ]; then
+    echo -e "${YELLOW}==========================================${NC}"
+    echo -e "${YELLOW} Elige la prueba RAM-I a ejecutar (1-5):${NC}"
+    echo -e "${YELLOW}==========================================${NC}"
+    echo " 1) 1_Scratchpad (Aciertos basicos)"
+    echo " 2) 2_Lecturas (Fallos y aciertos)"
+    echo " 3) 3_Escrituras (Write-Around / Hit)"
+    echo " 4) 4_CopyBack (Reemplazo bloque sucio)"
+    echo " 5) 5_Errores (Excepciones de bus)"
+    read -p "Opcion [por defecto 1]: " opcion_ram
+    case "$opcion_ram" in
+        2) RAM_TEST="2_Lecturas" ;;
+        3) RAM_TEST="3_Escrituras" ;;
+        4) RAM_TEST="4_CopyBack" ;;
+        5) RAM_TEST="5_Errores" ;;
+        *) RAM_TEST="1_Scratchpad" ;;
+    esac
+fi
+
 ensure_tools
 
 if [ "$CLEAN_ONLY" -eq 1 ]; then
@@ -205,6 +251,7 @@ fi
 
 echo -e "${GREEN}=== AOC2 Proyecto 2 ===${NC}"
 echo -e "Modo: ${YELLOW}$TEST_NAME_NORMALIZED${NC}"
+echo -e "Prueba RAM seleccionada: ${YELLOW}$RAM_TEST${NC}"
 
 compile_project
 
