@@ -37,3 +37,6 @@ modelsim.ini
 *.bak
 *.orig
 *~
+
+.codex
+work-obj93.cf
