@@ -1,23 +1,5 @@
 ----------------------------------------------------------------------------------
--- Módulo: memoriaRAM_I (Test 5: Gestión de Errores y Registros Internos)
--- Descripción:
---   Verifica que la máquina de estados de la Unidad de Control salta a 
---   'memory_error' ante infracciones, y que se recupera únicamente al 
---   leer el registro mágico 0x01000000.
---
--- Código Ensamblador MIPS:
---   # 1) Error de Desalineamiento
---   lw $2, 0x0001($0) # Fallo: Dir no alineada. Activa Mem_Error.
---   nop
---   # 2) Limpieza del error
---   lui $8, 0x0100    # $8 = 0x01000000 (Dir del registro de error)
---   lw $9, 0($8)      # Lee el registro. Mem_Error debe volver a '0'.
---   nop
---   # 3) Error de Bus Timeout
---   lui $8, 0x2000    # $8 = 0x20000000 (Dirección que no existe en la placa)
---   lw $9, 0($8)      # Fallo: Nadie activa Bus_DevSel. Activa Mem_Error de nuevo.
---   nop
---   j loop            # Bucle infinito para finalizar
+-- Mdulo: memoriaRAM_I (Test 5: Gestin de Errores)
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -35,15 +17,14 @@ end memoriaRAM_I;
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-    X"8C020001", -- 0: lw $2, 0x0001($0) (Desalineado -> ERROR)
+    X"08020001", -- 0: lw $2, 1($0) (Error Desalineado)
     X"00000000", -- 4: nop
-    X"3C080100", -- 8: lui $8, 0x0100    ($8 = 0x01000000)
-    X"8D090000", -- C: lw $9, 0($8)      (Lee Registro Error -> LIMPIA ERROR)
-    X"00000000", -- 10: nop
-    X"3C082000", -- 14: lui $8, 0x2000   ($8 = 0x20000000, dir fantasma)
-    X"8D090000", -- 18: lw $9, 0($8)     (Bus_DevSel = 0 -> ERROR DE BUS)
-    X"00000000", -- 1C: nop
-    X"08000008", -- 20: j 8              (Bucle)
+    X"08080104", -- 8: lw $8, 260($0) ($8 = 0x01000000)
+    X"00000000", -- C: nop
+    X"08090000", -- 10: lw $9, 0($8) (Limpia Error)
+    X"00000000", -- 14: nop
+    X"08094000", -- 18: lw $9, 0x4000($0) (Timeout)
+    X"1000FFFF", -- 1C: beq $0, $0, -1
     others => X"00000000"
 );
 signal dir_7:  std_logic_vector(6 downto 0); 
@@ -52,10 +33,10 @@ begin
  process (CLK)
     begin
         if (CLK'event and CLK = '1') then
-            if (WE = '1') then
+            if (WE = '1') then 
                 RAM(conv_integer(dir_7)) <= Din;
             end if;
         end if;
     end process;
-    Dout <= RAM(conv_integer(dir_7)) when (RE='1') else X"00000000";
+    Dout <= RAM(conv_integer(dir_7)) when (RE='1') else "00000000000000000000000000000000"; 
 end Behavioral;

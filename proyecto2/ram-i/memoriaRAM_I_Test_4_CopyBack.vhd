@@ -15,7 +15,7 @@
 --                     # desalojar la Vía 0 (la más vieja). Al estar sucia (Dirty), 
 --                     # la Unidad de Control lanza la fase de CopyBack enviando
 --                     # el Bloque 0 a la RAM antes de traerse el Bloque 8.
---   j loop            # Bucle infinito para finalizar la prueba
+--   beq $0, $0, -1    # Bucle infinito para finalizar la prueba
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -33,14 +33,14 @@ end memoriaRAM_I;
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-    X"8C020000", -- 0: lw $2, 0x0000($0) 
+    X"08020000", -- 0: lw $2, 0x0000($0) 
     X"00000000", -- 4: nop
-    X"AC020000", -- 8: sw $2, 0x0000($0) 
+    X"0C020000", -- 8: sw $2, 0x0000($0) 
     X"00000000", -- C: nop
-    X"8C020040", -- 10: lw $2, 0x0040($0)
+    X"08020040", -- 10: lw $2, 0x0040($0)
     X"00000000", -- 14: nop
-    X"8C020080", -- 18: lw $2, 0x0080($0)
-    X"08000007", -- 1C: j 7              
+    X"08020080", -- 18: lw $2, 0x0080($0)
+    X"1000FFFF", -- 1C: beq $0, $0, -1 
     others => X"00000000"
 );
 signal dir_7:  std_logic_vector(6 downto 0); 

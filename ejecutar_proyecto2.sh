@@ -9,7 +9,7 @@ WAVE_FORMAT="ghw"
 COMPILE_ONLY=0
 CLEAN_ONLY=0
 RAM_TEST="1_Scratchpad"
-STOP_TIME="50000ns"
+STOP_TIME="5000ns"
 WAVE_FORMAT="ghw"
 COMPILE_ONLY=0
 CLEAN_ONLY=0
@@ -111,7 +111,7 @@ compile_project() {
                     continue
                 fi
                 ;;
-            *memoriaRAM_I_Test_*.vhd)
+            *memoriaRAM_I_[Tt]est*.vhd)
                 if [[ "$file" != *"${RAM_TEST}"* ]]; then
                     continue
                 fi
