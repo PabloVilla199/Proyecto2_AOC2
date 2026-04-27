@@ -1,0 +1,190 @@
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*]
+[timestart] 0
+[size] 1854 1001
+[pos] -1 -1
+[treeopen] top.
+[treeopen] top.testbench.
+[treeopen] top.testbench.uut.
+[treeopen] top.testbench.uut.io_mem.
+[treeopen] top.testbench.uut.io_mem.mc.
+[treeopen] top.testbench.uut.io_mem.mc.unidad_control.
+[sst_width] 278
+[signals_width] 350
+[sst_expanded] 1
+[sst_vpaned_height] 700
+
+@200
+-==================== SEÑALES GLOBALES ====================
+@28
+top.testbench.clk
+top.testbench.reset
+top.testbench.uut.io_mem.mc.unidad_control.state
+top.testbench.uut.io_mem.mc.unidad_control.error_state
+@200
+-
+-==================== ESTADO: Inicio ====================
+-  --- Entradas (Decisiones IF) ---
+@28
+top.testbench.uut.io_mem.mc.re
+top.testbench.uut.io_mem.mc.we
+top.testbench.uut.io_mem.mc.unidad_control.unaligned
+top.testbench.uut.io_mem.mc.unidad_control.internal_addr
+top.testbench.uut.io_mem.mc.unidad_control.hit
+@200
+-  --- (Acierto Lectura) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.addr_non_cacheable
+top.testbench.uut.io_mem.mc.unidad_control.inc_r
+#{top.testbench.uut.io_mem.mc.unidad_control.mux_output[1:0]} top.testbench.uut.io_mem.mc.unidad_control.mux_output[1] top.testbench.uut.io_mem.mc.unidad_control.mux_output[0]
+@200
+-  --- (Acierto Escritura) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.hit0
+top.testbench.uut.io_mem.mc.unidad_control.hit1
+top.testbench.uut.io_mem.mc.unidad_control.inc_w
+top.testbench.uut.io_mem.mc.unidad_control.update_dirty
+top.testbench.uut.io_mem.mc.unidad_control.mc_we0
+top.testbench.uut.io_mem.mc.unidad_control.mc_we1
+@200
+-  --- (Fallos y Errores) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.inc_m
+top.testbench.uut.io_mem.mc.unidad_control.load_addr_error
+top.testbench.uut.io_mem.mc.ready
+@200
+-
+-==================== ESTADO: Send_Addr ====================
+-  --- Inicializacion y Decisiones ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.bus_grant
+top.testbench.uut.io_mem.mc.unidad_control.addr_non_cacheable
+top.testbench.uut.io_mem.mc.we
+@200
+-
+-==================== ESTADO: block_transfer_addr ====================
+-  --- Inicializacion (Default) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.mc_send_addr_ctrl
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.block_addr
+@200
+-  --- IF (dirty_bit_rpl = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.dirty_bit_rpl
+top.testbench.uut.io_mem.mc.unidad_control.send_dirty
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_write
+@200
+-  --- ELSE (Read block) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_read
+@200
+-  --- IF (Bus_DevSel = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_devsel
+top.testbench.uut.io_mem.mc.unidad_control.load_addr_error
+@200
+-
+-==================== ESTADO: CopyBack ====================
+-  --- Inicializacion (Default) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.mc_send_data
+top.testbench.uut.io_mem.mc.unidad_control.mux_origen
+top.testbench.uut.io_mem.mc.unidad_control.block_addr
+top.testbench.uut.io_mem.mc.unidad_control.send_dirty
+@200
+-  --- IF (Bus_TRDY = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_trdy
+top.testbench.uut.io_mem.mc.unidad_control.count_enable
+@200
+-  --- IF (last_word_block = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.last_word_block
+top.testbench.uut.io_mem.mc.unidad_control.last_word
+top.testbench.uut.io_mem.mc.unidad_control.inc_cb
+top.testbench.uut.io_mem.mc.unidad_control.update_dirty
+top.testbench.uut.io_mem.mc.unidad_control.block_copied_back
+@200
+-
+-==================== ESTADO: block_transfer_data ====================
+-  --- Inicializacion (Default) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_read
+top.testbench.uut.io_mem.mc.unidad_control.mux_origen
+top.testbench.uut.io_mem.mc.unidad_control.block_addr
+#{top.testbench.uut.io_mem.mc.unidad_control.mux_output[1:0]} top.testbench.uut.io_mem.mc.unidad_control.mux_output[1] top.testbench.uut.io_mem.mc.unidad_control.mux_output[0]
+@200
+-  --- IF (Bus_TRDY = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_trdy
+top.testbench.uut.io_mem.mc.unidad_control.count_enable
+@200
+-  --- IF (via_2_rpl = '0') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.via_2_rpl
+top.testbench.uut.io_mem.mc.unidad_control.mc_we0
+top.testbench.uut.io_mem.mc.unidad_control.mc_we1
+@200
+-  --- IF (last_word_block = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.last_word_block
+top.testbench.uut.io_mem.mc.unidad_control.last_word
+top.testbench.uut.io_mem.mc.unidad_control.mc_tags_we
+@200
+-
+-==================== ESTADO: single_word_transfer_addr ====================
+-  --- Inicializacion (Default) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.mc_send_addr_ctrl
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.block_addr
+top.testbench.uut.io_mem.mc.unidad_control.one_word
+@200
+-  --- IF (RE = '1') / ELSE ---
+@28
+top.testbench.uut.io_mem.mc.re
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_read
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_write
+@200
+-  --- IF (Bus_DevSel = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_devsel
+top.testbench.uut.io_mem.mc.unidad_control.load_addr_error
+top.testbench.uut.io_mem.mc.ready
+@200
+-
+-==================== ESTADO: single_word_transfer_data ====================
+-  --- Inicializacion (Default) ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.block_addr
+top.testbench.uut.io_mem.mc.unidad_control.one_word
+top.testbench.uut.io_mem.mc.unidad_control.last_word
+@200
+-  --- IF (RE = '1') / ELSE ---
+@28
+top.testbench.uut.io_mem.mc.re
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_read
+#{top.testbench.uut.io_mem.mc.unidad_control.mux_output[1:0]} top.testbench.uut.io_mem.mc.unidad_control.mux_output[1] top.testbench.uut.io_mem.mc.unidad_control.mux_output[0]
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_write
+top.testbench.uut.io_mem.mc.unidad_control.mc_send_data
+@200
+-  --- IF (Bus_TRDY = '1') ---
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_trdy
+top.testbench.uut.io_mem.mc.ready
+@200
+-
+-==================== ESTADO: bajar_Frame ====================
+@28
+top.testbench.uut.io_mem.mc.unidad_control.frame
+top.testbench.uut.io_mem.mc.unidad_control.bus_req

@@ -250,14 +250,22 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				MC_bus_Write <= '1';
 				if(Bus_DevSel = '1') then
 					next_state <= CopyBack;
+				else -- ERROR DE MEMORIA
+					next_error_state <= memory_error;
+					load_addr_error <= '1';
+					ready <= '1'; -- Avisamos al MIPS para no colgarlo (faltaba aquí)
+					next_state <= bajar_Frame;
 				end if;
-				-- if bus desvel err saltaria a err de mem 
 			else
 				MC_bus_Read <= '1';
 				if(Bus_DevSel = '1') then
 					next_state <= block_transfer_data;
+				else -- ERROR DE MEMORIA
+					next_error_state <= memory_error;
+					load_addr_error <= '1';
+					ready <= '1'; -- Avisamos al MIPS para no colgarlo
+					next_state <= bajar_Frame;
 				end if;
-				-- if bus desvel err saltaria a err de mem 
 			end if;
 
 		when CopyBack=>
@@ -325,7 +333,11 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		
 			if(Bus_DevSel = '1') then
 				next_state <= single_word_transfer_data;
-			--else error de mem 
+			else -- ERROR DE MEMORIA
+				next_error_state <= memory_error;
+				load_addr_error <= '1';
+				ready <= '1'; -- Avisamos al MIPS
+				next_state <= bajar_Frame;
 			end if;
 		when single_word_transfer_data =>
 			Frame <= '1';

@@ -1,0 +1,291 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows.meta, fit, backgrounds, shapes.geometric}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tabularx}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+% ============================================================
+\section*{1.\; Arquitectura General del Sistema-on-Chip (SoC)}
+% ============================================================
+
+El dise\~no del subsistema se rige por un esquema \textbf{Multi-Maestro (Multi-Master)} donde el procesador MIPS y el M\'odulo de Entrada/Salida (E/S) compiten por el control del Bus del Sistema recurriendo al \'Arbitro.
+
+A continuaci\'on se presenta el diagrama de rutas de datos y peticiones del sistema:
+
+\bigskip
+\begin{center}
+\shorthandoff{<>}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    >=Stealth,
+    shorten >=1pt,
+    font=\normalsize,
+    box/.style={
+        draw, very thick, rectangle,
+        minimum width=4.5cm, minimum height=1.3cm,
+        align=center, fill=white, rounded corners=3pt
+    },
+    grpbox/.style={
+        draw, very thick, rounded corners=8pt,
+        inner sep=22pt, fill=gray!4
+    },
+    lbl/.style={font=\footnotesize, align=center, fill=white,
+                inner sep=2pt, rounded corners=2pt}
+]
+
+%% ---- Coordenadas absolutas ----
+%%  Fila A (Maestros):  y = 9
+%%  Fila B (Control):   y = 4.5
+%%  Fila C (Esclavos):  y = 0
+
+\node[box] (ES)     at (0,   9)   {M\'odulo E/S};
+\node[box] (MIPS)   at (13,  9)   {Procesador MIPS};
+
+\node[box] (Arb)    at (0,   4.5) {\'Arbitro del Bus};
+\node[box] (Cache)  at (6.5, 4.5) {Controlador\\de Cach\'e};
+\node[box] (Decod)  at (13,  4.5) {Decodificador\\(IF Dir)};
+
+\node[box] (RAM)    at (3.5, 0)   {Memoria Principal\\(RAM)};
+\node[box] (Scratch)at (10.5,0)   {Memoria\\Scratchpad};
+
+%% ---- Grupos ----
+\begin{scope}[on background layer]
+  \node[grpbox, fit=(ES)(MIPS),
+        label={[font=\small\bfseries]above:Maestros / Productores}] {};
+\end{scope}
+\begin{scope}[on background layer]
+  \node[grpbox, fit=(RAM)(Scratch),
+        label={[font=\small\bfseries]below:Esclavos / Memorias}] {};
+\end{scope}
+
+%% ---- Flujos de control (todas lineas rectas) ----
+% ES -> Arbitro (recto vertical)
+\draw[->] (ES.south) -- node[lbl, left] {Petici\'on Bus\\para E/S} (Arb.north);
+
+% MIPS -> Decod (recto vertical)
+\draw[->] (MIPS.south) -- node[lbl, right] {Petici\'on\\(Dir, Dato)} (Decod.north);
+
+% Decod -> Cache (recto horizontal)
+\draw[->] (Decod.west) -- node[lbl, above] {Rango RAM} (Cache.east);
+
+% Decod -> Scratch: baja vertical y luego horizontal a Scratch
+\draw[->] (Decod.south) -- ++(0,-1.5) -|
+      node[lbl, right, pos=0.25] {Rango Scratchpad}
+      (Scratch.north);
+
+% Cache -> Arbitro (recto horizontal)
+\draw[->] (Cache.west) -- node[lbl, above] {Petici\'on Bus\\(Fallo/CopyBack)} (Arb.east);
+
+%% ---- Retornos al MIPS (lineas rectas ortogonales) ----
+% Cache -> MIPS: sube vertical hasta y=7.5, luego horizontal hasta MIPS
+\draw[->] (Cache.north) -- ++(0,2.2) coordinate (hitWP)
+      -- node[lbl, above] {Hit=1 (Acierto)}
+      (hitWP -| MIPS.south west) -- (MIPS.south west);
+
+% Scratch -> MIPS: sube vertical (misma columna x=10.5 que Scratch)
+\draw[->] (Scratch.north) -- ++(0,1.2) coordinate (respWP)
+      -| node[lbl, pos=0.5] {Respuesta Directa}
+      (MIPS.south);
+
+%% ---- Transferencias BUS (lineas rectas ortogonales) ----
+% Cache <-> RAM: baja vertical y luego horizontal
+\draw[<->, thick, dashed] (Cache.south) -- ++(0,-1.2) coordinate (busC)
+      -| node[lbl, pos=0.5] {[BUS] Transferencia\\bloques}
+      (RAM.north);
+
+% ES <-> RAM: sale izquierda de ES (x=-2), baja vertical, entra por RAM.west
+\draw[<->, thick, dashed]
+      (ES.west) -- ++(-2, 0) coordinate (viaL)
+      -- node[lbl, left] {[BUS]\\E/S$\leftrightarrow$RAM}
+      (viaL |- RAM.west) -- (RAM.west);
+
+% ES <-> Scratch: sube de ES (y=11), va horizontal derecha, baja a Scratch
+\draw[<->, thick, dashed]
+      (ES.north) -- ++(0, 1.5) coordinate (viaT)
+      -- node[lbl, above] {[BUS] E/S$\leftrightarrow$Scratch}
+      (viaT -| Scratch.north) -- (Scratch.north);
+
+\end{tikzpicture}%
+}
+\shorthandon{<>}
+\end{center}
+\bigskip
+
+% ============================================================
+\section*{2.\; Pol\'iticas de Configuraci\'on de la Memoria Cach\'e}
+% ============================================================
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Escritura en Aciertos (Write Hit): Copy-Back.}
+        Los datos modificados se escriben \'unicamente en la V\'ia de la Cach\'e elevando el \textit{Dirty Bit} (`Sucio'). Esta pol\'itica optimiza el tr\'afico, ya que no se accede al bus exterior innecesariamente hasta que el bloque sea forzosamente desalojado.
+  \item \textbf{Escritura en Fallos (Write Miss): Write-Around (Write-No-Allocate).}
+        Si la direcci\'on de memoria no se encuentra en las v\'ias, el controlador rechaza su ingesta. Confiere una petici\'on de Bus directa a la RAM principal, y escribe la palabra sin alterar en ning\'un momento el contenido interno actual de la Cach\'e.
+\end{itemize}
+
+\bigskip
+
+% ============================================================
+\section*{3.\; Matriz Gen\'erica de Casos de Uso}
+% ============================================================
+
+Teniendo en cuenta las rutas del datapath y las pol\'iticas del MIPS y MC, la memoria lidia de la siguiente manera con los 9 escenarios est\'andar:
+
+\renewcommand{\arraystretch}{1.25}
+
+\begin{longtable}{|p{0.45cm}|p{4.0cm}|p{1.6cm}|p{2.2cm}|p{3.5cm}|p{1.0cm}|p{4.0cm}|}
+\hline
+\textbf{ID} &
+\textbf{Operaci\'on / Escenario} &
+\textbf{Maestro} &
+\textbf{Destino} &
+\textbf{Condici\'on} &
+\textbf{Bus?} &
+\textbf{Flujo resultante} \\
+\hline
+\endhead
+\hline
+\endfoot
+1 & MIPS Acceso a Scratchpad     & MIPS    & MemScratch & Address en rango dedicado.                           & No  & Petici\'on directa por IF. La Scratchpad responde en 1 ciclo. \\
+\hline
+2 & Acierto LECTURA Cach\'e      & MIPS    & Cach\'e     & Instr. \texttt{lw} / Hit=1.                          & No  & El MC verifica Tag+Validez y responde en 1 ciclo. \\
+\hline
+3 & Acierto ESCRITURA Cach\'e    & MIPS    & Cach\'e     & Instr. \texttt{sw} / Hit=1.                          & No  & Se sobreescribe la palabra y se levanta Dirty Bit=1. \\
+\hline
+4 & Fallo de LECTURA Cach\'e     & Cach\'e  & RAM         & Instr. \texttt{lw} / Hit=0.                          & S\'i & MC detiene pipeline, pide bus, transfiere bloque a la v\'ia y presenta el dato. \\
+\hline
+5 & Fallo ESCRITURA Cach\'e      & Cach\'e  & RAM         & Instr. \texttt{sw} / Hit=0.                          & S\'i & \textit{Write-Around}: Sin alocar. Pide bus y escribe directamente en RAM. \\
+\hline
+6 & Desalojo de Bloque (CopyBack)& Cach\'e  & RAM         & Fallo que precisa v\'ia con DirtyBit=1.               & S\'i & Pide bus, vuelca bloque sucio a RAM y reanuda la petici\'on pendiente. \\
+\hline
+7 & DMA E/S a M. Principal       & M\'od.\ E/S & RAM      & Actividad de E/S externa.                             & S\'i & \'Arbitro cede bus al perif\'erico; transmite r\'afagas a RAM. \\
+\hline
+8 & DMA E/S a MemScratch         & M\'od.\ E/S & Scratchpad& Datos externos cr\'iticos (GPU/Red).                  & S\'i & \'Arbitro cede bus; datos DMA van a Scratchpad permitiendo al MIPS computar en L1. \\
+\hline
+9 & Colisi\'on de Maestros        & Cach\'e/E/S & \'Arbitro  & Petici\'on sincr\'onica simult\'anea.                  & S\'i & \'Arbitro detecta doble \texttt{Req}, aplica Round-Robin/Prioridad y concede \texttt{Grant} al ganador. \\
+\hline
+\end{longtable}
+
+\bigskip
+
+% ============================================================
+\section*{UC de la cach\'e: diagrama y tabla de estados}
+
+\subsection*{Diagrama de estados}
+
+\begin{center}
+\shorthandoff{<>}
+\begin{tikzpicture}[
+    >=Stealth,
+    shorten >=1pt,
+    node distance=4.4cm and 4.0cm,
+    on grid,
+    auto,
+    font=\small,
+    every state/.style={
+        draw,
+        thick,
+        minimum width=3.4cm,
+        minimum height=1.15cm,
+        align=center
+    }
+]
+
+\node[state, initial] (inicio) {Inicio};
+\node[state, right=of inicio] (pedir) {PedirBus};
+\node[state, right=of pedir] (enviar) {EnviarAddr};
+\node[state, above=of enviar] (copyback) {CopyBack};
+\node[state, right=of enviar] (fetch) {FetchBloque};
+\node[state, below=of enviar] (transfer) {TransferPalabra};
+\node[state, below=of fetch] (fin) {FinAcceso};
+\node[state, below=of pedir] (errorbus) {ErrorBus};
+
+\path[->]
+(inicio) edge[loop above] node[font=\footnotesize] {sin acceso} (inicio)
+(inicio) edge[loop below] node[font=\footnotesize] {hit, error local,\\ registro interno} (inicio)
+(inicio) edge node[above, font=\footnotesize] {miss / no cacheable} (pedir)
+
+(pedir) edge[loop above] node[font=\footnotesize] {$grant=0$} (pedir)
+(pedir) edge node[above, font=\footnotesize] {$grant=1$} (enviar)
+
+(enviar) edge node[left, font=\footnotesize] {$DevSel=0$} (errorbus)
+(enviar) edge node[below, font=\footnotesize] {non-cacheable} (transfer)
+(enviar) edge[bend left=20] node[above, font=\footnotesize] {cacheable y dirty} (copyback)
+(enviar) edge node[above, font=\footnotesize] {cacheable y clean} (fetch)
+
+(copyback) edge[loop above] node[font=\footnotesize] {$TRDY=0$ o no última} (copyback)
+(copyback) edge[bend left=20] node[right, font=\footnotesize] {última palabra} (enviar)
+
+(fetch) edge[loop above] node[font=\footnotesize] {$TRDY=0$ o no última} (fetch)
+(fetch) edge node[right, font=\footnotesize] {última palabra} (fin)
+
+(transfer) edge[loop below] node[font=\footnotesize] {$TRDY=0$} (transfer)
+(transfer) edge node[right, font=\footnotesize] {TRDY=1} (fin)
+
+(fin) edge[bend left=20] node[below, font=\footnotesize] {fin} (inicio)
+(errorbus) edge[bend right=20] node[left, font=\footnotesize] {error} (inicio);
+
+\end{tikzpicture}
+\shorthandon{<>}
+\end{center}
+
+\subsection*{Resumen de estados}
+
+\renewcommand{\arraystretch}{1.2}
+
+\begin{longtable}{|p{2.2cm}|p{4.4cm}|p{2.5cm}|p{5.8cm}|}
+\hline
+\textbf{Estado} & \textbf{Condición} & \textbf{Siguiente} & \textbf{Señales clave} \\
+\hline
+Inicio & sin acceso & Inicio & $ready=1$ \\
+\hline
+Inicio & hit de lectura & Inicio & $ready=1$, $inc\_r=1$, $mux\_output=00$ \\
+\hline
+Inicio & hit de escritura & Inicio & $ready=1$, $MC\_WE0/1$, $Update\_dirty=1$, $inc\_w=1$ \\
+\hline
+Inicio & miss cacheable o acceso no cacheable & PedirBus & $Bus\_req=1$ \\
+\hline
+PedirBus & $grant=0$ & PedirBus & $Bus\_req=1$ \\
+\hline
+PedirBus & $grant=1$ & EnviarAddr & $Bus\_req=1$ \\
+\hline
+EnviarAddr & $DevSel=0$ & ErrorBus & $Frame=1$, $MC\_send\_addr\_ctrl=1$ \\
+\hline
+EnviarAddr & non-cacheable & TransferPalabra & $Frame=1$, $block\_addr=0$ \\
+\hline
+EnviarAddr & cacheable y dirty & CopyBack & $Frame=1$, $send\_dirty=1$, $MC\_bus\_Write=1$ \\
+\hline
+EnviarAddr & cacheable y clean & FetchBloque & $Frame=1$, $MC\_bus\_Read=1$, $block\_addr=1$ \\
+\hline
+CopyBack & no termina bloque & CopyBack & $MC\_send\_data=1$, $count\_enable=1$ \\
+\hline
+CopyBack & termina bloque & EnviarAddr & $last\_word=1$, $Block\_copied\_back=1$, $Update\_dirty=1$ \\
+\hline
+FetchBloque & no termina bloque & FetchBloque & $MC\_WE0/1$, $mux\_origen=1$, $count\_enable=1$ \\
+\hline
+FetchBloque & termina bloque & FinAcceso & $last\_word=1$, $MC\_tags\_WE=1$, $inc\_m=1$ \\
+\hline
+TransferPalabra & $TRDY=0$ & TransferPalabra & $Frame=1$ \\
+\hline
+TransferPalabra & $TRDY=1$ & FinAcceso & lectura: $mux\_output=01$, escritura: $MC\_send\_data=1$ \\
+\hline
+ErrorBus & siempre & Inicio & $ready=1$, $next\_error\_state=memory\_error$, $load\_addr\_error=1$ \\
+\hline
+FinAcceso & siempre & Inicio & cierre del acceso \\
+\hline
+\end{longtable}
+
+\end{document}

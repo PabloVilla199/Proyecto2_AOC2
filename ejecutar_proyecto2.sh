@@ -2,12 +2,13 @@
 
 set -euo pipefail
 
-TEST_NAME="${1:-default}"
+TEST_NAME="default"
 VIEW_WAVEFORM=""
 STOP_TIME="50000ns"
 WAVE_FORMAT="ghw"
 COMPILE_ONLY=0
 CLEAN_ONLY=0
+RAM_TEST="1_Scratchpad"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -34,6 +35,12 @@ show_help() {
     echo "  --stop-time=TIME   Ej: 5us, 5000ns, 50000ns"
     echo "  --vcd              Genera VCD en lugar de GHW"
     echo "  --ghw              Genera GHW (por defecto)"
+    echo "  --test-ram=X       Elige la prueba a ejecutar. Opciones disponibles:"
+    echo "                         1_Scratchpad"
+    echo "                         2_Lecturas"
+    echo "                         3_Escrituras"
+    echo "                         4_CopyBack"
+    echo "                         5_Errores"
     echo "  --help             Muestra esta ayuda"
     echo ""
     echo "Notas:"
@@ -97,6 +104,11 @@ compile_project() {
                 if [ -f "proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd" ] || \
                    [ -f "proyecto2/ram-d/memoriaRAM_64_32_enable.vhd" ] || \
                    [ -f "proyecto2/ram-i/memoriaRAM_I_test.bucle_lectura.P2.vhd" ]; then
+                    continue
+                fi
+                ;;
+            *memoriaRAM_I_Test_*.vhd)
+                if [[ "$file" != *"${RAM_TEST}"* ]]; then
                     continue
                 fi
                 ;;
@@ -171,10 +183,11 @@ for arg in "$@"; do
         --ghw)
             WAVE_FORMAT="ghw"
             ;;
+        --test-ram=*)
+            RAM_TEST="${arg#*=}"
+            ;;
         *)
-            if [ "$arg" = "$TEST_NAME" ]; then
-                :
-            else
+            if [[ "$arg" != --* ]]; then
                 TEST_NAME="$arg"
             fi
             ;;
@@ -205,6 +218,7 @@ fi
 
 echo -e "${GREEN}=== AOC2 Proyecto 2 ===${NC}"
 echo -e "Modo: ${YELLOW}$TEST_NAME_NORMALIZED${NC}"
+echo -e "Prueba RAM seleccionada: ${YELLOW}$RAM_TEST${NC}"
 
 compile_project
 
