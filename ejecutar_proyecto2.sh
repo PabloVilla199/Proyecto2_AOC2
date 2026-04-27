@@ -1,0 +1,221 @@
+#!/bin/bash
+
+set -euo pipefail
+
+TEST_NAME="${1:-default}"
+VIEW_WAVEFORM=""
+STOP_TIME="50000ns"
+WAVE_FORMAT="ghw"
+COMPILE_ONLY=0
+CLEAN_ONLY=0
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SIM_DIR="${PROJECT_DIR}/simulation"
+TB_ENTITY="testbench"
+WAVE_BASE="${SIM_DIR}/aoc2_p2_testbench"
+WAVE_GHW="${WAVE_BASE}.ghw"
+WAVE_VCD="${WAVE_BASE}.vcd"
+
+show_help() {
+    echo "Uso: ./ejecutar_proyecto2.sh [default|compile|clean] [opciones]"
+    echo ""
+    echo "Acciones disponibles:"
+    echo "  default            Compila y ejecuta el testbench actual del proyecto"
+    echo "  compile            Solo compila"
+    echo "  clean              Limpia artefactos de GHDL y ondas"
+    echo ""
+    echo "Opciones:"
+    echo "  --view             Abre GTKWave al final si hay onda generada"
+    echo "  --stop-time=TIME   Ej: 5us, 5000ns, 50000ns"
+    echo "  --vcd              Genera VCD en lugar de GHW"
+    echo "  --ghw              Genera GHW (por defecto)"
+    echo "  --help             Muestra esta ayuda"
+    echo ""
+    echo "Notas:"
+    echo "  - Compila todos los VHDL de proyecto1 y de proyecto2, incluyendo ram-d/ y ram-i/."
+    echo "  - Usa el testbench actual: proyecto2/testbench_AOC2_SoC.vhd"
+    echo "  - Las ondas se guardan en simulation/, que ya esta ignorado por git."
+}
+
+normalize_test_name() {
+    case "$1" in
+        default|run|test|tb) echo "default" ;;
+        compile|build) echo "compile" ;;
+        clean) echo "clean" ;;
+        *) echo "" ;;
+    esac
+}
+
+ensure_tools() {
+    if ! command -v ghdl >/dev/null 2>&1; then
+        echo -e "${RED}✗ No se encontro 'ghdl' en PATH${NC}"
+        exit 1
+    fi
+
+    if [ "$VIEW_WAVEFORM" = "--view" ] && ! command -v gtkwave >/dev/null 2>&1; then
+        echo -e "${RED}✗ No se encontro 'gtkwave' en PATH${NC}"
+        exit 1
+    fi
+}
+
+clean_artifacts() {
+    echo -e "${YELLOW}Limpiando artefactos de simulacion...${NC}"
+    rm -f "${PROJECT_DIR}/work-obj93.cf" "${WAVE_GHW}" "${WAVE_VCD}"
+    mkdir -p "$SIM_DIR"
+    find "$SIM_DIR" -maxdepth 1 -type f \( -name '*.ghw' -o -name '*.vcd' \) -delete
+    ghdl --clean >/dev/null 2>&1 || true
+    echo -e "${GREEN}✓ Limpieza completada${NC}"
+}
+
+compile_project() {
+    local -a vhdl_files
+    local -a filtered_files
+    local file
+
+    echo -e "${YELLOW}Compilando proyecto...${NC}"
+    mkdir -p "$SIM_DIR"
+    cd "$PROJECT_DIR"
+    ghdl --clean >/dev/null 2>&1 || true
+
+    mapfile -t vhdl_files < <(find proyecto1 proyecto2 -type f -name '*.vhd' | sort)
+
+    if [ "${#vhdl_files[@]}" -eq 0 ]; then
+        echo -e "${RED}✗ No se encontraron ficheros .vhd para compilar${NC}"
+        exit 1
+    fi
+
+    for file in "${vhdl_files[@]}"; do
+        case "$file" in
+            proyecto2/memoriaRAM_128_32_2026_bucle_lectura.vhd|\
+            proyecto2/memoriaRAM_64_32_enable.vhd|\
+            proyecto2/memoriaRAM_I_test.bucle_lectura.P2.vhd)
+                if [ -f "proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd" ] || \
+                   [ -f "proyecto2/ram-d/memoriaRAM_64_32_enable.vhd" ] || \
+                   [ -f "proyecto2/ram-i/memoriaRAM_I_test.bucle_lectura.P2.vhd" ]; then
+                    continue
+                fi
+                ;;
+        esac
+        filtered_files+=("$file")
+    done
+
+    ghdl -a --ieee=synopsys -fexplicit -fsynopsys "${filtered_files[@]}"
+    ghdl -m --ieee=synopsys -fexplicit -fsynopsys "$TB_ENTITY"
+    echo -e "${GREEN}✓ Compilacion exitosa${NC}"
+}
+
+run_simulation() {
+    local wave_file
+
+    echo -e "${YELLOW}Ejecutando simulacion...${NC}"
+    echo -e "${YELLOW}Stop-time: $STOP_TIME${NC}"
+
+    rm -f "$WAVE_GHW" "$WAVE_VCD"
+
+    if [ "$WAVE_FORMAT" = "vcd" ]; then
+        wave_file="$WAVE_VCD"
+        ghdl -r --ieee=synopsys -fexplicit -fsynopsys "$TB_ENTITY" \
+            --vcd="$wave_file" --stop-time="$STOP_TIME" | tail -20
+    else
+        wave_file="$WAVE_GHW"
+        ghdl -r --ieee=synopsys -fexplicit -fsynopsys "$TB_ENTITY" \
+            --wave="$wave_file" --stop-time="$STOP_TIME" | tail -20
+    fi
+
+    if [ -f "$wave_file" ]; then
+        echo -e "${GREEN}✓ Simulacion completada: $wave_file${NC}"
+    else
+        echo -e "${RED}✗ No se genero el fichero de onda esperado${NC}"
+        exit 1
+    fi
+}
+
+view_waveforms() {
+    local wave_file
+
+    if [ "$WAVE_FORMAT" = "vcd" ]; then
+        wave_file="$WAVE_VCD"
+    else
+        wave_file="$WAVE_GHW"
+    fi
+
+    if [ -f "$wave_file" ]; then
+        gtkwave "$wave_file" >/dev/null 2>&1 &
+        echo -e "${GREEN}✓ GTKWave abierto con: $wave_file${NC}"
+    else
+        echo -e "${RED}✗ No existe el fichero de onda para visualizar${NC}"
+        exit 1
+    fi
+}
+
+for arg in "$@"; do
+    case "$arg" in
+        --help)
+            show_help
+            exit 0
+            ;;
+        --view)
+            VIEW_WAVEFORM="--view"
+            ;;
+        --stop-time=*)
+            STOP_TIME="${arg#*=}"
+            ;;
+        --vcd)
+            WAVE_FORMAT="vcd"
+            ;;
+        --ghw)
+            WAVE_FORMAT="ghw"
+            ;;
+        *)
+            if [ "$arg" = "$TEST_NAME" ]; then
+                :
+            else
+                TEST_NAME="$arg"
+            fi
+            ;;
+    esac
+done
+
+TEST_NAME_NORMALIZED="$(normalize_test_name "$TEST_NAME")"
+
+if [ -z "$TEST_NAME_NORMALIZED" ]; then
+    echo -e "${RED}✗ Opcion no valida: $TEST_NAME${NC}"
+    echo ""
+    show_help
+    exit 1
+fi
+
+if [ "$TEST_NAME_NORMALIZED" = "compile" ]; then
+    COMPILE_ONLY=1
+elif [ "$TEST_NAME_NORMALIZED" = "clean" ]; then
+    CLEAN_ONLY=1
+fi
+
+ensure_tools
+
+if [ "$CLEAN_ONLY" -eq 1 ]; then
+    clean_artifacts
+    exit 0
+fi
+
+echo -e "${GREEN}=== AOC2 Proyecto 2 ===${NC}"
+echo -e "Modo: ${YELLOW}$TEST_NAME_NORMALIZED${NC}"
+
+compile_project
+
+if [ "$COMPILE_ONLY" -eq 1 ]; then
+    exit 0
+fi
+
+run_simulation
+
+if [ "$VIEW_WAVEFORM" = "--view" ]; then
+    view_waveforms
+fi
+
+echo -e "${GREEN}✓ Flujo completado${NC}"
