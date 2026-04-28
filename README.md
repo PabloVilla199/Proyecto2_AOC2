@@ -19,7 +19,24 @@ The project introduces a non-trivial memory system including a Cache Memory (MC)
 - **Error Handling (Data Aborts):** Full secondary FSM resolving Memory Exception faults triggered by invalid addresses, misalignment, or illegal write attempts to Read-Only internal registers.
 
 ## Testing & Validation
-All memory access cases (Read/Write Hits, Misses, Clean/Dirty Evictions over all dimensions) are comprehensively checked via ModelSim unit testbenches and real MIPS Assembly program execution targeting different caching edge-cases to guarantee proper cycle behavior.
+All memory access cases (Read/Write Hits, Misses, Clean/Dirty Evictions) are comprehensively checked via ModelSim unit testbenches and real MIPS Assembly program execution targeting different caching edge-cases to guarantee proper cycle behavior.
+
+### Automation & Analysis Tools
+We have developed a set of Python-based tools to facilitate the analysis of VHDL simulation results:
+- **Signal Extraction:** `scripts/extract_signals.py` parses VCD files to generate human-readable event logs for MIPS and UC signals.
+- **Visual Dashboard:** `scripts/generate_gallery.py` creates an interactive HTML report with waveforms for key simulation milestones (Cache Misses, Copy-Back, etc.).
+
+## Directory Structure
+- `proyecto1/`: MIPS Core implementation.
+- `proyecto2/`: Memory hierarchy components (Cache, Bus, RAM).
+- `scripts/`: Automation and analysis scripts.
+- `docs/`: Technical documentation and test plans.
+- `outputs/`: Pre-generated simulation logs and visual reports.
+
+## Usage
+1. **Simulation:** Run `./ejecutar_proyecto2.sh --vcd` (requires WSL/GHDL).
+2. **Analysis:** Run `python scripts/extract_signals.py` to extract event logs.
+3. **Visualization:** Run `python scripts/generate_gallery.py` to view interactive waveforms in `outputs/reporte_grafico_caps.html`.
 
 ## Documentation Index
 In this repository, you can find extended technical documentation split carefully into specific markdown files to simplify assessment and development tracking:
