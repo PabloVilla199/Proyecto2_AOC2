@@ -89,7 +89,7 @@ for t, name, val in events:
     if (name, val) not in grouped_events[t]:
         grouped_events[t].append((name, val))
 
-print("=== Análisis Detallado de Señales (UC y MIPS) - Test 1 ===")
+print("=== Análisis Detallado de Señales (UC y MIPS) ===")
 for t in sorted(grouped_events.keys()):
     time_ns = t / 1000000.0  
     if time_ns < 40 or time_ns > 1000: continue 

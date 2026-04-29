@@ -54,7 +54,7 @@ architecture Behavioral of memoriaRAM_I is
     signal RAM : RamType := (
         X"08080100", -- 0: [45 ns] lw $8, 256($0)  -> MISS (Trae bloque 0x100)
         X"08090104", -- 14: [255 ns aprox] lw $9, 260($0) -> HIT (Localidad espacial)
-        X"080A0200", -- 24: [315 ns aprox] lw $10, 512($0) -> MISS (Nuevo bloque 0x200)
+        X"080A0010", -- 24: [315 ns aprox] lw $10, 16($0) -> MISS (Nuevo bloque 0x010, set 1)
         X"1000FFFF", -- 28: beq $0, $0, -1
         others => X"00000000"
     );

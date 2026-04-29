@@ -18,9 +18,8 @@
 --   beq $0, $0, -1    # Bucle infinito para finalizar la prueba
 
 ----------------------------------------------------------------------------------
--- Módulo: memoriaRAM_I (Test 4: Desalojo de Bloque Sucio - CopyBack)
 -- ===============================================================================
--- GUIA DEFINITIVA PARA EL REPORT (Lógica FIFO y Coherencia Copy-Back):
+-- GUIA PARA EL REPORT (Lógica FIFO y  Copy-Back):
 -- ===============================================================================
 --
 -- 1. [T=45 ns a 215 ns] CARGA INICIAL (VIA 0)
@@ -39,7 +38,7 @@
 --    - Dinámica: Fallo de lectura. Como la Vía 0 está ocupada, el FIFO elige la Vía 1.
 --    - Qué capturar: mc_we1='1'. Ahora ambas vías están llenas.
 --
--- 4. [T=545 ns a 665 ns] ¡CRÍTICO! FASE DE COPY-BACK
+-- 4. [T=545 ns a 665 ns] FASE DE COPY-BACK
 --    - Instrucción: lw $2, 0x0080($0) -> Bloque 8.
 --    - Dinámica: Fallo de lectura. El FIFO elige reemplazar la Vía 0 (la más vieja). 
 --      Al detectar dirty_bit_rpl='1', la UC lanza el desalojo.

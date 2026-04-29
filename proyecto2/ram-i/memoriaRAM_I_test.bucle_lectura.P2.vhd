@@ -60,18 +60,17 @@ signal RAM : RamType := (  			X"10210003", X"1021003E", X"1021005D", X"1021006C"
 signal dir_7:  std_logic_vector(6 downto 0); 
 begin
  
- dir_7 <= ADDR(8 downto 2); -- como la memoria es de 128 plalabras no usamos la dirección completa sino sólo 7 bits. Como se direccionan los bytes, pero damos palabras no usamos los 2 bits menos significativos
+ dir_7 <= ADDR(8 downto 2); -- como la memoria es de 128 plalabras no usamos la direcciï¿½n completa sino sï¿½lo 7 bits. Como se direccionan los bytes, pero damos palabras no usamos los 2 bits menos significativos
  process (CLK)
     begin
         if (CLK'event and CLK = '1') then
-            if (WE = '1') then -- sólo se escribe si WE vale 1
+            if (WE = '1') then -- sï¿½lo se escribe si WE vale 1
                 RAM(conv_integer(dir_7)) <= Din;
             end if;
         end if;
     end process;
 
-    Dout <= RAM(conv_integer(dir_7)) when (RE='1') else "00000000000000000000000000000000"; --sólo se lee si RE vale 1
+    Dout <= RAM(conv_integer(dir_7)) when (RE='1') else "00000000000000000000000000000000"; --sï¿½lo se lee si RE vale 1
 
 end Behavioral;
-
 

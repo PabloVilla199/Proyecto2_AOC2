@@ -92,7 +92,7 @@ component counter is
 					  );
 end component;		           
 -- Ejemplos de nombres de estado. No hay que usar estos. Nombrad a vuestros estados con nombres descriptivos. As� se facilita la depuraci�n
-type state_type is (Inicio, single_word_transfer_addr, read_block, write_dirty_block, single_word_transfer_data, block_transfer_addr, block_transfer_data, Send_Addr, Send_ADDR_CB, fallo, CopyBack, bajar_Frame); 
+type state_type is (Inicio, single_word_transfer_addr, read_block, write_dirty_block, single_word_transfer_data, block_transfer_addr, block_transfer_data, Arbitraje, Send_ADDR_CB, fallo, CopyBack); 
 type error_type is (memory_error, No_error); 
 signal state, next_state : state_type; 
 signal error_state, next_error_state : error_type; 
@@ -221,13 +221,13 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					--error 
 				end if;
 			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura/escritura
-				next_state <= Send_Addr; --Arbitraje
-				if (addr_non_cacheable = '0') then
-					inc_m <= '1'; -- Solo contamos fallo si es cacheable
+				next_state <= Arbitraje;
+				if (addr_non_cacheable = '0' and dirty_bit_rpl = '0') then
+					inc_m <= '1'; -- Solo contamos fallo si es cacheable y no estamos en medio de un reemplazo sucio
 				end if;
 			end if;
 
-		when Send_Addr =>
+		when Arbitraje =>
 			Bus_req <= '1';
 			if (Bus_grant = '1') then
 				if(addr_non_cacheable = '1' or WE = '1') then -- no cacheable o peticion de escritura
@@ -236,7 +236,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					next_state <= block_transfer_addr;
 				end if;
 			else 
-				next_state <= Send_Addr;
+				next_state <= Arbitraje;
 			end if;
 		
 		when block_transfer_addr =>
@@ -254,7 +254,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					next_error_state <= memory_error;
 					load_addr_error <= '1';
 					ready <= '1'; -- Avisamos al MIPS para no colgarlo (faltaba aquí)
-					next_state <= bajar_Frame;
+					next_state <= Inicio;
 				end if;
 			else
 				MC_bus_Read <= '1';
@@ -264,7 +264,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 					next_error_state <= memory_error;
 					load_addr_error <= '1';
 					ready <= '1'; -- Avisamos al MIPS para no colgarlo
-					next_state <= bajar_Frame;
+					next_state <= Inicio;
 				end if;
 			end if;
 
@@ -272,6 +272,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			Frame <= '1'; -- Mantenemos el bus 
 			Bus_req <= '1'; -- Bus ocupado
 			MC_send_data <= '1'; -- Mandamos los datos
+			MC_bus_Write <= '1'; -- Mantenemos la señal de escritura en el bus
 			mux_origen <= '1'; -- Origen los datos del bloque a guardar viene de MC 
 			block_addr <= '1'; 
 			send_dirty <= '1'; 
@@ -280,7 +281,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				count_enable <= '1';
 				if(last_word_block = '1') then
 					last_word <= '1';
-					next_state <= bajar_Frame;
+					next_state <= Inicio;
 					inc_cb <= '1';
 					Update_dirty <= '1';
 					Block_copied_back <= '1';
@@ -309,7 +310,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				if(last_word_block = '1') then
 					last_word <= '1';
 					MC_tags_WE <= '1';
-					next_state <= bajar_Frame;
+					next_state <= Inicio;
 				else 
 					next_state <= block_transfer_data;
 				end if;
@@ -337,7 +338,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				next_error_state <= memory_error;
 				load_addr_error <= '1';
 				ready <= '1'; -- Avisamos al MIPS
-				next_state <= bajar_Frame;
+				next_state <= Inicio;
 			end if;
 		when single_word_transfer_data =>
 			Frame <= '1';
@@ -356,16 +357,11 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 
 			if(Bus_TRDY = '1') then
 				ready <= '1'; -- Le decimos al procesador que su palabra est lista
-				next_state <= bajar_Frame;
+				next_state <= Inicio;
 			else 
 				next_state <= single_word_transfer_data;
 			end if;
-		
-		when bajar_Frame =>
-			Frame <= '0';
-			Bus_req <= '0';
-			next_state <= Inicio;    
-			
+					
     -- COMPLETE  with other states
 		
 		WHEN others => 	
