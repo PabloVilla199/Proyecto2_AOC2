@@ -74,7 +74,7 @@ Teniendo en cuenta las rutas del datapath y las políticas del MIPS y MC, la mem
 
 | ID | Operación / Escenario | Maestro / Inicia | Componente Destino | Condición Hardware | ¿Usa Bus General? | Descripción del Flujo Físico Resultante |
 | :---: | :--- | :---: | :---: | :--- | :---: | :--- |
-| **1** | **MIPS Acceso a Scratchpad** | **MIPS** | MemScratch | Address en rango dedicado. | ❌ **No** | Petición directa decodificada por IF. La Scratchpad lee o guarda el dato en **1 ciclo**, ignorando al resto de componentes. |
+| **1** | **MIPS Acceso a Scratchpad** | **MIPS** | MemScratch | Address en rango dedicado. |  **Si** | Petición directa decodificada por IF. La Scratchpad lee o guarda el dato en **1 ciclo**, ignorando al resto de componentes. |
 | **2** | **Acierto LECTURA Caché** | **MIPS** | Caché | Instrucción `lw` / Hit = 1. | ❌ **No** | El controlador comprueba Tag + Validez, y responde al MIPS de forma instantánea (**1 ciclo**). |
 | **3** | **Acierto ESCRITURA Caché** | **MIPS** | Caché | Instrucción `sw` / Hit = 1. | ❌ **No** | Se sobreescribe la palabra en la vía de la caché y se levanta su **Bit de Sucio = 1**. |
 | **4** | **Fallo de LECTURA Caché** | **Caché** | RAM principal | Instrucción `lw` / Hit = 0. | ✅ **SÍ** | Controlador detiene pipeline MIPS, luego pide el Bus. Tras esperar la latencia, transfiere el Bloque entero de RAM a la Vía vacía y finalmente presenta el dato al MIPS. |
