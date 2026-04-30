@@ -1,0 +1,1527 @@
+[0;32m=== AOC2 Proyecto 2 ===[0m
+Modo: [1;33mdefault[0m
+Prueba RAM seleccionada: [1;33mbucle_lectura[0m
+[1;33mCompilando proyecto...[0m
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+[0;32mâœ“ Compilacion exitosa[0m
+[1;33mEjecutando simulacion...[0m
+[1;33mStop-time: 15us[0m
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+proyecto2/testbench_AOC2_SoC.vhd:73:13:@5ns:(assertion note): >>> [ALERTA] MEMORY ERROR / DATA ABORT DETECTADO! <<<
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:28:17:@20ns:(assertion note): --- INICIANDO TEST DE INTEGRACION FINAL ---
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@55ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:66:13:@75ns:(assertion note): >>> [EVENTO] MISS en addr=00000000
+proyecto2/testbench_AOC2_SoC.vhd:79:13:@85ns:(report note): >>> [DEBUG] MIPS pide bus para addr=00000000 (NC='0')
+proyecto2/testbench_AOC2_SoC.vhd:85:13:@85ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto2/Via_2026_CB.vhd:60:33:@155ns:(report note): Simulation time : 155000000 fs.  Data written in via 0: 1, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@175ns:(report note): Simulation time : 175000000 fs.  Data written in via 0: 0, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@195ns:(report note): Simulation time : 195000000 fs.  Data written in via 0: 0, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:74:33:@215ns:(report note): Simulation time : 215000000 fs.  Tag written in via 0: 0, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@215ns:(report note): Simulation time : 215000000 fs.  Data written in via 0: 0, in Dir_cjto = 0
+proyecto1/BReg.vhd:67:34:@220ns:(report note): Simulation time : 220000000 fs.  Data written: 0, in Reg = 1
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@240ns:(report note): Simulation time : 240000000 fs.  Data written: 0, in Reg = 4
+proyecto1/BReg.vhd:67:34:@250ns:(report note): Simulation time : 250000000 fs.  Data written: 0, in Reg = 4
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@260ns:(report note): Simulation time : 260000000 fs.  Data written: 0, in Reg = 8
+proyecto1/BReg.vhd:67:34:@270ns:(report note): Simulation time : 270000000 fs.  Data written: 0, in Reg = 16
+proyecto1/BReg.vhd:67:34:@280ns:(report note): Simulation time : 280000000 fs.  Data written: 0, in Reg = 6
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@290ns:(report note): Simulation time : 290000000 fs.  Data written: 0, in Reg = 4
+proyecto1/BReg.vhd:67:34:@300ns:(report note): Simulation time : 300000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@310ns:(report note): Simulation time : 310000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@320ns:(report note): Simulation time : 320000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@330ns:(report note): Simulation time : 330000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@360ns:(report note): Simulation time : 360000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@370ns:(report note): Simulation time : 370000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@380ns:(report note): Simulation time : 380000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@390ns:(report note): Simulation time : 390000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@420ns:(report note): Simulation time : 420000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@430ns:(report note): Simulation time : 430000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@440ns:(report note): Simulation time : 440000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@450ns:(report note): Simulation time : 450000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@480ns:(report note): Simulation time : 480000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@490ns:(report note): Simulation time : 490000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@500ns:(report note): Simulation time : 500000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@510ns:(report note): Simulation time : 510000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@540ns:(report note): Simulation time : 540000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@550ns:(report note): Simulation time : 550000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@560ns:(report note): Simulation time : 560000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@570ns:(report note): Simulation time : 570000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@600ns:(report note): Simulation time : 600000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@610ns:(report note): Simulation time : 610000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@620ns:(report note): Simulation time : 620000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@630ns:(report note): Simulation time : 630000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@660ns:(report note): Simulation time : 660000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@670ns:(report note): Simulation time : 670000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@680ns:(report note): Simulation time : 680000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@690ns:(report note): Simulation time : 690000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@720ns:(report note): Simulation time : 720000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@730ns:(report note): Simulation time : 730000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@740ns:(report note): Simulation time : 740000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@750ns:(report note): Simulation time : 750000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@780ns:(report note): Simulation time : 780000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@790ns:(report note): Simulation time : 790000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@800ns:(report note): Simulation time : 800000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@810ns:(report note): Simulation time : 810000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@840ns:(report note): Simulation time : 840000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@850ns:(report note): Simulation time : 850000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@860ns:(report note): Simulation time : 860000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@870ns:(report note): Simulation time : 870000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@900ns:(report note): Simulation time : 900000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@910ns:(report note): Simulation time : 910000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@920ns:(report note): Simulation time : 920000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@930ns:(report note): Simulation time : 930000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@960ns:(report note): Simulation time : 960000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@970ns:(report note): Simulation time : 970000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@980ns:(report note): Simulation time : 980000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@990ns:(report note): Simulation time : 990000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1005ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1020ns:(report note): Simulation time : 1020000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1030ns:(report note): Simulation time : 1030000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1035ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1040ns:(report note): Simulation time : 1040000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1050ns:(report note): Simulation time : 1050000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1080ns:(report note): Simulation time : 1080000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1090ns:(report note): Simulation time : 1090000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1100ns:(report note): Simulation time : 1100000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1110ns:(report note): Simulation time : 1110000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1125ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1140ns:(report note): Simulation time : 1140000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1150ns:(report note): Simulation time : 1150000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1155ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1160ns:(report note): Simulation time : 1160000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1170ns:(report note): Simulation time : 1170000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1185ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1200ns:(report note): Simulation time : 1200000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1210ns:(report note): Simulation time : 1210000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1215ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1220ns:(report note): Simulation time : 1220000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1230ns:(report note): Simulation time : 1230000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1245ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1260ns:(report note): Simulation time : 1260000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1270ns:(report note): Simulation time : 1270000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1280ns:(report note): Simulation time : 1280000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1290ns:(report note): Simulation time : 1290000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1320ns:(report note): Simulation time : 1320000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1330ns:(report note): Simulation time : 1330000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1335ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1340ns:(report note): Simulation time : 1340000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1350ns:(report note): Simulation time : 1350000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1380ns:(report note): Simulation time : 1380000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1390ns:(report note): Simulation time : 1390000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1400ns:(report note): Simulation time : 1400000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1410ns:(report note): Simulation time : 1410000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1425ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1440ns:(report note): Simulation time : 1440000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1450ns:(report note): Simulation time : 1450000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1455ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1460ns:(report note): Simulation time : 1460000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1470ns:(report note): Simulation time : 1470000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1500ns:(report note): Simulation time : 1500000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1510ns:(report note): Simulation time : 1510000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:96:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:97:9:@1520ns:(assertion note):       AUDITORIA FINAL DE RENDIMIENTO (CACHE)        
+proyecto2/testbench_AOC2_SoC.vhd:98:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:99:9:@1520ns:(assertion note):  - Misses Totales:       1
+proyecto2/testbench_AOC2_SoC.vhd:100:9:@1520ns:(assertion note):  - Aciertos Lectura (r): 43
+proyecto2/testbench_AOC2_SoC.vhd:101:9:@1520ns:(assertion note):  - Aciertos Escritura(w): 0
+proyecto2/testbench_AOC2_SoC.vhd:102:9:@1520ns:(assertion note):  - Bloques Copy-Back:    0
+proyecto2/testbench_AOC2_SoC.vhd:103:9:@1520ns:(assertion note): ====================================================
+proyecto1/BReg.vhd:67:34:@1520ns:(report note): Simulation time : 1520000000 fs.  Data written: 0, in Reg = 6
+proyecto2/testbench_AOC2_SoC.vhd:35:9:@1530ns:(assertion note): --- SIMULACION COMPLETADA ---
+proyecto1/BReg.vhd:67:34:@1530ns:(report note): Simulation time : 1530000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1545ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1560ns:(report note): Simulation time : 1560000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1570ns:(report note): Simulation time : 1570000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1580ns:(report note): Simulation time : 1580000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1590ns:(report note): Simulation time : 1590000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1620ns:(report note): Simulation time : 1620000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1630ns:(report note): Simulation time : 1630000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1635ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1640ns:(report note): Simulation time : 1640000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1650ns:(report note): Simulation time : 1650000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1665ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1680ns:(report note): Simulation time : 1680000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1690ns:(report note): Simulation time : 1690000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1700ns:(report note): Simulation time : 1700000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1710ns:(report note): Simulation time : 1710000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1740ns:(report note): Simulation time : 1740000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1750ns:(report note): Simulation time : 1750000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1755ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1760ns:(report note): Simulation time : 1760000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1770ns:(report note): Simulation time : 1770000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1800ns:(report note): Simulation time : 1800000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1810ns:(report note): Simulation time : 1810000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1820ns:(report note): Simulation time : 1820000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1830ns:(report note): Simulation time : 1830000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1845ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1860ns:(report note): Simulation time : 1860000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1870ns:(report note): Simulation time : 1870000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1875ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1880ns:(report note): Simulation time : 1880000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1890ns:(report note): Simulation time : 1890000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1920ns:(report note): Simulation time : 1920000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1930ns:(report note): Simulation time : 1930000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1940ns:(report note): Simulation time : 1940000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@1950ns:(report note): Simulation time : 1950000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1965ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@1980ns:(report note): Simulation time : 1980000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@1990ns:(report note): Simulation time : 1990000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@1995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2us:(report note): Simulation time : 2000000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2010ns:(report note): Simulation time : 2010000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2040ns:(report note): Simulation time : 2040000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2050ns:(report note): Simulation time : 2050000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2055ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2060ns:(report note): Simulation time : 2060000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2070ns:(report note): Simulation time : 2070000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2085ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2100ns:(report note): Simulation time : 2100000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2110ns:(report note): Simulation time : 2110000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2115ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2120ns:(report note): Simulation time : 2120000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2130ns:(report note): Simulation time : 2130000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2145ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2160ns:(report note): Simulation time : 2160000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2170ns:(report note): Simulation time : 2170000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2175ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2180ns:(report note): Simulation time : 2180000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2190ns:(report note): Simulation time : 2190000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2220ns:(report note): Simulation time : 2220000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2230ns:(report note): Simulation time : 2230000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2240ns:(report note): Simulation time : 2240000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2250ns:(report note): Simulation time : 2250000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2265ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2280ns:(report note): Simulation time : 2280000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2290ns:(report note): Simulation time : 2290000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2300ns:(report note): Simulation time : 2300000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2310ns:(report note): Simulation time : 2310000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2340ns:(report note): Simulation time : 2340000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2350ns:(report note): Simulation time : 2350000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2360ns:(report note): Simulation time : 2360000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2370ns:(report note): Simulation time : 2370000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2400ns:(report note): Simulation time : 2400000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2410ns:(report note): Simulation time : 2410000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2420ns:(report note): Simulation time : 2420000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2430ns:(report note): Simulation time : 2430000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2460ns:(report note): Simulation time : 2460000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2470ns:(report note): Simulation time : 2470000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2480ns:(report note): Simulation time : 2480000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2490ns:(report note): Simulation time : 2490000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2520ns:(report note): Simulation time : 2520000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2530ns:(report note): Simulation time : 2530000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2540ns:(report note): Simulation time : 2540000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2550ns:(report note): Simulation time : 2550000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2580ns:(report note): Simulation time : 2580000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2590ns:(report note): Simulation time : 2590000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2600ns:(report note): Simulation time : 2600000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2610ns:(report note): Simulation time : 2610000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2640ns:(report note): Simulation time : 2640000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2650ns:(report note): Simulation time : 2650000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2660ns:(report note): Simulation time : 2660000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2670ns:(report note): Simulation time : 2670000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2700ns:(report note): Simulation time : 2700000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2710ns:(report note): Simulation time : 2710000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2720ns:(report note): Simulation time : 2720000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2730ns:(report note): Simulation time : 2730000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2760ns:(report note): Simulation time : 2760000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2770ns:(report note): Simulation time : 2770000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2780ns:(report note): Simulation time : 2780000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2790ns:(report note): Simulation time : 2790000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2820ns:(report note): Simulation time : 2820000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2830ns:(report note): Simulation time : 2830000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2840ns:(report note): Simulation time : 2840000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2850ns:(report note): Simulation time : 2850000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2880ns:(report note): Simulation time : 2880000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2890ns:(report note): Simulation time : 2890000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2900ns:(report note): Simulation time : 2900000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2910ns:(report note): Simulation time : 2910000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2940ns:(report note): Simulation time : 2940000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@2950ns:(report note): Simulation time : 2950000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@2960ns:(report note): Simulation time : 2960000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@2970ns:(report note): Simulation time : 2970000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@2985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3us:(report note): Simulation time : 3000000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3010ns:(report note): Simulation time : 3010000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3015ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3020ns:(report note): Simulation time : 3020000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3030ns:(report note): Simulation time : 3030000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3045ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3060ns:(report note): Simulation time : 3060000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3070ns:(report note): Simulation time : 3070000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3075ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3080ns:(report note): Simulation time : 3080000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3090ns:(report note): Simulation time : 3090000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3105ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3120ns:(report note): Simulation time : 3120000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3130ns:(report note): Simulation time : 3130000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3140ns:(report note): Simulation time : 3140000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3150ns:(report note): Simulation time : 3150000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3180ns:(report note): Simulation time : 3180000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3190ns:(report note): Simulation time : 3190000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3195ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3200ns:(report note): Simulation time : 3200000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3210ns:(report note): Simulation time : 3210000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3240ns:(report note): Simulation time : 3240000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3250ns:(report note): Simulation time : 3250000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3260ns:(report note): Simulation time : 3260000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3270ns:(report note): Simulation time : 3270000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3300ns:(report note): Simulation time : 3300000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3310ns:(report note): Simulation time : 3310000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3320ns:(report note): Simulation time : 3320000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3330ns:(report note): Simulation time : 3330000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3360ns:(report note): Simulation time : 3360000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3370ns:(report note): Simulation time : 3370000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3380ns:(report note): Simulation time : 3380000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3390ns:(report note): Simulation time : 3390000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3420ns:(report note): Simulation time : 3420000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3430ns:(report note): Simulation time : 3430000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3440ns:(report note): Simulation time : 3440000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3450ns:(report note): Simulation time : 3450000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3480ns:(report note): Simulation time : 3480000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3490ns:(report note): Simulation time : 3490000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3500ns:(report note): Simulation time : 3500000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3510ns:(report note): Simulation time : 3510000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3540ns:(report note): Simulation time : 3540000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3550ns:(report note): Simulation time : 3550000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3560ns:(report note): Simulation time : 3560000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3570ns:(report note): Simulation time : 3570000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3600ns:(report note): Simulation time : 3600000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3610ns:(report note): Simulation time : 3610000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3620ns:(report note): Simulation time : 3620000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3630ns:(report note): Simulation time : 3630000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3660ns:(report note): Simulation time : 3660000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3670ns:(report note): Simulation time : 3670000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3680ns:(report note): Simulation time : 3680000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3690ns:(report note): Simulation time : 3690000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3720ns:(report note): Simulation time : 3720000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3730ns:(report note): Simulation time : 3730000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3740ns:(report note): Simulation time : 3740000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3750ns:(report note): Simulation time : 3750000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3780ns:(report note): Simulation time : 3780000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3790ns:(report note): Simulation time : 3790000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3800ns:(report note): Simulation time : 3800000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3810ns:(report note): Simulation time : 3810000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3840ns:(report note): Simulation time : 3840000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3850ns:(report note): Simulation time : 3850000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3860ns:(report note): Simulation time : 3860000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3870ns:(report note): Simulation time : 3870000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3900ns:(report note): Simulation time : 3900000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3910ns:(report note): Simulation time : 3910000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3920ns:(report note): Simulation time : 3920000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3930ns:(report note): Simulation time : 3930000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3960ns:(report note): Simulation time : 3960000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@3970ns:(report note): Simulation time : 3970000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@3975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@3980ns:(report note): Simulation time : 3980000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@3990ns:(report note): Simulation time : 3990000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4005ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4020ns:(report note): Simulation time : 4020000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4030ns:(report note): Simulation time : 4030000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4035ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4040ns:(report note): Simulation time : 4040000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4050ns:(report note): Simulation time : 4050000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4080ns:(report note): Simulation time : 4080000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4090ns:(report note): Simulation time : 4090000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4100ns:(report note): Simulation time : 4100000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4110ns:(report note): Simulation time : 4110000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4125ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4140ns:(report note): Simulation time : 4140000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4150ns:(report note): Simulation time : 4150000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4155ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4160ns:(report note): Simulation time : 4160000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4170ns:(report note): Simulation time : 4170000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4185ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4200ns:(report note): Simulation time : 4200000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4210ns:(report note): Simulation time : 4210000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4215ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4220ns:(report note): Simulation time : 4220000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4230ns:(report note): Simulation time : 4230000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4245ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4260ns:(report note): Simulation time : 4260000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4270ns:(report note): Simulation time : 4270000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4280ns:(report note): Simulation time : 4280000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4290ns:(report note): Simulation time : 4290000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4320ns:(report note): Simulation time : 4320000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4330ns:(report note): Simulation time : 4330000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4335ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4340ns:(report note): Simulation time : 4340000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4350ns:(report note): Simulation time : 4350000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4380ns:(report note): Simulation time : 4380000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4390ns:(report note): Simulation time : 4390000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4400ns:(report note): Simulation time : 4400000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4410ns:(report note): Simulation time : 4410000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4425ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4440ns:(report note): Simulation time : 4440000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4450ns:(report note): Simulation time : 4450000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4455ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4460ns:(report note): Simulation time : 4460000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4470ns:(report note): Simulation time : 4470000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4500ns:(report note): Simulation time : 4500000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4510ns:(report note): Simulation time : 4510000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4520ns:(report note): Simulation time : 4520000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4530ns:(report note): Simulation time : 4530000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4545ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4560ns:(report note): Simulation time : 4560000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4570ns:(report note): Simulation time : 4570000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4580ns:(report note): Simulation time : 4580000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4590ns:(report note): Simulation time : 4590000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4620ns:(report note): Simulation time : 4620000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4630ns:(report note): Simulation time : 4630000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4635ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4640ns:(report note): Simulation time : 4640000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4650ns:(report note): Simulation time : 4650000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4665ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4680ns:(report note): Simulation time : 4680000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4690ns:(report note): Simulation time : 4690000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4700ns:(report note): Simulation time : 4700000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4710ns:(report note): Simulation time : 4710000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4740ns:(report note): Simulation time : 4740000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4750ns:(report note): Simulation time : 4750000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4755ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4760ns:(report note): Simulation time : 4760000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4770ns:(report note): Simulation time : 4770000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4800ns:(report note): Simulation time : 4800000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4810ns:(report note): Simulation time : 4810000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4820ns:(report note): Simulation time : 4820000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4830ns:(report note): Simulation time : 4830000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4845ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4860ns:(report note): Simulation time : 4860000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4870ns:(report note): Simulation time : 4870000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4875ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4880ns:(report note): Simulation time : 4880000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4890ns:(report note): Simulation time : 4890000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4920ns:(report note): Simulation time : 4920000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4930ns:(report note): Simulation time : 4930000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4940ns:(report note): Simulation time : 4940000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@4950ns:(report note): Simulation time : 4950000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4965ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@4980ns:(report note): Simulation time : 4980000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@4990ns:(report note): Simulation time : 4990000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@4995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5us:(report note): Simulation time : 5000000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5010ns:(report note): Simulation time : 5010000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5040ns:(report note): Simulation time : 5040000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5050ns:(report note): Simulation time : 5050000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5055ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5060ns:(report note): Simulation time : 5060000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5070ns:(report note): Simulation time : 5070000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5085ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5100ns:(report note): Simulation time : 5100000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5110ns:(report note): Simulation time : 5110000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5115ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5120ns:(report note): Simulation time : 5120000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5130ns:(report note): Simulation time : 5130000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5145ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5160ns:(report note): Simulation time : 5160000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5170ns:(report note): Simulation time : 5170000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5175ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5180ns:(report note): Simulation time : 5180000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5190ns:(report note): Simulation time : 5190000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5220ns:(report note): Simulation time : 5220000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5230ns:(report note): Simulation time : 5230000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5240ns:(report note): Simulation time : 5240000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5250ns:(report note): Simulation time : 5250000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5265ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5280ns:(report note): Simulation time : 5280000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5290ns:(report note): Simulation time : 5290000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5300ns:(report note): Simulation time : 5300000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5310ns:(report note): Simulation time : 5310000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5340ns:(report note): Simulation time : 5340000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5350ns:(report note): Simulation time : 5350000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5360ns:(report note): Simulation time : 5360000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5370ns:(report note): Simulation time : 5370000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5400ns:(report note): Simulation time : 5400000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5410ns:(report note): Simulation time : 5410000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5420ns:(report note): Simulation time : 5420000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5430ns:(report note): Simulation time : 5430000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5460ns:(report note): Simulation time : 5460000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5470ns:(report note): Simulation time : 5470000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5480ns:(report note): Simulation time : 5480000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5490ns:(report note): Simulation time : 5490000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5520ns:(report note): Simulation time : 5520000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5530ns:(report note): Simulation time : 5530000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5540ns:(report note): Simulation time : 5540000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5550ns:(report note): Simulation time : 5550000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5580ns:(report note): Simulation time : 5580000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5590ns:(report note): Simulation time : 5590000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5600ns:(report note): Simulation time : 5600000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5610ns:(report note): Simulation time : 5610000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5640ns:(report note): Simulation time : 5640000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5650ns:(report note): Simulation time : 5650000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5660ns:(report note): Simulation time : 5660000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5670ns:(report note): Simulation time : 5670000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5700ns:(report note): Simulation time : 5700000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5710ns:(report note): Simulation time : 5710000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5720ns:(report note): Simulation time : 5720000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5730ns:(report note): Simulation time : 5730000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5760ns:(report note): Simulation time : 5760000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5770ns:(report note): Simulation time : 5770000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5780ns:(report note): Simulation time : 5780000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5790ns:(report note): Simulation time : 5790000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5820ns:(report note): Simulation time : 5820000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5830ns:(report note): Simulation time : 5830000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5840ns:(report note): Simulation time : 5840000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5850ns:(report note): Simulation time : 5850000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5880ns:(report note): Simulation time : 5880000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5890ns:(report note): Simulation time : 5890000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5900ns:(report note): Simulation time : 5900000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5910ns:(report note): Simulation time : 5910000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5940ns:(report note): Simulation time : 5940000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@5950ns:(report note): Simulation time : 5950000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@5960ns:(report note): Simulation time : 5960000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@5970ns:(report note): Simulation time : 5970000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@5985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6us:(report note): Simulation time : 6000000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6010ns:(report note): Simulation time : 6010000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6015ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6020ns:(report note): Simulation time : 6020000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6030ns:(report note): Simulation time : 6030000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6045ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6060ns:(report note): Simulation time : 6060000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6070ns:(report note): Simulation time : 6070000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6075ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6080ns:(report note): Simulation time : 6080000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6090ns:(report note): Simulation time : 6090000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6105ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6120ns:(report note): Simulation time : 6120000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6130ns:(report note): Simulation time : 6130000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6140ns:(report note): Simulation time : 6140000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6150ns:(report note): Simulation time : 6150000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6180ns:(report note): Simulation time : 6180000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6190ns:(report note): Simulation time : 6190000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6195ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6200ns:(report note): Simulation time : 6200000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6210ns:(report note): Simulation time : 6210000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6240ns:(report note): Simulation time : 6240000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6250ns:(report note): Simulation time : 6250000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6260ns:(report note): Simulation time : 6260000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6270ns:(report note): Simulation time : 6270000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6300ns:(report note): Simulation time : 6300000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6310ns:(report note): Simulation time : 6310000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6320ns:(report note): Simulation time : 6320000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6330ns:(report note): Simulation time : 6330000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6360ns:(report note): Simulation time : 6360000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6370ns:(report note): Simulation time : 6370000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6380ns:(report note): Simulation time : 6380000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6390ns:(report note): Simulation time : 6390000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6420ns:(report note): Simulation time : 6420000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6430ns:(report note): Simulation time : 6430000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6440ns:(report note): Simulation time : 6440000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6450ns:(report note): Simulation time : 6450000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6480ns:(report note): Simulation time : 6480000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6490ns:(report note): Simulation time : 6490000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6500ns:(report note): Simulation time : 6500000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6510ns:(report note): Simulation time : 6510000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6540ns:(report note): Simulation time : 6540000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6550ns:(report note): Simulation time : 6550000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6560ns:(report note): Simulation time : 6560000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6570ns:(report note): Simulation time : 6570000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6600ns:(report note): Simulation time : 6600000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6610ns:(report note): Simulation time : 6610000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6620ns:(report note): Simulation time : 6620000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6630ns:(report note): Simulation time : 6630000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6660ns:(report note): Simulation time : 6660000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6670ns:(report note): Simulation time : 6670000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6680ns:(report note): Simulation time : 6680000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6690ns:(report note): Simulation time : 6690000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6720ns:(report note): Simulation time : 6720000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6730ns:(report note): Simulation time : 6730000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6740ns:(report note): Simulation time : 6740000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6750ns:(report note): Simulation time : 6750000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6780ns:(report note): Simulation time : 6780000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6790ns:(report note): Simulation time : 6790000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6800ns:(report note): Simulation time : 6800000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6810ns:(report note): Simulation time : 6810000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6840ns:(report note): Simulation time : 6840000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6850ns:(report note): Simulation time : 6850000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6860ns:(report note): Simulation time : 6860000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6870ns:(report note): Simulation time : 6870000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6900ns:(report note): Simulation time : 6900000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6910ns:(report note): Simulation time : 6910000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6920ns:(report note): Simulation time : 6920000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6930ns:(report note): Simulation time : 6930000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6960ns:(report note): Simulation time : 6960000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@6970ns:(report note): Simulation time : 6970000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@6975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@6980ns:(report note): Simulation time : 6980000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@6990ns:(report note): Simulation time : 6990000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7005ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7020ns:(report note): Simulation time : 7020000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7030ns:(report note): Simulation time : 7030000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7035ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7040ns:(report note): Simulation time : 7040000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7050ns:(report note): Simulation time : 7050000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7080ns:(report note): Simulation time : 7080000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7090ns:(report note): Simulation time : 7090000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7100ns:(report note): Simulation time : 7100000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7110ns:(report note): Simulation time : 7110000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7125ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7140ns:(report note): Simulation time : 7140000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7150ns:(report note): Simulation time : 7150000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7155ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7160ns:(report note): Simulation time : 7160000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7170ns:(report note): Simulation time : 7170000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7185ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7200ns:(report note): Simulation time : 7200000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7210ns:(report note): Simulation time : 7210000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7215ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7220ns:(report note): Simulation time : 7220000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7230ns:(report note): Simulation time : 7230000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7245ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7260ns:(report note): Simulation time : 7260000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7270ns:(report note): Simulation time : 7270000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7280ns:(report note): Simulation time : 7280000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7290ns:(report note): Simulation time : 7290000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7320ns:(report note): Simulation time : 7320000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7330ns:(report note): Simulation time : 7330000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7335ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7340ns:(report note): Simulation time : 7340000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7350ns:(report note): Simulation time : 7350000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7380ns:(report note): Simulation time : 7380000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7390ns:(report note): Simulation time : 7390000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7400ns:(report note): Simulation time : 7400000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7410ns:(report note): Simulation time : 7410000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7425ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7440ns:(report note): Simulation time : 7440000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7450ns:(report note): Simulation time : 7450000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7455ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7460ns:(report note): Simulation time : 7460000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7470ns:(report note): Simulation time : 7470000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7500ns:(report note): Simulation time : 7500000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7510ns:(report note): Simulation time : 7510000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7520ns:(report note): Simulation time : 7520000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7530ns:(report note): Simulation time : 7530000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7545ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7560ns:(report note): Simulation time : 7560000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7570ns:(report note): Simulation time : 7570000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7580ns:(report note): Simulation time : 7580000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7590ns:(report note): Simulation time : 7590000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7620ns:(report note): Simulation time : 7620000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7630ns:(report note): Simulation time : 7630000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7635ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7640ns:(report note): Simulation time : 7640000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7650ns:(report note): Simulation time : 7650000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7665ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7680ns:(report note): Simulation time : 7680000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7690ns:(report note): Simulation time : 7690000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7700ns:(report note): Simulation time : 7700000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7710ns:(report note): Simulation time : 7710000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7740ns:(report note): Simulation time : 7740000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7750ns:(report note): Simulation time : 7750000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7755ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7760ns:(report note): Simulation time : 7760000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7770ns:(report note): Simulation time : 7770000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7800ns:(report note): Simulation time : 7800000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7810ns:(report note): Simulation time : 7810000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7820ns:(report note): Simulation time : 7820000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7830ns:(report note): Simulation time : 7830000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7845ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7860ns:(report note): Simulation time : 7860000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7870ns:(report note): Simulation time : 7870000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7875ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7880ns:(report note): Simulation time : 7880000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7890ns:(report note): Simulation time : 7890000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7920ns:(report note): Simulation time : 7920000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7930ns:(report note): Simulation time : 7930000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7940ns:(report note): Simulation time : 7940000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@7950ns:(report note): Simulation time : 7950000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7965ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@7980ns:(report note): Simulation time : 7980000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@7990ns:(report note): Simulation time : 7990000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@7995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8us:(report note): Simulation time : 8000000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8010ns:(report note): Simulation time : 8010000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8040ns:(report note): Simulation time : 8040000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8050ns:(report note): Simulation time : 8050000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8055ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8060ns:(report note): Simulation time : 8060000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8070ns:(report note): Simulation time : 8070000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8085ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8100ns:(report note): Simulation time : 8100000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8110ns:(report note): Simulation time : 8110000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8115ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8120ns:(report note): Simulation time : 8120000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8130ns:(report note): Simulation time : 8130000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8145ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8160ns:(report note): Simulation time : 8160000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8170ns:(report note): Simulation time : 8170000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8175ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8180ns:(report note): Simulation time : 8180000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8190ns:(report note): Simulation time : 8190000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8220ns:(report note): Simulation time : 8220000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8230ns:(report note): Simulation time : 8230000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8240ns:(report note): Simulation time : 8240000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8250ns:(report note): Simulation time : 8250000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8265ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8280ns:(report note): Simulation time : 8280000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8290ns:(report note): Simulation time : 8290000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8300ns:(report note): Simulation time : 8300000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8310ns:(report note): Simulation time : 8310000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8340ns:(report note): Simulation time : 8340000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8350ns:(report note): Simulation time : 8350000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8360ns:(report note): Simulation time : 8360000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8370ns:(report note): Simulation time : 8370000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8400ns:(report note): Simulation time : 8400000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8410ns:(report note): Simulation time : 8410000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8420ns:(report note): Simulation time : 8420000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8430ns:(report note): Simulation time : 8430000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8460ns:(report note): Simulation time : 8460000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8470ns:(report note): Simulation time : 8470000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8480ns:(report note): Simulation time : 8480000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8490ns:(report note): Simulation time : 8490000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8520ns:(report note): Simulation time : 8520000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8530ns:(report note): Simulation time : 8530000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8540ns:(report note): Simulation time : 8540000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8550ns:(report note): Simulation time : 8550000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8580ns:(report note): Simulation time : 8580000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8590ns:(report note): Simulation time : 8590000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8600ns:(report note): Simulation time : 8600000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8610ns:(report note): Simulation time : 8610000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8640ns:(report note): Simulation time : 8640000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8650ns:(report note): Simulation time : 8650000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8660ns:(report note): Simulation time : 8660000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8670ns:(report note): Simulation time : 8670000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8700ns:(report note): Simulation time : 8700000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8710ns:(report note): Simulation time : 8710000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8720ns:(report note): Simulation time : 8720000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8730ns:(report note): Simulation time : 8730000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8760ns:(report note): Simulation time : 8760000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8770ns:(report note): Simulation time : 8770000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8780ns:(report note): Simulation time : 8780000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8790ns:(report note): Simulation time : 8790000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8820ns:(report note): Simulation time : 8820000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8830ns:(report note): Simulation time : 8830000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8840ns:(report note): Simulation time : 8840000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8850ns:(report note): Simulation time : 8850000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8880ns:(report note): Simulation time : 8880000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8890ns:(report note): Simulation time : 8890000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8900ns:(report note): Simulation time : 8900000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8910ns:(report note): Simulation time : 8910000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8940ns:(report note): Simulation time : 8940000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@8950ns:(report note): Simulation time : 8950000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@8960ns:(report note): Simulation time : 8960000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@8970ns:(report note): Simulation time : 8970000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@8985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9us:(report note): Simulation time : 9000000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9010ns:(report note): Simulation time : 9010000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9015ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9020ns:(report note): Simulation time : 9020000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9030ns:(report note): Simulation time : 9030000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9045ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9060ns:(report note): Simulation time : 9060000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9070ns:(report note): Simulation time : 9070000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9075ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9080ns:(report note): Simulation time : 9080000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9090ns:(report note): Simulation time : 9090000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9105ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9120ns:(report note): Simulation time : 9120000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9130ns:(report note): Simulation time : 9130000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9140ns:(report note): Simulation time : 9140000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9150ns:(report note): Simulation time : 9150000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9180ns:(report note): Simulation time : 9180000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9190ns:(report note): Simulation time : 9190000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9195ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9200ns:(report note): Simulation time : 9200000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9210ns:(report note): Simulation time : 9210000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9240ns:(report note): Simulation time : 9240000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9250ns:(report note): Simulation time : 9250000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9260ns:(report note): Simulation time : 9260000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9270ns:(report note): Simulation time : 9270000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9300ns:(report note): Simulation time : 9300000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9310ns:(report note): Simulation time : 9310000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9320ns:(report note): Simulation time : 9320000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9330ns:(report note): Simulation time : 9330000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9360ns:(report note): Simulation time : 9360000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9370ns:(report note): Simulation time : 9370000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9380ns:(report note): Simulation time : 9380000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9390ns:(report note): Simulation time : 9390000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9420ns:(report note): Simulation time : 9420000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9430ns:(report note): Simulation time : 9430000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9440ns:(report note): Simulation time : 9440000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9450ns:(report note): Simulation time : 9450000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9480ns:(report note): Simulation time : 9480000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9490ns:(report note): Simulation time : 9490000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9500ns:(report note): Simulation time : 9500000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9510ns:(report note): Simulation time : 9510000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9540ns:(report note): Simulation time : 9540000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9550ns:(report note): Simulation time : 9550000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9560ns:(report note): Simulation time : 9560000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9570ns:(report note): Simulation time : 9570000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9600ns:(report note): Simulation time : 9600000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9610ns:(report note): Simulation time : 9610000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9620ns:(report note): Simulation time : 9620000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9630ns:(report note): Simulation time : 9630000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9660ns:(report note): Simulation time : 9660000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9670ns:(report note): Simulation time : 9670000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9680ns:(report note): Simulation time : 9680000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9690ns:(report note): Simulation time : 9690000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9720ns:(report note): Simulation time : 9720000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9730ns:(report note): Simulation time : 9730000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9740ns:(report note): Simulation time : 9740000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9750ns:(report note): Simulation time : 9750000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9780ns:(report note): Simulation time : 9780000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9790ns:(report note): Simulation time : 9790000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9800ns:(report note): Simulation time : 9800000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9810ns:(report note): Simulation time : 9810000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9840ns:(report note): Simulation time : 9840000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9850ns:(report note): Simulation time : 9850000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9860ns:(report note): Simulation time : 9860000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9870ns:(report note): Simulation time : 9870000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9900ns:(report note): Simulation time : 9900000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9910ns:(report note): Simulation time : 9910000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9920ns:(report note): Simulation time : 9920000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9930ns:(report note): Simulation time : 9930000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9960ns:(report note): Simulation time : 9960000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@9970ns:(report note): Simulation time : 9970000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@9975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@9980ns:(report note): Simulation time : 9980000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@9990ns:(report note): Simulation time : 9990000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10005ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10020ns:(report note): Simulation time : 10020000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10030ns:(report note): Simulation time : 10030000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10035ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10040ns:(report note): Simulation time : 10040000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10050ns:(report note): Simulation time : 10050000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10080ns:(report note): Simulation time : 10080000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10090ns:(report note): Simulation time : 10090000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10100ns:(report note): Simulation time : 10100000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10110ns:(report note): Simulation time : 10110000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10125ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10140ns:(report note): Simulation time : 10140000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10150ns:(report note): Simulation time : 10150000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10155ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10160ns:(report note): Simulation time : 10160000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10170ns:(report note): Simulation time : 10170000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10185ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10200ns:(report note): Simulation time : 10200000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10210ns:(report note): Simulation time : 10210000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10215ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10220ns:(report note): Simulation time : 10220000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10230ns:(report note): Simulation time : 10230000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10245ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10260ns:(report note): Simulation time : 10260000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10270ns:(report note): Simulation time : 10270000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10280ns:(report note): Simulation time : 10280000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10290ns:(report note): Simulation time : 10290000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10320ns:(report note): Simulation time : 10320000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10330ns:(report note): Simulation time : 10330000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10335ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10340ns:(report note): Simulation time : 10340000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10350ns:(report note): Simulation time : 10350000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10380ns:(report note): Simulation time : 10380000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10390ns:(report note): Simulation time : 10390000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10400ns:(report note): Simulation time : 10400000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10410ns:(report note): Simulation time : 10410000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10425ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10440ns:(report note): Simulation time : 10440000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10450ns:(report note): Simulation time : 10450000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10455ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10460ns:(report note): Simulation time : 10460000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10470ns:(report note): Simulation time : 10470000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10500ns:(report note): Simulation time : 10500000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10510ns:(report note): Simulation time : 10510000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10520ns:(report note): Simulation time : 10520000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10530ns:(report note): Simulation time : 10530000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10545ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10560ns:(report note): Simulation time : 10560000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10570ns:(report note): Simulation time : 10570000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10580ns:(report note): Simulation time : 10580000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10590ns:(report note): Simulation time : 10590000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10620ns:(report note): Simulation time : 10620000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10630ns:(report note): Simulation time : 10630000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10635ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10640ns:(report note): Simulation time : 10640000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10650ns:(report note): Simulation time : 10650000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10665ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10680ns:(report note): Simulation time : 10680000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10690ns:(report note): Simulation time : 10690000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10700ns:(report note): Simulation time : 10700000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10710ns:(report note): Simulation time : 10710000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10740ns:(report note): Simulation time : 10740000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10750ns:(report note): Simulation time : 10750000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10755ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10760ns:(report note): Simulation time : 10760000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10770ns:(report note): Simulation time : 10770000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10800ns:(report note): Simulation time : 10800000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10810ns:(report note): Simulation time : 10810000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10820ns:(report note): Simulation time : 10820000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10830ns:(report note): Simulation time : 10830000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10845ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10860ns:(report note): Simulation time : 10860000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10870ns:(report note): Simulation time : 10870000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10875ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10880ns:(report note): Simulation time : 10880000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10890ns:(report note): Simulation time : 10890000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10920ns:(report note): Simulation time : 10920000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10930ns:(report note): Simulation time : 10930000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10940ns:(report note): Simulation time : 10940000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@10950ns:(report note): Simulation time : 10950000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10965ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@10980ns:(report note): Simulation time : 10980000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@10990ns:(report note): Simulation time : 10990000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@10995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11us:(report note): Simulation time : 11000000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11010ns:(report note): Simulation time : 11010000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11040ns:(report note): Simulation time : 11040000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11050ns:(report note): Simulation time : 11050000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11055ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11060ns:(report note): Simulation time : 11060000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11070ns:(report note): Simulation time : 11070000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11085ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11100ns:(report note): Simulation time : 11100000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11110ns:(report note): Simulation time : 11110000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11115ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11120ns:(report note): Simulation time : 11120000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11130ns:(report note): Simulation time : 11130000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11145ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11160ns:(report note): Simulation time : 11160000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11170ns:(report note): Simulation time : 11170000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11175ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11180ns:(report note): Simulation time : 11180000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11190ns:(report note): Simulation time : 11190000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11220ns:(report note): Simulation time : 11220000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11230ns:(report note): Simulation time : 11230000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11240ns:(report note): Simulation time : 11240000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11250ns:(report note): Simulation time : 11250000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11265ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11280ns:(report note): Simulation time : 11280000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11290ns:(report note): Simulation time : 11290000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11300ns:(report note): Simulation time : 11300000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11310ns:(report note): Simulation time : 11310000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11340ns:(report note): Simulation time : 11340000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11350ns:(report note): Simulation time : 11350000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11360ns:(report note): Simulation time : 11360000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11370ns:(report note): Simulation time : 11370000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11400ns:(report note): Simulation time : 11400000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11410ns:(report note): Simulation time : 11410000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11420ns:(report note): Simulation time : 11420000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11430ns:(report note): Simulation time : 11430000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11460ns:(report note): Simulation time : 11460000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11470ns:(report note): Simulation time : 11470000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11480ns:(report note): Simulation time : 11480000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11490ns:(report note): Simulation time : 11490000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11520ns:(report note): Simulation time : 11520000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11530ns:(report note): Simulation time : 11530000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11540ns:(report note): Simulation time : 11540000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11550ns:(report note): Simulation time : 11550000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11580ns:(report note): Simulation time : 11580000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11590ns:(report note): Simulation time : 11590000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11600ns:(report note): Simulation time : 11600000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11610ns:(report note): Simulation time : 11610000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11640ns:(report note): Simulation time : 11640000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11650ns:(report note): Simulation time : 11650000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11660ns:(report note): Simulation time : 11660000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11670ns:(report note): Simulation time : 11670000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11700ns:(report note): Simulation time : 11700000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11710ns:(report note): Simulation time : 11710000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11720ns:(report note): Simulation time : 11720000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11730ns:(report note): Simulation time : 11730000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11760ns:(report note): Simulation time : 11760000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11770ns:(report note): Simulation time : 11770000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11780ns:(report note): Simulation time : 11780000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11790ns:(report note): Simulation time : 11790000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11820ns:(report note): Simulation time : 11820000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11830ns:(report note): Simulation time : 11830000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11840ns:(report note): Simulation time : 11840000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11850ns:(report note): Simulation time : 11850000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11880ns:(report note): Simulation time : 11880000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11890ns:(report note): Simulation time : 11890000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11900ns:(report note): Simulation time : 11900000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11910ns:(report note): Simulation time : 11910000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11940ns:(report note): Simulation time : 11940000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@11950ns:(report note): Simulation time : 11950000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@11960ns:(report note): Simulation time : 11960000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@11970ns:(report note): Simulation time : 11970000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@11985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12us:(report note): Simulation time : 12000000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12010ns:(report note): Simulation time : 12010000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12015ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12020ns:(report note): Simulation time : 12020000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12030ns:(report note): Simulation time : 12030000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12045ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12060ns:(report note): Simulation time : 12060000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12070ns:(report note): Simulation time : 12070000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12075ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12080ns:(report note): Simulation time : 12080000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12090ns:(report note): Simulation time : 12090000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12105ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12120ns:(report note): Simulation time : 12120000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12130ns:(report note): Simulation time : 12130000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12140ns:(report note): Simulation time : 12140000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12150ns:(report note): Simulation time : 12150000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12180ns:(report note): Simulation time : 12180000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12190ns:(report note): Simulation time : 12190000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12195ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12200ns:(report note): Simulation time : 12200000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12210ns:(report note): Simulation time : 12210000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12240ns:(report note): Simulation time : 12240000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12250ns:(report note): Simulation time : 12250000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12260ns:(report note): Simulation time : 12260000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12270ns:(report note): Simulation time : 12270000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12300ns:(report note): Simulation time : 12300000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12310ns:(report note): Simulation time : 12310000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12320ns:(report note): Simulation time : 12320000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12330ns:(report note): Simulation time : 12330000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12360ns:(report note): Simulation time : 12360000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12370ns:(report note): Simulation time : 12370000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12380ns:(report note): Simulation time : 12380000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12390ns:(report note): Simulation time : 12390000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12420ns:(report note): Simulation time : 12420000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12430ns:(report note): Simulation time : 12430000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12440ns:(report note): Simulation time : 12440000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12450ns:(report note): Simulation time : 12450000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12480ns:(report note): Simulation time : 12480000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12490ns:(report note): Simulation time : 12490000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12500ns:(report note): Simulation time : 12500000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12510ns:(report note): Simulation time : 12510000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12540ns:(report note): Simulation time : 12540000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12550ns:(report note): Simulation time : 12550000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12560ns:(report note): Simulation time : 12560000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12570ns:(report note): Simulation time : 12570000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12600ns:(report note): Simulation time : 12600000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12610ns:(report note): Simulation time : 12610000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12620ns:(report note): Simulation time : 12620000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12630ns:(report note): Simulation time : 12630000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12660ns:(report note): Simulation time : 12660000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12670ns:(report note): Simulation time : 12670000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12680ns:(report note): Simulation time : 12680000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12690ns:(report note): Simulation time : 12690000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12720ns:(report note): Simulation time : 12720000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12730ns:(report note): Simulation time : 12730000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12740ns:(report note): Simulation time : 12740000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12750ns:(report note): Simulation time : 12750000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12780ns:(report note): Simulation time : 12780000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12790ns:(report note): Simulation time : 12790000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12800ns:(report note): Simulation time : 12800000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12810ns:(report note): Simulation time : 12810000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12840ns:(report note): Simulation time : 12840000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12850ns:(report note): Simulation time : 12850000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12860ns:(report note): Simulation time : 12860000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12870ns:(report note): Simulation time : 12870000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12900ns:(report note): Simulation time : 12900000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12910ns:(report note): Simulation time : 12910000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12920ns:(report note): Simulation time : 12920000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12930ns:(report note): Simulation time : 12930000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12960ns:(report note): Simulation time : 12960000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@12970ns:(report note): Simulation time : 12970000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@12975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@12980ns:(report note): Simulation time : 12980000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@12990ns:(report note): Simulation time : 12990000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13005ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13020ns:(report note): Simulation time : 13020000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13030ns:(report note): Simulation time : 13030000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13035ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13040ns:(report note): Simulation time : 13040000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13050ns:(report note): Simulation time : 13050000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13080ns:(report note): Simulation time : 13080000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13090ns:(report note): Simulation time : 13090000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13100ns:(report note): Simulation time : 13100000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13110ns:(report note): Simulation time : 13110000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13125ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13140ns:(report note): Simulation time : 13140000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13150ns:(report note): Simulation time : 13150000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13155ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13160ns:(report note): Simulation time : 13160000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13170ns:(report note): Simulation time : 13170000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13185ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13200ns:(report note): Simulation time : 13200000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13210ns:(report note): Simulation time : 13210000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13215ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13220ns:(report note): Simulation time : 13220000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13230ns:(report note): Simulation time : 13230000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13245ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13260ns:(report note): Simulation time : 13260000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13270ns:(report note): Simulation time : 13270000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13280ns:(report note): Simulation time : 13280000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13290ns:(report note): Simulation time : 13290000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13320ns:(report note): Simulation time : 13320000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13330ns:(report note): Simulation time : 13330000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13335ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13340ns:(report note): Simulation time : 13340000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13350ns:(report note): Simulation time : 13350000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13380ns:(report note): Simulation time : 13380000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13390ns:(report note): Simulation time : 13390000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13400ns:(report note): Simulation time : 13400000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13410ns:(report note): Simulation time : 13410000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13425ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13440ns:(report note): Simulation time : 13440000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13450ns:(report note): Simulation time : 13450000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13455ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13460ns:(report note): Simulation time : 13460000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13470ns:(report note): Simulation time : 13470000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13500ns:(report note): Simulation time : 13500000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13510ns:(report note): Simulation time : 13510000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13520ns:(report note): Simulation time : 13520000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13530ns:(report note): Simulation time : 13530000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13545ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13560ns:(report note): Simulation time : 13560000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13570ns:(report note): Simulation time : 13570000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13580ns:(report note): Simulation time : 13580000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13590ns:(report note): Simulation time : 13590000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13620ns:(report note): Simulation time : 13620000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13630ns:(report note): Simulation time : 13630000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13635ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13640ns:(report note): Simulation time : 13640000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13650ns:(report note): Simulation time : 13650000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13665ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13680ns:(report note): Simulation time : 13680000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13690ns:(report note): Simulation time : 13690000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13700ns:(report note): Simulation time : 13700000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13710ns:(report note): Simulation time : 13710000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13740ns:(report note): Simulation time : 13740000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13750ns:(report note): Simulation time : 13750000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13755ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13760ns:(report note): Simulation time : 13760000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13770ns:(report note): Simulation time : 13770000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13800ns:(report note): Simulation time : 13800000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13810ns:(report note): Simulation time : 13810000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13820ns:(report note): Simulation time : 13820000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13830ns:(report note): Simulation time : 13830000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13845ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13860ns:(report note): Simulation time : 13860000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13870ns:(report note): Simulation time : 13870000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13875ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13880ns:(report note): Simulation time : 13880000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13890ns:(report note): Simulation time : 13890000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13920ns:(report note): Simulation time : 13920000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13930ns:(report note): Simulation time : 13930000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13940ns:(report note): Simulation time : 13940000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@13950ns:(report note): Simulation time : 13950000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13965ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@13980ns:(report note): Simulation time : 13980000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@13990ns:(report note): Simulation time : 13990000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@13995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14us:(report note): Simulation time : 14000000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14010ns:(report note): Simulation time : 14010000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14040ns:(report note): Simulation time : 14040000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14050ns:(report note): Simulation time : 14050000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14055ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14060ns:(report note): Simulation time : 14060000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14070ns:(report note): Simulation time : 14070000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14085ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14100ns:(report note): Simulation time : 14100000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14110ns:(report note): Simulation time : 14110000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14115ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14120ns:(report note): Simulation time : 14120000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14130ns:(report note): Simulation time : 14130000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14145ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14160ns:(report note): Simulation time : 14160000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14170ns:(report note): Simulation time : 14170000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14175ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14180ns:(report note): Simulation time : 14180000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14190ns:(report note): Simulation time : 14190000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14220ns:(report note): Simulation time : 14220000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14230ns:(report note): Simulation time : 14230000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14240ns:(report note): Simulation time : 14240000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14250ns:(report note): Simulation time : 14250000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14265ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14280ns:(report note): Simulation time : 14280000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14290ns:(report note): Simulation time : 14290000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14300ns:(report note): Simulation time : 14300000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14310ns:(report note): Simulation time : 14310000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14340ns:(report note): Simulation time : 14340000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14350ns:(report note): Simulation time : 14350000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14360ns:(report note): Simulation time : 14360000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14370ns:(report note): Simulation time : 14370000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14400ns:(report note): Simulation time : 14400000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14410ns:(report note): Simulation time : 14410000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14420ns:(report note): Simulation time : 14420000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14430ns:(report note): Simulation time : 14430000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14460ns:(report note): Simulation time : 14460000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14470ns:(report note): Simulation time : 14470000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14480ns:(report note): Simulation time : 14480000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14490ns:(report note): Simulation time : 14490000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14520ns:(report note): Simulation time : 14520000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14530ns:(report note): Simulation time : 14530000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14540ns:(report note): Simulation time : 14540000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14550ns:(report note): Simulation time : 14550000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14580ns:(report note): Simulation time : 14580000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14590ns:(report note): Simulation time : 14590000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14600ns:(report note): Simulation time : 14600000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14610ns:(report note): Simulation time : 14610000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14640ns:(report note): Simulation time : 14640000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14650ns:(report note): Simulation time : 14650000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14660ns:(report note): Simulation time : 14660000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14670ns:(report note): Simulation time : 14670000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14700ns:(report note): Simulation time : 14700000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14710ns:(report note): Simulation time : 14710000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14720ns:(report note): Simulation time : 14720000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14730ns:(report note): Simulation time : 14730000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14760ns:(report note): Simulation time : 14760000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14770ns:(report note): Simulation time : 14770000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14780ns:(report note): Simulation time : 14780000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14790ns:(report note): Simulation time : 14790000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14820ns:(report note): Simulation time : 14820000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14830ns:(report note): Simulation time : 14830000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14840ns:(report note): Simulation time : 14840000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14850ns:(report note): Simulation time : 14850000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14880ns:(report note): Simulation time : 14880000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14890ns:(report note): Simulation time : 14890000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14900ns:(report note): Simulation time : 14900000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14910ns:(report note): Simulation time : 14910000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14940ns:(report note): Simulation time : 14940000000 fs.  Data written: 1, in Reg = 2
+proyecto1/BReg.vhd:67:34:@14950ns:(report note): Simulation time : 14950000000 fs.  Data written: 0, in Reg = 2
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@14960ns:(report note): Simulation time : 14960000000 fs.  Data written: 0, in Reg = 6
+proyecto1/BReg.vhd:67:34:@14970ns:(report note): Simulation time : 14970000000 fs.  Data written: 0, in Reg = 5
+proyecto2/testbench_AOC2_SoC.vhd:88:13:@14985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@15us:(report note): Simulation time : 15000000000 fs.  Data written: 1, in Reg = 2
+ghdl:info: simulation stopped by --stop-time @15us
+[0;32mâœ“ Simulacion completada: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd[0m
+[0;32mâœ“ GTKWave abierto con: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd y ondas_cache.gtkw[0m
+[0;32mâœ“ Flujo completado[0m

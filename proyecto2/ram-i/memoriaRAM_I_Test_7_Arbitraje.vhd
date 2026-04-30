@@ -14,12 +14,14 @@ end memoriaRAM_I;
 architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
-    0 => X"08020000", -- lw \, 0(\) -> Miss largo. El IO Master entrará aquí.
-    1 => X"1000FFFF", -- beq \, \, -1
+    0 => X"08080100", -- 0: lw $8, 256($0) -> Carga 0x10000000 en $8
+    1 => X"00000000", -- 4: nop
+    2 => X"09090000", -- 8: [LOOP] lw $9, 0($8) -> AHORA SÍ usa $8 como base
+    3 => X"1000FFFE", -- C: beq $0, $0, -2 -> Vuelve al LOOP
     others => X"00000000"
 );
 signal dir_7:  std_logic_vector(6 downto 0); 
-begin
+begin 
  dir_7 <= ADDR(8 downto 2); 
  process (CLK) begin
     if (CLK'event and CLK = '1') then

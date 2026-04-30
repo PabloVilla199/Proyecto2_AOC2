@@ -217,8 +217,9 @@ for time_ns, uc, mips in snapshots:
     # --- READY RISES (MIPS unstalled) ---
     if (uc.get('ready') == '0x1' and prev_uc.get('ready', '0x0') != '0x1'
         and uc.get('one_word', '0x0') != '0x1'):
-        if uc.get('hit') == '0x1':
-            detected_events.append((time_ns, 'READY_AFTER_MISS', 'MIPS desbloqueado tras miss'))
+        # En la versión optimizada, el hit puede llegar 1 ciclo después que el ready
+        if uc.get('hit') == '0x1' or prev_uc.get('block_addr') == '0x1':
+            detected_events.append((time_ns, 'READY_AFTER_MISS', 'MIPS desbloqueado tras miss (Optimizado)'))
         elif uc.get('load_addr_error') == '0x1' or prev_uc.get('load_addr_error') == '0x1':
              detected_events.append((time_ns, 'READY_AFTER_ERROR', 'MIPS desbloqueado tras error'))
     

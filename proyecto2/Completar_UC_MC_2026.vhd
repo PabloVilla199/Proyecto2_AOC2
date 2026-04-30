@@ -199,19 +199,15 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				ready <= '1';
 				next_error_state <= memory_error; --�ltima direcci�n incorrecta (intento de escritura en registro de lectura)
 				load_addr_error <= '1';
-			elsif (RE= '1' and  hit='1') then -- si piden y es acierto de lectura mandamos el dato
+			elsif (RE= '1' and  hit='1' and addr_non_cacheable = '0') then -- si piden y es acierto de lectura mandamos el dato
 		        next_state <= Inicio;
 				ready <= '1';
-				if (addr_non_cacheable = '0') then
-					inc_r <= '1'; -- se lee la MC
-				end if;
+				inc_r <= '1'; -- se lee la MC
 				mux_output <= "00"; --Es el valor por defecto. No hace falta ponerlo. La salida es un dato almacenado en la MC
-			elsif ( WE= '1' and  hit='1') then -- si piden y es acierto de escritura 
+			elsif ( WE= '1' and  hit='1' and addr_non_cacheable = '0') then -- si piden y es acierto de escritura 
 				next_state <= Inicio;
 				ready <= '1';
-				if (addr_non_cacheable = '0') then
-					inc_w <= '1';
-				end if;
+				inc_w <= '1';
 				Update_dirty <= '1'; --Bloque sucio 
 				if(hit0='1') then
 					MC_WE0 <= '1';
@@ -220,7 +216,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			    else
 					--error 
 				end if;
-			elsif (((RE= '1') or (WE= '1')) and (hit='0')) then  --fallo de lectura/escritura
+			elsif (((RE= '1') or (WE= '1')) and (hit='0' or addr_non_cacheable = '1')) then  --fallo O NO CACHEABLE
 				next_state <= Arbitraje;
 				if (addr_non_cacheable = '0' and dirty_bit_rpl = '0') then
 					inc_m <= '1'; -- Solo contamos fallo si es cacheable y no estamos en medio de un reemplazo sucio
@@ -310,6 +306,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				if(last_word_block = '1') then
 					last_word <= '1';
 					MC_tags_WE <= '1';
+					ready <= '1';
 					next_state <= Inicio;
 				else 
 					next_state <= block_transfer_data;

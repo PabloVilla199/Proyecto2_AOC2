@@ -469,8 +469,8 @@ begin
 	--------------------------------------------------
 	-- REGISTER BANK
 	
-	-- only valid instructions write
-	RegWrite <= RegWrite_WB and valid_I_WB;
+	-- only valid instructions write and only if the processor is not stalled
+	RegWrite <= RegWrite_WB and valid_I_WB and not(stall_MIPS);
 	
 	INT_Register_bank: BReg PORT MAP (clk => clk, reset => reset, RA => Reg_Rs_ID, RB => Reg_Rt_ID, RW => RW_WB, BusW => BusW, RegWrite => RegWrite, BusA => BusA, BusB => BusB);
 	

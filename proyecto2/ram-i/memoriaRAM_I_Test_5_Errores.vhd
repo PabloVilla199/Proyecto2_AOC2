@@ -19,12 +19,14 @@ type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
     X"08020001", -- 0: lw $2, 1($0) (Error Desalineado)
     X"00000000", -- 4: nop
-    X"08080104", -- 8: lw $8, 260($0) ($8 = 0x01000000)
+    X"08080108", -- 8: lw $8, 264($0) ($8 = 0x01000000, desde RAM-D)
     X"00000000", -- C: nop
-    X"08090000", -- 10: lw $9, 0($8) (Limpia Error)
+    X"0D090000", -- 10: sw $9, 0($8) (Error: Escritura en Read-Only - TEST_11)
     X"00000000", -- 14: nop
-    X"08094000", -- 18: lw $9, 0x4000($0) (Timeout)
-    X"1000FFFF", -- 1C: beq $0, $0, -1
+    X"08090000", -- 18: lw $9, 0($8) (Limpia Error - TEST_12)
+    X"00000000", -- 1C: nop
+    X"08094000", -- 20: lw $9, 0x4000($0) (Timeout - TEST_09)
+    X"1000FFFF", -- 24: beq $0, $0, -1
     others => X"00000000"
 );
 signal dir_7:  std_logic_vector(6 downto 0); 
