@@ -74,13 +74,11 @@
         end if;
         abort_prev := abort;
 
-        -- Log de peticiones para ver qué dirección se está pidiendo
         if req_mips = '1' and req_mips_prev = '0' then
             report ">>> [DEBUG] MIPS pide bus para addr=" & to_hstring(addr_sig) & " (NC=" & std_logic'image(nc_sig) & ")";
         end if;
         req_mips_prev := req_mips;
 
-        -- Logs de Arbitraje (Detección de flanco de subida)
         if grant_mips = '1' and grant_mips_prev = '0' then
             assert false report ">>> [ARBITRAJE] Bus concedido al MIPS" severity note;
         end if;
