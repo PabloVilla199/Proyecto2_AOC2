@@ -306,7 +306,6 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				if(last_word_block = '1') then
 					last_word <= '1';
 					MC_tags_WE <= '1';
-					ready <= '1';
 					next_state <= Inicio;
 				else 
 					next_state <= block_transfer_data;
@@ -329,12 +328,15 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				MC_bus_Write <= '1';
 			end if;
 		
-			if(Bus_DevSel = '1') then
+			-- Si la dirección es no cacheable (Scratchpad), ya sabemos que responderá.
+			-- No hace falta esperar DevSel (el Scratchpad lo activa el ciclo siguiente).
+			-- Solo se comprueba DevSel para detectar errores en accesos a dir. desconocidas.
+			if(Bus_DevSel = '1' or addr_non_cacheable = '1') then
 				next_state <= single_word_transfer_data;
-			else -- ERROR DE MEMORIA
+			else -- ERROR DE MEMORIA: ningún esclavo reconoció la dirección
 				next_error_state <= memory_error;
 				load_addr_error <= '1';
-				ready <= '1'; -- Avisamos al MIPS
+				ready <= '1';
 				next_state <= Inicio;
 			end if;
 		when single_word_transfer_data =>

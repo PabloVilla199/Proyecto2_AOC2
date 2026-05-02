@@ -21,6 +21,7 @@ signal RAM : RamType := (
     X"00000000", -- 4: nop
     X"08080108", -- 8: lw $8, 264($0) ($8 = 0x01000000, desde RAM-D)
     X"00000000", -- C: nop
+    X"00000000", -- C: nop 
     X"0D090000", -- 10: sw $9, 0($8) (Error: Escritura en Read-Only - TEST_11)
     X"00000000", -- 14: nop
     X"08090000", -- 18: lw $9, 0($8) (Limpia Error - TEST_12)

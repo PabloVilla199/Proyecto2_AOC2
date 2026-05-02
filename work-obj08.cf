@@ -1,103 +1,103 @@
 v 4
-file . "proyecto2/testbench_AOC2_SoC.vhd" "3f7c9ad68709167f9e376ebb5fb0221322c12524" "20260430101136.143":
-  entity testbench at 2( 55) + 2 on 5517;
-  architecture behavior of testbench at 9( 171) + 2 on 5518;
-file . "proyecto2/ram-d/memoriaRAM_64_32_enable.vhd" "a76b1da1779a6032d9755e065f9f03f57d6bfad1" "20260430101136.118":
-  entity ram_64_32 at 1( 0) + 0 on 5513;
-  architecture behavioral of ram_64_32 at 16( 374) + 0 on 5514;
-file . "proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd" "a2934d2963ff2d3d38df718a0064ec869ed03b98" "20260430101136.104":
-  entity ram_128_32 at 20( 489) + 0 on 5511;
-  architecture behavioral of ram_128_32 at 44( 1361) + 0 on 5512;
-file . "proyecto2/counter_2bits.vhd" "0fc3f2cb6ca5db5c10947b0ce45d20cff2218e2e" "20260430101136.092":
-  entity counter_2bits at 20( 486) + 0 on 5509;
-  architecture behavioral of counter_2bits at 34( 950) + 0 on 5510;
-file . "proyecto2/arbitro.vhd" "fdf034f52f3ecb1c46d2f0e563418c23bb29e91d" "20260430101136.082":
-  entity arbitro at 20( 484) + 0 on 5507;
-  architecture behavioral of arbitro at 44( 1357) + 0 on 5508;
-file . "proyecto2/Via_2026_CB.vhd" "dfc1466cd98617a8734426822fd411ac68cce502" "20260430101136.072":
-  entity via_cb at 1( 0) + 0 on 5505;
-  architecture behavioral of via_cb at 25( 1303) + 0 on 5506;
-file . "proyecto2/MD_scratch_2026.vhd" "5605d0c4696bd54dac4b2885018edf36352d4b1a" "20260430101136.066":
-  entity md_scratch at 19( 398) + 0 on 5503;
-  architecture behavioral of md_scratch at 40( 1248) + 0 on 5504;
-file . "proyecto2/MD_cont_2026.vhd" "62c9081c533284dc57c09e18f19b83a066941d29" "20260430101136.051":
-  entity md_cont_2026 at 19( 398) + 0 on 5501;
-  architecture behavioral of md_cont_2026 at 41( 1341) + 0 on 5502;
-file . "proyecto2/MC_datos_CB_2026.vhd" "c22d5c770b08736a8e75ff541590db307fbe4e39" "20260430101136.044":
-  entity mc_datos_cb at 20( 635) + 0 on 5499;
-  architecture behavioral of mc_datos_cb at 59( 2615) + 0 on 5500;
-file . "proyecto2/IO_master_2026.vhd" "ee4ac225333b1b93ad388d592be64f14c233dee5" "20260430101136.037":
-  entity io_master at 1( 0) + 0 on 5497;
-  architecture behavioral of io_master at 25( 1279) + 0 on 5498;
-file . "proyecto2/IO_MD_subsystem_P2_26.vhd" "d88c983f16ff9e2739dcd1a1826b01a6a01b292a" "20260430101136.030":
-  entity io_data_memory_subsystem at 20( 489) + 0 on 5495;
-  architecture behavioral of io_data_memory_subsystem at 57( 2512) + 0 on 5496;
-file . "proyecto2/FIFO_reg.vhd" "05cf4847cc560ffcca35210b0249fba6811f815d" "20260430101136.024":
-  entity fifo_reg at 20( 481) + 0 on 5493;
-  architecture behavioral of fifo_reg at 47( 1325) + 0 on 5494;
-file . "proyecto2/Completar_UC_MC_2026.vhd" "abedf5e281b66ad8be80809479e2bdd5fc6245f7" "20260430101136.017":
-  entity uc_mc_cb at 20( 602) + 0 on 5491;
-  architecture behavioral of uc_mc_cb at 82( 4834) + 0 on 5492;
-file . "proyecto1/mux4_1.vhd" "77e61d225e8903760cce4b3e7e6390eff88901d5" "20260430101136.009":
-  entity mux4_1 at 20( 493) + 0 on 5489;
-  architecture behavioral of mux4_1 at 41( 1197) + 0 on 5490;
-file . "proyecto1/mux2_5bits.vhd" "380d4d9ec33f6a77c2e56b7f36dec5b19b69ff9d" "20260430101136.002":
-  entity mux2_5bits at 20( 489) + 0 on 5487;
-  architecture behavioral of mux2_5bits at 39( 1068) + 0 on 5488;
-file . "proyecto1/mux2_1.vhd" "16c03f03addbb8a3f3dad9a1da21f497d0aa4854" "20260430101135.992":
-  entity mux2_1 at 20( 493) + 0 on 5485;
-  architecture behavioral of mux2_1 at 39( 1069) + 0 on 5486;
-file . "proyecto1/counter.vhd" "4c787804472fe6172d2d20f4bfdcfb0934d580c9" "20260430101135.980":
-  entity counter at 20( 487) + 0 on 5483;
-  architecture behavioral of counter at 46( 1270) + 0 on 5484;
-file . "proyecto1/bits_shifter.vhd" "84314704fb90b0c3a56bacef575e87f50f736186" "20260430101135.968":
-  entity two_bits_shifter at 20( 491) + 0 on 5481;
-  architecture behavioral of two_bits_shifter at 37( 1003) + 0 on 5482;
-file . "proyecto1/adder32.vhd" "314628325a7fba8ded83ce676b48051d32b99dc4" "20260430101135.958":
-  entity adder32 at 20( 486) + 0 on 5479;
-  architecture behavioral of adder32 at 39( 1097) + 0 on 5480;
-file . "proyecto1/REGISTER.vhd" "bb1f16639744f39ecc1ef4892185e16345358757" "20260430101135.948":
-  entity reg at 2( 2) + 0 on 5477;
-  architecture behavioral of reg at 15( 421) + 0 on 5478;
-file . "proyecto1/INCOMPLETE_UD_2026.vhd" "6eda7ba1f7d82cc7972f317b9cd2b1427191551a" "20260430101135.940":
-  entity ud at 11( 661) + 0 on 5475;
-  architecture behavioral of ud at 38( 1628) + 0 on 5476;
-file . "proyecto1/INCOMPLETE_UC_Mips_2026.vhd" "a32958986668d888bbe554cf133daeb596c1ba57" "20260430101135.931":
-  entity uc at 20( 528) + 0 on 5473;
-  architecture behavioral of uc at 51( 1636) + 0 on 5474;
-file . "proyecto1/INCOMPLETE_UA_2026.vhd" "1657bb4da13b0516c91a0f129d527f66a820e13d" "20260430101135.922":
-  entity ua at 8( 494) + 0 on 5471;
-  architecture behavioral of ua at 26( 1012) + 0 on 5472;
-file . "proyecto1/INCOMPLETE_Mips_segmentado_IRQ_2026.vhd" "a8e96123c8448f6fe79e20ca34acc7b48307fbf7" "20260430101135.914":
-  entity mips_segmentado at 15( 748) + 0 on 5469;
-  architecture behavioral of mips_segmentado at 34( 1545) + 0 on 5470;
-file . "proyecto1/Ext_signo.vhd" "a86099b57bba8e351753e752f26601c7908ad4f4" "20260430101135.904":
-  entity ext_signo at 20( 488) + 0 on 5467;
-  architecture behavioral of ext_signo at 37( 989) + 0 on 5468;
-file . "proyecto1/Exception_manager.vhd" "19313d933909d8056ac99b4b9f66ac9990594fb9" "20260430101135.900":
-  entity exception_manager at 6( 309) + 0 on 5465;
-  architecture behavioral of exception_manager at 29( 1807) + 0 on 5466;
-file . "proyecto1/Banco_WB.vhd" "09f709cc072c7c47cd795b43ce7f357e3da439d1" "20260430101135.896":
-  entity banco_wb at 20( 487) + 0 on 5463;
-  architecture behavioral of banco_wb at 63( 2304) + 0 on 5464;
-file . "proyecto1/Banco_MEM.vhd" "eafad20fe4100104072dc1cc21ae3065594c638f" "20260430101135.893":
-  entity banco_mem at 20( 488) + 0 on 5461;
-  architecture behavioral of banco_mem at 68( 2502) + 0 on 5462;
-file . "proyecto1/Banco_ID.vhd" "688b006032428225982a73c4921ea61c8c20d37f" "20260430101135.887":
-  entity banco_id at 4( 288) + 0 on 5459;
-  architecture behavioral of banco_id at 24( 1122) + 0 on 5460;
-file . "proyecto1/Banco_EX.vhd" "57445634bb03f893c9352a376ecd62698d63e32d" "20260430101135.884":
-  entity banco_ex at 20( 487) + 0 on 5457;
-  architecture behavioral of banco_ex at 88( 3392) + 0 on 5458;
-file . "proyecto1/BReg.vhd" "bb69d410cca56dd4f196ac706a7044ffa4091399" "20260430101135.879":
-  entity breg at 20( 481) + 0 on 5455;
-  architecture behavioral of breg at 49( 1525) + 0 on 5456;
-file . "proyecto1/AOC2_SoC_2026.vhd" "5334030092120db6ce992c7f19abd74cf23422cb" "20260430101135.875":
-  entity aoc2_soc at 10( 308) + 2 on 5453;
-  architecture behavior of aoc2_soc at 24( 818) + 2 on 5454;
-file . "proyecto1/ALU_2026.vhd" "3f7825b4067bb0955c558a0d53f47f5ef4f85e0a" "20260430101135.866":
-  entity alu_vector_mac at 11( 406) + 0 on 5451;
-  architecture behavioral of alu_vector_mac at 32( 1314) + 0 on 5452;
-file . "proyecto2/ram-i/memoriaRAM_I_test.bucle_lectura.P2.vhd" "69a37756ec7c62b947b6aa9e609d60eb324d6daa" "20260430101136.131":
-  entity memoriaram_i at 20( 472) + 0 on 5515;
-  architecture behavioral of memoriaram_i at 41( 1197) + 0 on 5516;
+file . "proyecto2/ram-i/memoriaRAM_I_test.bucle_lectura.P2.vhd" "69a37756ec7c62b947b6aa9e609d60eb324d6daa" "20260502002148.860":
+  entity memoriaram_i at 20( 472) + 0 on 13719;
+  architecture behavioral of memoriaram_i at 41( 1197) + 0 on 13720;
+file . "proyecto1/ALU_2026.vhd" "3f7825b4067bb0955c558a0d53f47f5ef4f85e0a" "20260502002148.702":
+  entity alu_vector_mac at 11( 406) + 0 on 13659;
+  architecture behavioral of alu_vector_mac at 32( 1314) + 0 on 13660;
+file . "proyecto1/AOC2_SoC_2026.vhd" "5334030092120db6ce992c7f19abd74cf23422cb" "20260502002148.707":
+  entity aoc2_soc at 10( 308) + 2 on 13661;
+  architecture behavior of aoc2_soc at 24( 818) + 2 on 13662;
+file . "proyecto1/BReg.vhd" "bb69d410cca56dd4f196ac706a7044ffa4091399" "20260502002148.713":
+  entity breg at 20( 481) + 0 on 13663;
+  architecture behavioral of breg at 49( 1525) + 0 on 13664;
+file . "proyecto1/Banco_EX.vhd" "57445634bb03f893c9352a376ecd62698d63e32d" "20260502002148.718":
+  entity banco_ex at 20( 487) + 0 on 13665;
+  architecture behavioral of banco_ex at 88( 3392) + 0 on 13666;
+file . "proyecto1/Banco_ID.vhd" "688b006032428225982a73c4921ea61c8c20d37f" "20260502002148.722":
+  entity banco_id at 4( 288) + 0 on 13667;
+  architecture behavioral of banco_id at 24( 1122) + 0 on 13668;
+file . "proyecto1/Banco_MEM.vhd" "eafad20fe4100104072dc1cc21ae3065594c638f" "20260502002148.727":
+  entity banco_mem at 20( 488) + 0 on 13669;
+  architecture behavioral of banco_mem at 68( 2502) + 0 on 13670;
+file . "proyecto1/Banco_WB.vhd" "09f709cc072c7c47cd795b43ce7f357e3da439d1" "20260502002148.732":
+  entity banco_wb at 20( 487) + 0 on 13671;
+  architecture behavioral of banco_wb at 63( 2304) + 0 on 13672;
+file . "proyecto1/Exception_manager.vhd" "19313d933909d8056ac99b4b9f66ac9990594fb9" "20260502002148.738":
+  entity exception_manager at 6( 309) + 0 on 13673;
+  architecture behavioral of exception_manager at 29( 1807) + 0 on 13674;
+file . "proyecto1/Ext_signo.vhd" "a86099b57bba8e351753e752f26601c7908ad4f4" "20260502002148.743":
+  entity ext_signo at 20( 488) + 0 on 13675;
+  architecture behavioral of ext_signo at 37( 989) + 0 on 13676;
+file . "proyecto1/INCOMPLETE_Mips_segmentado_IRQ_2026.vhd" "a8e96123c8448f6fe79e20ca34acc7b48307fbf7" "20260502002148.750":
+  entity mips_segmentado at 15( 748) + 0 on 13677;
+  architecture behavioral of mips_segmentado at 34( 1545) + 0 on 13678;
+file . "proyecto1/INCOMPLETE_UA_2026.vhd" "1657bb4da13b0516c91a0f129d527f66a820e13d" "20260502002148.755":
+  entity ua at 8( 494) + 0 on 13679;
+  architecture behavioral of ua at 26( 1012) + 0 on 13680;
+file . "proyecto1/INCOMPLETE_UC_Mips_2026.vhd" "a32958986668d888bbe554cf133daeb596c1ba57" "20260502002148.759":
+  entity uc at 20( 528) + 0 on 13681;
+  architecture behavioral of uc at 51( 1636) + 0 on 13682;
+file . "proyecto1/INCOMPLETE_UD_2026.vhd" "6eda7ba1f7d82cc7972f317b9cd2b1427191551a" "20260502002148.764":
+  entity ud at 11( 661) + 0 on 13683;
+  architecture behavioral of ud at 38( 1628) + 0 on 13684;
+file . "proyecto1/REGISTER.vhd" "bb1f16639744f39ecc1ef4892185e16345358757" "20260502002148.768":
+  entity reg at 2( 2) + 0 on 13685;
+  architecture behavioral of reg at 15( 421) + 0 on 13686;
+file . "proyecto1/adder32.vhd" "314628325a7fba8ded83ce676b48051d32b99dc4" "20260502002148.773":
+  entity adder32 at 20( 486) + 0 on 13687;
+  architecture behavioral of adder32 at 39( 1097) + 0 on 13688;
+file . "proyecto1/bits_shifter.vhd" "84314704fb90b0c3a56bacef575e87f50f736186" "20260502002148.777":
+  entity two_bits_shifter at 20( 491) + 0 on 13689;
+  architecture behavioral of two_bits_shifter at 37( 1003) + 0 on 13690;
+file . "proyecto1/counter.vhd" "4c787804472fe6172d2d20f4bfdcfb0934d580c9" "20260502002148.782":
+  entity counter at 20( 487) + 0 on 13691;
+  architecture behavioral of counter at 46( 1270) + 0 on 13692;
+file . "proyecto1/mux2_1.vhd" "16c03f03addbb8a3f3dad9a1da21f497d0aa4854" "20260502002148.786":
+  entity mux2_1 at 20( 493) + 0 on 13693;
+  architecture behavioral of mux2_1 at 39( 1069) + 0 on 13694;
+file . "proyecto1/mux2_5bits.vhd" "380d4d9ec33f6a77c2e56b7f36dec5b19b69ff9d" "20260502002148.793":
+  entity mux2_5bits at 20( 489) + 0 on 13695;
+  architecture behavioral of mux2_5bits at 39( 1068) + 0 on 13696;
+file . "proyecto1/mux4_1.vhd" "77e61d225e8903760cce4b3e7e6390eff88901d5" "20260502002148.800":
+  entity mux4_1 at 20( 493) + 0 on 13697;
+  architecture behavioral of mux4_1 at 41( 1197) + 0 on 13698;
+file . "proyecto2/Completar_UC_MC_2026.vhd" "309c5c82e648230944f8d2609ed1af525dee8f65" "20260502002148.807":
+  entity uc_mc_cb at 20( 602) + 0 on 13699;
+  architecture behavioral of uc_mc_cb at 82( 4834) + 0 on 13700;
+file . "proyecto2/FIFO_reg.vhd" "05cf4847cc560ffcca35210b0249fba6811f815d" "20260502002148.812":
+  entity fifo_reg at 20( 481) + 0 on 13701;
+  architecture behavioral of fifo_reg at 47( 1325) + 0 on 13702;
+file . "proyecto2/IO_MD_subsystem_P2_26.vhd" "d88c983f16ff9e2739dcd1a1826b01a6a01b292a" "20260502002148.818":
+  entity io_data_memory_subsystem at 20( 489) + 0 on 13703;
+  architecture behavioral of io_data_memory_subsystem at 57( 2512) + 0 on 13704;
+file . "proyecto2/IO_master_2026.vhd" "ee4ac225333b1b93ad388d592be64f14c233dee5" "20260502002148.822":
+  entity io_master at 1( 0) + 0 on 13705;
+  architecture behavioral of io_master at 25( 1279) + 0 on 13706;
+file . "proyecto2/MC_datos_CB_2026.vhd" "c22d5c770b08736a8e75ff541590db307fbe4e39" "20260502002148.828":
+  entity mc_datos_cb at 20( 635) + 0 on 13707;
+  architecture behavioral of mc_datos_cb at 59( 2615) + 0 on 13708;
+file . "proyecto2/MD_cont_2026.vhd" "62c9081c533284dc57c09e18f19b83a066941d29" "20260502002148.832":
+  entity md_cont_2026 at 19( 398) + 0 on 13709;
+  architecture behavioral of md_cont_2026 at 41( 1341) + 0 on 13710;
+file . "proyecto2/MD_scratch_2026.vhd" "5605d0c4696bd54dac4b2885018edf36352d4b1a" "20260502002148.837":
+  entity md_scratch at 19( 398) + 0 on 13711;
+  architecture behavioral of md_scratch at 40( 1248) + 0 on 13712;
+file . "proyecto2/Via_2026_CB.vhd" "dfc1466cd98617a8734426822fd411ac68cce502" "20260502002148.842":
+  entity via_cb at 1( 0) + 0 on 13713;
+  architecture behavioral of via_cb at 25( 1303) + 0 on 13714;
+file . "proyecto2/arbitro.vhd" "fdf034f52f3ecb1c46d2f0e563418c23bb29e91d" "20260502002148.847":
+  entity arbitro at 20( 484) + 0 on 13715;
+  architecture behavioral of arbitro at 44( 1357) + 0 on 13716;
+file . "proyecto2/counter_2bits.vhd" "0fc3f2cb6ca5db5c10947b0ce45d20cff2218e2e" "20260502002148.852":
+  entity counter_2bits at 20( 486) + 0 on 13717;
+  architecture behavioral of counter_2bits at 34( 950) + 0 on 13718;
+file . "proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd" "a2934d2963ff2d3d38df718a0064ec869ed03b98" "20260502002141.288":
+  entity ram_128_32 at 20( 489) + 0 on 13273;
+  architecture behavioral of ram_128_32 at 44( 1361) + 0 on 13274;
+file . "proyecto2/ram-d/memoriaRAM_64_32_enable.vhd" "a76b1da1779a6032d9755e065f9f03f57d6bfad1" "20260501230210.224":
+  entity ram_64_32 at 1( 0) + 0 on 6737;
+  architecture behavioral of ram_64_32 at 16( 374) + 0 on 6738;
+file . "proyecto2/testbench_AOC2_SoC.vhd" "05d07680b2745a3a4c5f524bc627910fb504f5b2" "20260502002148.865":
+  entity testbench at 2( 55) + 2 on 13721;
+  architecture behavior of testbench at 9( 171) + 2 on 13722;

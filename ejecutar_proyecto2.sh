@@ -107,8 +107,8 @@ compile_project() {
         
         # Otros filtros existentes para RAM-D
         case "$file" in
-            proyecto2/memoriaRAM_128_32_2026_bucle_lectura.vhd|\
-            proyecto2/memoriaRAM_64_32_enable.vhd)
+            proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd|\
+            proyecto2/ram-d/memoriaRAM_64_32_enable.vhd)
                 continue
                 ;;
         esac
