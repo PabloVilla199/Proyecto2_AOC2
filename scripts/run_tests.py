@@ -47,9 +47,9 @@ def run_test(file_name, display_name, silent=False):
     ram_arg = file_name.replace("memoriaRAM_I_", "").replace(".vhd", "")
     stop_time = "800ns" if "arbitraje" in display_name.lower() else "2000ns"
     
+    # En CI (Linux), usamos bash directamente. En Windows, usamos WSL.
     cmd_base = "bash"
     if sys.platform == 'win32':
-        # Intentamos usar Ubuntu que es donde suelen estar las herramientas
         cmd_base = "wsl -d Ubuntu bash"
         
     shell_cmd = f"{cmd_base} ejecutar_proyecto2.sh default --test-ram={ram_arg} --vcd --stop-time={stop_time}"
@@ -109,8 +109,17 @@ def run_all(tests):
     final_color = Colors.OKGREEN if total_passed == len(tests) else Colors.WARNING
     print(f" TOTAL: {final_color}{total_passed}/{len(tests)} superados{Colors.ENDC}")
     print("=" * 60)
+    
+    return total_passed == len(tests)
 
 def main():
+    tests = get_available_tests()
+    
+    if "--all" in sys.argv:
+        print(f"{Colors.BOLD}{Colors.OKBLUE}Modo CI Detectado. Ejecutando todo...{Colors.ENDC}")
+        success = run_all(tests)
+        sys.exit(0 if success else 1)
+
     while True:
         print_header()
         tests = get_available_tests()
