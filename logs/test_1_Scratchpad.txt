@@ -1,0 +1,108 @@
+[0;32m=== AOC2 Proyecto 2 ===[0m
+Modo: [1;33mdefault[0m
+Prueba RAM seleccionada: [1;33m1_Scratchpad[0m
+[1;33mCompilando proyecto...[0m
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+[0;32mâœ“ Compilacion exitosa[0m
+[1;33mEjecutando simulacion...[0m
+[1;33mStop-time: 2000ns[0m
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@5ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:28:17:@20ns:(assertion note): --- INICIANDO TEST DE INTEGRACION FINAL ---
+proyecto2/testbench_AOC2_SoC.vhd:66:13:@55ns:(assertion note): >>> [EVENTO] MISS en addr=00000100
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@55ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@65ns:(report note): >>> [DEBUG] MIPS pide bus para addr=00000100 (NC='0')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@85ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto2/Via_2026_CB.vhd:60:33:@155ns:(report note): Simulation time : 155000000 fs.  Data written in via 0: 268435456, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@175ns:(report note): Simulation time : 175000000 fs.  Data written in via 0: 2736, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@195ns:(report note): Simulation time : 195000000 fs.  Data written in via 0: 16777216, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:74:33:@215ns:(report note): Simulation time : 215000000 fs.  Tag written in via 0: 4, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@215ns:(report note): Simulation time : 215000000 fs.  Data written in via 0: 195890189, in Dir_cjto = 0
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@230ns:(report note): Simulation time : 230000000 fs.  Data written: 268435456, in Reg = 8
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@255ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@290ns:(report note): Simulation time : 290000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@315ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000004 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@355ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@385ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@475ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@565ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@595ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@685ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@775ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@805ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@895ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@985ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1015ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1045ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1075ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1105ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1195ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1285ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1315ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1405ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1495ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:94:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:95:9:@1520ns:(assertion note):       AUDITORIA FINAL DE RENDIMIENTO (CACHE)        
+proyecto2/testbench_AOC2_SoC.vhd:96:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:97:9:@1520ns:(assertion note):  - Misses Totales:       1
+proyecto2/testbench_AOC2_SoC.vhd:98:9:@1520ns:(assertion note):  - Aciertos Lectura (r): 1
+proyecto2/testbench_AOC2_SoC.vhd:99:9:@1520ns:(assertion note):  - Aciertos Escritura(w): 0
+proyecto2/testbench_AOC2_SoC.vhd:100:9:@1520ns:(assertion note):  - Bloques Copy-Back:    0
+proyecto2/testbench_AOC2_SoC.vhd:101:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1525ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:35:9:@1530ns:(assertion note): --- SIMULACION COMPLETADA ---
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1615ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1705ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1735ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1825ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1915ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1945ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+ghdl:info: simulation stopped by --stop-time @2us
+[0;32mâœ“ Simulacion completada: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd[0m
+[0;32mâœ“ GTKWave abierto con: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd y ondas_cache.gtkw[0m
+[0;32mâœ“ Flujo completado[0m

@@ -86,6 +86,31 @@ Un buffer tipo FIFO (First-In, First-Out) utilizado probablemente para desacopla
 
 ---
 
+## Mejoras Técnicas y Decisiones de Diseño (Revisión Intermedia)
+
+Durante el desarrollo se han implementado varias correcciones y optimizaciones críticas para asegurar la estabilidad y precisión del sistema.
+
+### 1. Optimización del Acceso a Scratchpad (UC)
+Se identificó una inconsistencia en el acceso a la memoria Scratchpad a través del bus. Originalmente, la Unidad de Control (UC) esperaba la señal `Bus_DevSel` de forma genérica para todos los esclavos. Sin embargo, debido a que el Scratchpad es un recurso interno mapeado en el bus con tiempos de respuesta muy rápidos, esperar a que la señal se propagara a través de la lógica de "OR" del bus introducía retardos innecesarios.
+
+**Cambio realizado:** En el estado `single_word_transfer_addr`, se permite la transición al estado de datos si la dirección es no-cacheable (`addr_non_cacheable = '1'`), incluso si `Bus_DevSel` no se ha activado aún en ese ciclo exacto. Esto garantiza que el flujo de datos no se detenga y se mantenga la coherencia temporal con el Scratchpad.
+
+### 2. Precisión en las Estadísticas de Rendimiento (Hit/Miss)
+Se ha refinado la lógica de conteo de eventos para evitar sobreestimaciones. 
+- **Problema detectado:** Al producirse un fallo (Miss), el procesador se detiene. Una vez que el bloque se carga en la caché, el procesador retoma la ejecución repitiendo la instrucción. Al repetirla, la caché detecta ahora un "Acierto" (Hit). 
+- **Interpretación de datos:** Si simplemente sumamos los hits detectados por el hardware, estaríamos contando dos veces la misma operación (el intento fallido que luego es exitoso).
+- **Fórmula de cálculo:** Para obtener los **Hits Verdaderos**, se debe aplicar la lógica:
+  $$\text{Hits Reales} = \text{Contador Hits Hardware} - \text{Contador Misses Hardware}$$
+  Esto asegura que solo se cuenten como aciertos aquellas solicitudes que NO requirieron un acceso previo a memoria principal en esa misma instrucción.
+
+### 3. Robustez de la FSM ante Errores de Bus
+Se ha mejorado la gestión de errores (como accesos a direcciones inexistentes o desalineadas).
+- Se aseguró que la señal `ready` se active incluso en estados de error (`memory_error`). Esto es vital para "liberar" al procesador MIPS del estado de espera (stall) y permitir que gestione la excepción o continúe, evitando que el SoC se bloquee indefinidamente esperando una respuesta de un bus que ha fallado.
+
+---
+
 > [!TIP]
-> **Próximos pasos recomendados:**
-> - Revisar la máquina de estados en `Completar_UC_MC_2026.vhd` para asegurar que las transiciones entre estados (IDLE, BUS_REQ, MEM_WAIT, etc.) son correctas.
+> **Pautas para la Revisión:**
+> - Mostrar la ejecución de los bancos de pruebas en orden (desde `Test 1 Scratchpad` hasta `Test 8 Arbitraje`).
+> - Destacar en las ondas de GTKWave cómo el bit `ready` se activa inmediatamente después de cargar el bloque tras un fallo.
+> - Comentar el ajuste de las estadísticas de hit al presentar el resumen de rendimiento.

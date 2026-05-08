@@ -1,0 +1,151 @@
+[0;32m=== AOC2 Proyecto 2 ===[0m
+Modo: [1;33mdefault[0m
+Prueba RAM seleccionada: [1;33m7_Arbitraje[0m
+[1;33mCompilando proyecto...[0m
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/ram-i/memoriaRAM_I_Test_7_Arbitraje.vhd:1:1:warning: entity "memoriaram_i" was also defined in file "proyecto2/ram-i/memoriaRAM_I_Test_6_FIFO.vhd" [-Wlibrary]
+library IEEE;
+^
+proyecto2/MD_scratch_2026.vhd:107:1:warning: declaration of "MD_scratch" hides entity "MD_scratch" [-Whide]
+MD_scratch: RAM_64_32 PORT MAP (CLK => CLK, enable => MD_Scratch_enable, ADDR => MD_scratch_addr, Din => Bus_Data, WE =>  Scratch_WE, RE => Scratch_RE, Dout => MD_Scratch_Dout_int);
+^
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+[0;32mâœ“ Compilacion exitosa[0m
+[1;33mEjecutando simulacion...[0m
+[1;33mStop-time: 2000ns[0m
+proyecto2/IO_MD_subsystem_P2_26.vhd:305:9:warning: port "IO_M_Fetch_inc" of entity "IO_master" is not bound [-Wbinding]
+        Modulo_IO: IO_Master port map(  clk => clk, reset => reset, 
+        ^
+proyecto2/IO_MD_subsystem_P2_26.vhd:57:14:warning: (in default configuration of IO_Data_Memory_Subsystem(Behavioral))
+proyecto2/testbench_AOC2_SoC.vhd:73:13:@5ns:(assertion note): >>> [ALERTA] MEMORY ERROR / DATA ABORT DETECTADO! <<<
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@5ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:28:17:@20ns:(assertion note): --- INICIANDO TEST DE INTEGRACION FINAL ---
+proyecto2/testbench_AOC2_SoC.vhd:66:13:@55ns:(assertion note): >>> [EVENTO] MISS en addr=00000100
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@55ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@65ns:(report note): >>> [DEBUG] MIPS pide bus para addr=00000100 (NC='0')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@85ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto2/Via_2026_CB.vhd:60:33:@155ns:(report note): Simulation time : 155000000 fs.  Data written in via 0: 268435456, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@175ns:(report note): Simulation time : 175000000 fs.  Data written in via 0: 2736, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@195ns:(report note): Simulation time : 195000000 fs.  Data written in via 0: 16777216, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:74:33:@215ns:(report note): Simulation time : 215000000 fs.  Tag written in via 0: 4, in Dir_cjto = 0
+proyecto2/Via_2026_CB.vhd:60:33:@215ns:(report note): Simulation time : 215000000 fs.  Data written in via 0: 195890189, in Dir_cjto = 0
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@225ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto1/BReg.vhd:67:34:@230ns:(report note): Simulation time : 230000000 fs.  Data written: 268435456, in Reg = 8
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@255ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@255ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@290ns:(report note): Simulation time : 290000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@295ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@325ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@325ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@360ns:(report note): Simulation time : 360000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@365ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@395ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@395ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@430ns:(report note): Simulation time : 430000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@435ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@465ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@465ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@500ns:(report note): Simulation time : 500000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@505ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@535ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@535ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@570ns:(report note): Simulation time : 570000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@575ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@605ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@605ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@640ns:(report note): Simulation time : 640000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@645ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@675ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@675ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@710ns:(report note): Simulation time : 710000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@715ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@745ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@745ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@780ns:(report note): Simulation time : 780000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@785ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@815ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@815ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@850ns:(report note): Simulation time : 850000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@855ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@885ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@885ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@920ns:(report note): Simulation time : 920000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@925ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@955ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@955ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@990ns:(report note): Simulation time : 990000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@995ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1025ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1025ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1060ns:(report note): Simulation time : 1060000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1065ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1095ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1095ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1130ns:(report note): Simulation time : 1130000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1135ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1165ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1165ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1200ns:(report note): Simulation time : 1200000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1205ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1235ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1235ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1270ns:(report note): Simulation time : 1270000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1275ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1305ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1305ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1340ns:(report note): Simulation time : 1340000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1345ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1375ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1375ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1410ns:(report note): Simulation time : 1410000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1415ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1445ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1445ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1480ns:(report note): Simulation time : 1480000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1485ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1515ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1515ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto2/testbench_AOC2_SoC.vhd:94:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:95:9:@1520ns:(assertion note):       AUDITORIA FINAL DE RENDIMIENTO (CACHE)        
+proyecto2/testbench_AOC2_SoC.vhd:96:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:97:9:@1520ns:(assertion note):  - Misses Totales:       1
+proyecto2/testbench_AOC2_SoC.vhd:98:9:@1520ns:(assertion note):  - Aciertos Lectura (r): 1
+proyecto2/testbench_AOC2_SoC.vhd:99:9:@1520ns:(assertion note):  - Aciertos Escritura(w): 0
+proyecto2/testbench_AOC2_SoC.vhd:100:9:@1520ns:(assertion note):  - Bloques Copy-Back:    0
+proyecto2/testbench_AOC2_SoC.vhd:101:9:@1520ns:(assertion note): ====================================================
+proyecto2/testbench_AOC2_SoC.vhd:35:9:@1530ns:(assertion note): --- SIMULACION COMPLETADA ---
+proyecto1/BReg.vhd:67:34:@1550ns:(report note): Simulation time : 1550000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1555ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1585ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1585ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1620ns:(report note): Simulation time : 1620000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1625ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1655ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1655ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1690ns:(report note): Simulation time : 1690000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1695ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1725ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1725ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1760ns:(report note): Simulation time : 1760000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1765ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1795ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1795ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1830ns:(report note): Simulation time : 1830000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1835ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1865ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1865ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1900ns:(report note): Simulation time : 1900000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1905ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+proyecto2/testbench_AOC2_SoC.vhd:78:13:@1935ns:(report note): >>> [DEBUG] MIPS pide bus para addr=10000000 (NC='1')
+proyecto2/testbench_AOC2_SoC.vhd:83:13:@1935ns:(assertion note): >>> [ARBITRAJE] Bus concedido al MIPS
+proyecto1/BReg.vhd:67:34:@1970ns:(report note): Simulation time : 1970000000 fs.  Data written: 0, in Reg = 9
+proyecto2/testbench_AOC2_SoC.vhd:86:13:@1975ns:(assertion note): >>> [ARBITRAJE] Bus concedido al IO_MASTER
+ghdl:info: simulation stopped by --stop-time @2us
+[0;32mâœ“ Simulacion completada: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd[0m
+[0;32mâœ“ GTKWave abierto con: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/simulation/aoc2_p2_testbench.vcd y ondas_cache.gtkw[0m
+[0;32mâœ“ Flujo completado[0m

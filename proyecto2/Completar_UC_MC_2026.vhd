@@ -218,8 +218,13 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				end if;
 			elsif (((RE= '1') or (WE= '1')) and (hit='0' or addr_non_cacheable = '1')) then  --fallo O NO CACHEABLE
 				next_state <= Arbitraje;
-				if (addr_non_cacheable = '0' and dirty_bit_rpl = '0') then
-					inc_m <= '1'; -- Solo contamos fallo si es cacheable y no estamos en medio de un reemplazo sucio
+				if (addr_non_cacheable = '0') then
+					-- Si es un write miss (write-around) solo pasamos una vez por aqui, asi que contamos siempre.
+					-- Si es un read miss con victima sucia, pasamos dos veces. Contamos solo cuando dirty_bit_rpl='0' 
+					-- (que es la segunda vez) para evitar doble conteo.
+					if (dirty_bit_rpl = '0' or WE = '1') then
+						inc_m <= '1';
+					end if;
 				end if;
 			end if;
 
@@ -238,7 +243,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		when block_transfer_addr =>
 			Frame <= '1';
 			MC_send_addr_ctrl <= '1';
-			Bus_req <= '1';
+			Bus_req <= '1'; -- necesario en addr phase: el arbitro requiere req activo
 			block_addr <= '1';
 
 			if (dirty_bit_rpl = '1') then
@@ -265,8 +270,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			end if;
 
 		when CopyBack=>
-			Frame <= '1'; -- Mantenemos el bus 
-			Bus_req <= '1'; -- Bus ocupado
+			Frame <= '1'; -- Mantenemos el bus (Frame mantiene el grant, Bus_req no es necesario)
 			MC_send_data <= '1'; -- Mandamos los datos
 			MC_bus_Write <= '1'; -- Mantenemos la señal de escritura en el bus
 			mux_origen <= '1'; -- Origen los datos del bloque a guardar viene de MC 
@@ -289,15 +293,15 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			end if;
 		
 		when block_transfer_data =>
-			Bus_req <= '1';
 			Frame <= '1';
 			MC_bus_Read <= '1';	
 			mux_origen <= '1';
 			block_addr <= '1';
-			mux_output <= "01";
+			-- Con ready='0' el MIPS esta stallado, pero es mas limpio no poner dato invalido
 			
 			if(Bus_TRDY = '1') then
 				count_enable <= '1';
+				mux_output <= "01"; -- dato valido en bus, lo ofrecemos por si es la ultima palabra
 				if(via_2_rpl = '0') then
 					MC_WE0 <= '1';
 				else 
@@ -317,7 +321,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		when single_word_transfer_addr =>
 			Frame <= '1';
 			MC_send_addr_ctrl <= '1';
-			Bus_req <= '1';
+			Bus_req <= '1'; -- necesario en addr phase
 			block_addr <= '0';
 			one_word <= '1';
 
@@ -328,10 +332,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 				MC_bus_Write <= '1';
 			end if;
 		
-			-- Si la dirección es no cacheable (Scratchpad), ya sabemos que responderá.
-			-- No hace falta esperar DevSel (el Scratchpad lo activa el ciclo siguiente).
-			-- Solo se comprueba DevSel para detectar errores en accesos a dir. desconocidas.
-			if(Bus_DevSel = '1' or addr_non_cacheable = '1') then
+			if(Bus_DevSel = '1') then
 				next_state <= single_word_transfer_data;
 			else -- ERROR DE MEMORIA: ningún esclavo reconoció la dirección
 				next_error_state <= memory_error;
@@ -341,21 +342,20 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			end if;
 		when single_word_transfer_data =>
 			Frame <= '1';
-			Bus_req <= '1';
 			block_addr <= '0';
 			one_word <= '1';
 			last_word <= '1';
 			
 			if(RE = '1') then -- lectura
 				MC_bus_Read <= '1';
-				mux_output <= "01";	
+				mux_output <= "01"; -- dato viene del bus (Scratchpad o MD)
 			else -- escritura
 				MC_bus_Write <= '1';
 				MC_send_data <= '1';
 			end if;
 
 			if(Bus_TRDY = '1') then
-				ready <= '1'; -- Le decimos al procesador que su palabra est lista
+				ready <= '1'; -- Le decimos al procesador que su palabra esta lista
 				next_state <= Inicio;
 			else 
 				next_state <= single_word_transfer_data;
@@ -364,6 +364,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
     -- COMPLETE  with other states
 		
 		WHEN others => 	
+			next_state <= Inicio;
 	end CASE; 
 	 	
 end process; 

@@ -1,0 +1,54 @@
+Run started: Thu May  7 14:43:48 UTC 2026
+Stop time: 2000ns
+
+Test: 1_Scratchpad
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_1_Scratchpad.txt
+  elapsed_seconds: 1
+
+Test: 2_Lecturas
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_2_Lecturas.txt
+  elapsed_seconds: 1
+
+Test: 3_Escrituras
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_3_Escrituras.txt
+  elapsed_seconds: 1
+
+Test: 4_CopyBack
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_4_CopyBack.txt
+  elapsed_seconds: 1
+
+Test: 5_Errores
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_5_Errores.txt
+  elapsed_seconds: 1
+
+Test: 6_FIFO
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_6_FIFO.txt
+  elapsed_seconds: 1
+
+Test: 7_Arbitraje
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_7_Arbitraje.txt
+  elapsed_seconds: 1
+
+Test: bucle_lectura
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_bucle_lectura.txt
+  elapsed_seconds: 1
+
+Test: WriteMissDirty
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_WriteMissDirty.txt
+  elapsed_seconds: 1
+
+Test: HitVia1
+  status: OK (rc=0)
+  log: /mnt/c/Users/Pablo/Desktop/AOC2_p4/Moodle 2026_p2/Moodle 2026_p2/logs/test_HitVia1.txt
+  elapsed_seconds: 1
+
+Run finished: Thu May  7 14:43:58 UTC 2026

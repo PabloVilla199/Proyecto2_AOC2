@@ -3,6 +3,11 @@ import subprocess
 import sys
 import time
 
+# Change working directory to the project root
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(script_dir)
+os.chdir(project_root)
+
 # Arreglo para que los emojis y caracteres especiales no fallen en Windows
 if sys.platform == 'win32':
     import codecs

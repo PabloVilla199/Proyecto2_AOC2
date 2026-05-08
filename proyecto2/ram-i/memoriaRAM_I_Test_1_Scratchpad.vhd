@@ -54,14 +54,7 @@ architecture Behavioral of memoriaRAM_I is
 type RamType is array(0 to 127) of std_logic_vector(31 downto 0);
 signal RAM : RamType := (
     X"08080100", -- 0: [45 ns] lw $8, 256($0) -> Carga de RAM-D
-    X"00000000", -- 4: nop
-    X"00000000", -- 8: nop
-    X"00000000", -- C: nop
-    X"00000000", -- 10: nop
     X"09090000", -- 14: [255 ns] lw $9, 0($8)  -> LECTURA SCRATCHPAD
-    X"00000000", -- 18: nop
-    X"00000000", -- 1C: nop
-    X"00000000", -- 20: nop
     X"0D090004", -- 24: [365 ns] sw $9, 4($8)  -> ESCRITURA SCRATCHPAD
     X"1000FFFF", -- 28: beq $0, $0, -1
     others => X"00000000"

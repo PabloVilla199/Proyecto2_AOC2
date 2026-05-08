@@ -1,0 +1,641 @@
+    \documentclass[12pt,a4paper]{article}
+
+    % -------------------------------------------------
+    % PAQUETES Y CONFIGURACIÓN (del Proyecto 1)
+    % -------------------------------------------------
+    \usepackage[spanish]{babel}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage[a4paper,margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{parskip}
+    \usepackage{amsmath,amssymb}
+    \usepackage{graphicx}
+    \usepackage{float}
+    \usepackage{array}
+    \usepackage{longtable}
+    \usepackage{tabularx}
+    \usepackage{booktabs}
+    \usepackage{colortbl}
+    \usepackage{xcolor}
+    \usepackage{hyperref}
+    \usepackage{enumitem}
+    \usepackage{listings}
+    \usepackage{titlesec}
+    \usepackage{fancyhdr}
+    \usepackage{tikz}
+    \usetikzlibrary{automata, positioning, arrows.meta, fit, backgrounds, shapes.geometric}
+
+    % Fuentes Times New Roman en TODO
+    \usepackage{newtxtext,newtxmath}
+
+    % Ajustar espaciado de figuras
+    \setlength{\textfloatsep}{5pt plus 1.0pt minus 2.0pt}
+    \setlength{\floatsep}{5pt plus 1.0pt minus 2.0pt}
+    \setlength{\intextsep}{8pt plus 1.0pt minus 2.0pt}
+    \setlength{\abovecaptionskip}{3pt}
+    \setlength{\belowcaptionskip}{2pt}
+
+    % Títulos
+    \titleformat{\section}[hang]{\large\bfseries\rmfamily\color{black}}{\thesection.}{0.5em}{}
+    \titleformat{\subsection}[hang]{\normalsize\bfseries\rmfamily\color{black}}{\thesubsection.}{0.5em}{}
+    \titlespacing*{\section}{0pt}{10pt}{5pt}
+    \titlespacing*{\subsection}{0pt}{8pt}{4pt}
+
+    % Párrafos
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0.8em}
+
+    % -------------------------------------------------
+    % CONFIGURACIÓN ENCABEZADOS Y ENLACES
+    % -------------------------------------------------
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        urlcolor=blue,
+        citecolor=blue
+    }
+
+    \setstretch{1.15}
+
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{AOC2 - Proyecto 2}
+    \fancyhead[R]{Memoria de Diseño}
+    \fancyfoot[C]{\thepage}
+
+    \lstset{
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        frame=single,
+        columns=fullflexible,
+        keepspaces=true
+    }
+
+    % -------------------------------------------------
+    % COMANDOS ÚTILES
+    % -------------------------------------------------
+    \newcommand{\pendiente}{\textcolor{red}{[AÑADIR CAPTURA / RELLENAR]}}
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+    \begin{document}
+
+    % -------------------------------------------------
+    % PORTADA
+    % -------------------------------------------------
+    \begin{titlepage}
+        \centering
+        \vspace*{2cm}
+
+        % Logo UNIZAR (Comentado o ajustado si no tienes la imagen en el directorio)
+        % \includegraphics[width=0.25\textwidth]{logo_unizar.png}\\[1cm]
+
+        \textsc{\LARGE Universidad de Zaragoza}\\[0.5cm]
+        \textsc{\Large Asignatura: AOC2 2025-26 (2º curso)}\\[0.5cm]
+
+        \HRule \\[0.3cm]
+        {\Large \bfseries Proyecto 2 - Data Memory Hierarchy}
+        \\[0.3cm]
+        \HRule \\[1.5cm]
+
+        \textbf{Autores:}\\[0.3cm]
+        Tahir Berga \\
+        Pablo Villa\\[2cm]
+
+        \vfill
+        {\large \today}
+    \end{titlepage}
+
+    \tableofcontents
+    \newpage
+
+    % -------------------------------------------------
+    \section{Resumen del Diseño}
+    % -------------------------------------------------
+    El presente documento detalla el diseño e implementación del subsistema de memoria y su controlador de caché para un procesador MIPS. Partiendo del sistema en chip (SoC) desarrollado en el proyecto anterior, se ha ampliado la jerarquía de memoria introduciendo una {memoria caché de datos (MC)} asociativa por conjuntos de 2 vías, con política de reemplazo FIFO, escritura \textit{Copy-Back} y \textit{Write-Around} en fallo de escritura. 
+
+    El sistema incorpora también una \textbf{memoria Scratchpad} de acceso rápido no cacheable, una memoria principal (RAM) y un periférico I/O (\texttt{IO\_Master}). Todos estos componentes se interconectan mediante un \textbf{bus semi-síncrono} con árbitro y multiplexación de direcciones y datos, soportando ráfagas de tamaño variable. El controlador de la caché diseñado gestiona eficientemente las peticiones del MIPS, minimizando los accesos al bus principal y manteniendo la coherencia de datos, a la vez que detecta accesos desalineados o a zonas no permitidas, generando las correspondientes excepciones de \textit{Data Abort}.
+
+    % -------------------------------------------------
+    \section{Arquitectura General del Sistema-on-Chip (SoC)}
+    % -------------------------------------------------
+    El diseño del subsistema se rige por un esquema \textbf{Multi-Maestro (Multi-Master)} donde el procesador MIPS (a través del controlador de caché) y el Módulo de Entrada/Salida (E/S) compiten por el control del Bus del Sistema recurriendo al Árbitro.
+
+    \bigskip
+    \begin{center}
+    \shorthandoff{<>}
+    \resizebox{0.85\linewidth}{!}{%
+    \begin{tikzpicture}[
+        >=Stealth,
+        shorten >=1pt,
+        font=\normalsize,
+        box/.style={
+            draw, very thick, rectangle,
+            minimum width=4.2cm, minimum height=1.2cm,
+            align=center, fill=white, rounded corners=3pt
+        },
+        grpbox/.style={
+            draw, very thick, rounded corners=8pt,
+            inner sep=25pt, fill=gray!4
+        },
+        lbl/.style={font=\tiny, align=center, fill=white,
+                    inner sep=1pt, rounded corners=1pt}
+    ]
+
+    %% ---- Coordenadas ----
+    \node[box] (ES)      at (0,   9)    {Módulo E/S\\(IO\_Master)};
+    \node[box] (MIPS)    at (13,  9)    {Procesador MIPS};
+
+    \node[box] (Arb)     at (0,   4.5)  {Árbitro del Bus};
+    \node[box] (Cache)   at (6.5, 4.5)  {Controlador de\\Caché (MC)};
+
+    \node[box] (RAM)     at (3.5, 0)    {Memoria Principal\\(MD)};
+    \node[box] (Scratch) at (10.5,0)    {Memoria\\Scratchpad};
+
+    %% ---- Grupos ----
+    \begin{scope}[on background layer]
+    \node[grpbox, fit=(ES)(MIPS), label={[font=\small\bfseries]above:Maestros / Productores}] {};
+    \node[grpbox, fit=(RAM)(Scratch), label={[font=\small\bfseries]below:Esclavos / Memorias}] {};
+    \end{scope}
+
+    %% ---- Flujos de control ----
+    \draw[->, very thick] (MIPS.south) |- node[lbl, pos=0.75, above] {Petición Única\\(Dir, Dato)} (Cache.east);
+    \draw[->] (Cache.west) -- node[lbl, midway, above] {REQ Bus\\(Miss / Non-Cach)} (Arb.east);
+    \draw[->] (ES.south) -- node[lbl, midway, left=2pt] {REQ Bus\\(DMA)} (Arb.north);
+    \draw[<-] (MIPS.190) -- ++(-1.5,0) |- node[lbl, pos=0.25, left] {Dato / Ack} (Cache.30);
+
+    %% ---- EL BUS DEL SISTEMA (Líneas discontinuas) ----
+    \draw[<->, thick, dashed] (Cache.south) -- ++(0,-1) coordinate (busLine);
+    \draw[<->, thick, dashed] (busLine) -| node[lbl, pos=0.5, fill=gray!4] {[BUS]\\Ráfagas a MD} (RAM.north);
+    \draw[<->, thick, dashed] (busLine) -| node[lbl, pos=0.5, fill=gray!4] {[BUS]\\Acceso No-Cach.} (Scratch.north);
+
+    \end{tikzpicture}%
+    }
+    \shorthandon{<>}
+    \end{center}
+    \bigskip
+
+    \subsection{Políticas de Configuración de la Memoria Caché}
+
+    El controlador de caché se ha diseñado siguiendo las especificaciones del proyecto:
+    \begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Estructura:} Asociativa por conjuntos de 2 vías ($s=2$), con 32 palabras en total (128 bytes). Cada vía tiene 4 bloques de 4 palabras. El reemplazo en caso de conflicto es \textbf{FIFO}.
+    \item \textbf{Escritura en Aciertos (Write Hit): Copy-Back.}
+            Los datos modificados se escriben únicamente en la Vía de la Caché elevando el \textit{Dirty Bit} (`Sucio'). Esta política optimiza el tráfico, ya que no se accede al bus exterior innecesariamente hasta que el bloque sea forzosamente desalojado.
+    \item \textbf{Escritura en Fallos (Write Miss): Write-Around (Write-No-Allocate).}
+            Si la dirección de memoria no se encuentra en las vías, el controlador rechaza su ingesta. Hace una petición de Bus directa a la MD, y escribe la palabra sin alterar en ningún momento el contenido interno actual de la Caché.
+    \end{itemize}
+
+    \subsection{Desglose de Direcciones (Address Breakdown)}
+    Teniendo en cuenta que la caché tiene 128 bytes (32 palabras) asociativa de 2 vías:
+    \begin{itemize}
+        \item \textbf{Bytes por vía:} $128 / 2 = 64$ bytes.
+        \item \textbf{Bloques por vía:} El tamaño de bloque es de 4 palabras (16 bytes). Así, hay $64 / 16 = 4$ conjuntos (sets).
+    \end{itemize}
+    El formato de la dirección (32 bits) para acceder a la caché queda desglosado como sigue:
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Tag} & \textbf{Set (Conjunto)} & \textbf{Word (Palabra)} & \textbf{Byte (Offset)} \\
+    \hline
+    Bits [31:6] (26 bits) & Bits [5:4] (2 bits) & Bits [3:2] (2 bits) & Bits [1:0] (2 bits) \\
+    \hline
+    \end{tabular}
+    \end{center}
+
+    \newpage
+    % -------------------------------------------------
+    \section{Unidad de Control: Diagrama y Resumen de Estados}
+    % -------------------------------------------------
+
+    \subsection{Diagrama de Estados de la Máquina (FSM Principal)}
+
+    La máquina de estados finitos (FSM) que rige el controlador es la encargada de resolver las peticiones del procesador, manejando las ráfagas con la memoria y el acceso simple a la memoria Scratchpad.
+
+    \vspace{0.5cm}
+    \begin{center}
+    \shorthandoff{<>}
+    \resizebox{\textwidth}{!}{
+    \begin{tikzpicture}[
+        >=Stealth,
+        shorten >=1pt,
+        auto,
+        font=\small,
+        every state/.style={
+            draw, thick, minimum width=3.8cm, minimum height=1.2cm, align=center, fill=gray!5
+        }
+    ]
+
+    % ================= COORDENADAS =================
+    \node[state, initial, initial text=] (inicio)     at (0, 0) {Inicio};
+    \node[state] (arbitraje)  at (5, 0) {Arbitraje};
+
+    % Rama Superior (Word)
+    \node[state] (singleaddr) at (11, 3.5) {single\_word\_\\transfer\_addr};
+    \node[state] (singledata) at (17, 3.5) {single\_word\_\\transfer\_data};
+
+    % Rama Inferior (Block)
+    \node[state] (blockaddr)  at (11, -3.5) {block\_transfer\_\\addr};
+    \node[state] (copyback)   at (17, -1.5) {CopyBack};
+    \node[state] (blockdata)  at (17, -5.5) {block\_transfer\_\\data};
+
+    % ================= RUTAS Y FLECHAS =================
+
+    % 1. Inicio y Arbitraje
+    \path[->] (inicio) edge[loop below] node[align=center, font=\footnotesize] {Hit / Regs. internos \\ Error Alineación} (inicio);
+    \path[->] (inicio) edge node[above, font=\footnotesize] {Miss o Non-Cach.} (arbitraje);
+
+    \path[->] (arbitraje) edge[loop below] node[font=\footnotesize] {$grant=0$} (arbitraje);
+    \path[->] (arbitraje) edge[out=45, in=180] node[above left, font=\footnotesize] {$grant=1$ y (non-cach o WE=1)} (singleaddr);
+    \path[->] (arbitraje) edge[out=-45, in=180] node[below left, font=\footnotesize] {$grant=1$ y Fallo L} (blockaddr);
+
+    % 2. Rama Word
+    \path[->] (singleaddr) edge node[above, font=\footnotesize] {$DevSel=1$ \textbf{o Scratch}} (singledata);
+    \path[->] (singledata) edge[loop right] node[font=\footnotesize] {$TRDY=0$} (singledata);
+
+    % Retorno de Word a Inicio
+    \draw[->, rounded corners=8pt, thick] (singledata.north) |- (9, 5.5) -| node[pos=0.25, above, font=\footnotesize] {$TRDY=1$} (inicio.110);
+    \draw[->, rounded corners=8pt, dashed] (singleaddr.north) |- (6, 4.5) -| node[pos=0.25, above, font=\footnotesize] {No DevSel y no Scratch} (inicio.70);
+
+    % 3. Rama Block
+    \path[->] (blockaddr) edge[out=25, in=180] node[above left, font=\footnotesize] {$DevSel=1$ y dirty=1} (copyback);
+    \path[->] (blockaddr) edge[out=-25, in=180] node[below left, font=\footnotesize] {$DevSel=1$ y dirty=0} (blockdata);
+
+    \path[->] (copyback) edge[loop right] node[font=\footnotesize] {$TRDY=0$ o no últ.} (copyback);
+    \path[->] (blockdata) edge[loop right] node[font=\footnotesize] {$TRDY=0$ o no últ.} (blockdata);
+
+    % Retornos de Block a Inicio
+    \draw[->, rounded corners=8pt, thick] (copyback.east) -- ++(1,0) |- (12, -7.5) -| node[pos=0.25, below, font=\footnotesize] {$TRDY=1$ y últ.} (inicio.250);
+    \draw[->, rounded corners=8pt, thick] (blockdata.south) |- (12, -7.5) -| (inicio.250);
+
+    \draw[->, rounded corners=8pt, dashed] (blockaddr.south) |- (6, -6.5) -| node[pos=0.25, below, font=\footnotesize] {$DevSel=0$ (Error)} (inicio.290);
+
+    \end{tikzpicture}
+    }
+    \shorthandon{<>}
+    \end{center}
+
+    \subsection{Transiciones y Señales de la FSM Principal}
+
+    \begin{table}[H]
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{@{} l l X @{}}
+    \toprule
+    \textbf{Estado Actual} & \textbf{Estado Siguiente} & \textbf{Condición y Acciones Clave} \\
+    \midrule
+    \textbf{Inicio} & Inicio & \textbf{Hit (L/E) o Regs:} $ready=1$. Actualiza estadísticas (\texttt{inc\_r / inc\_w}) y \texttt{Update\_dirty}. \textbf{Error:} Activa $ready=1$ y \texttt{Mem\_ERROR=1}. \\
+                    & Arbitraje & \textbf{Miss o Non-Cacheable:} Se solicita el bus (\texttt{Bus\_req=1}). Suma \texttt{inc\_m} si es cacheable. \\
+    \midrule
+    \textbf{Arbitraje} & Arbitraje & \textbf{grant = 0:} Espera a que el árbitro conceda el bus. \\
+                        & single\_word\_transfer\_addr & \textbf{grant = 1 (WE=1 o Non-Cach):} Inicia acceso de una palabra. \\
+                        & block\_transfer\_addr & \textbf{grant = 1 (Fallo Lectura Cacheable):} Inicia acceso de bloque. \\
+    \midrule
+    \textbf{block\_transfer\_addr} & CopyBack & \textbf{DevSel = 1 y dirty = 1:} Bloque sucio. Manda escribir (\texttt{MC\_bus\_Write=1}). \\
+                                & block\_transfer\_data & \textbf{DevSel = 1 y dirty = 0:} Bloque limpio. Manda leer (\texttt{MC\_bus\_Read=1}). \\
+                                & Inicio & \textbf{DevSel = 0:} Aborta la transferencia. Activa error y $ready=1$. \\
+    \midrule
+    \textbf{CopyBack} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque volcado a memoria principal. Incrementa \texttt{cont\_cb}. Limpia el dirty bit (\texttt{Update\_dirty=1}) y retorna directamente para tratar el miss inicial. \\
+    \midrule
+    \textbf{block\_transfer\_data} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque cargado desde MD. Actualiza Etiquetas (\texttt{MC\_tags\_WE=1}) y retorna. \\
+    \midrule
+    \textbf{single\_word\_transfer\_addr} & single\_word\_transfer\_data & \textbf{DevSel = 1 o Scratch (\texttt{addr\_non\_cacheable=1}):} Transición rápida. \\
+                                        & Inicio & \textbf{DevSel = 0 y no Scratch:} Timeout. Aborta, activa error y $ready=1$. \\
+    \midrule
+    \textbf{single\_word\_transfer\_data} & Inicio & \textbf{TRDY=1:} Finaliza la lectura/escritura de 1 palabra. Se manda $ready=1$ al MIPS. \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+
+    \subsection{Máquina de Estados de Errores (FSM Secundaria)}
+
+    De forma concurrente, el controlador evalúa si el acceso actual produce algún tipo de excepción (Data Abort) como accesos no alineados, escrituras en zonas de sólo lectura o falta de respuesta en el bus.
+
+    \begin{figure}[H]
+        \centering
+        \shorthandoff{<>}
+        \resizebox{0.8\textwidth}{!}{ 
+        \begin{tikzpicture}[
+            >=Stealth,
+            shorten >=1pt,
+            auto,
+            font=\small,
+            every state/.style={
+                draw, thick, minimum width=3.8cm, minimum height=1.2cm, align=center, fill=gray!5
+            }
+        ]
+            
+            \node[state, initial, initial text=Inicio] (no_error)  at (0, 0) {No\_error};
+            \node[state]                               (mem_error) at (8, 0) {Memory\_error};
+            
+            \path[->] 
+                (no_error) edge [bend left=25] node[above, align=center, font=\footnotesize] {
+                    ((RE $\lor$ WE) $\cdot$ unaligned) \\
+                    $+$ (WE $\cdot$ internal\_addr) \\
+                    $+$ (Fase Dir. Bus $\cdot$ $\overline{\text{Bus\_DevSel}}$)
+                } (mem_error)
+                
+                (mem_error) edge [loop right] node[align=left, font=\footnotesize] {Cualquier otro\\ciclo de reloj} (mem_error)
+                
+                (mem_error) edge [bend left=25] node[below, font=\footnotesize] {RE $\cdot$ internal\_addr} (no_error)
+                
+                (no_error) edge [loop above] node[font=\footnotesize] {Resto de casos} (no_error);
+                
+        \end{tikzpicture}
+        }
+        \shorthandon{<>}
+        \caption{Máquina de estados secundaria concurrente para la gestión de errores.}
+        \label{fig:fsm_error}
+    \end{figure}
+
+
+    % -------------------------------------------------
+    \section{Casos de Uso}
+    % -------------------------------------------------
+
+    \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.7} 
+    \begin{tabularx}{\textwidth}{@{} c >{\bfseries}p{3cm} >{\small\ttfamily}X p{4cm} @{}}
+    \toprule
+    \textbf{\#} & \textbf{Escenario} & \normalfont\textbf{Ruta de Estados (FSM)} & \textbf{Señales Resultantes} \\
+    \midrule
+
+    % Caso 1
+    1 & Acierto L/E \newline (Hit Cacheable) & 
+    Inicio $\circlearrowright$ & 
+    \textbf{L:} $ready=1,\newline inc\_r=1$. \newline 
+    \textbf{E:} $ready=1,\newline inc\_w=1,\newline Update\_dirty=1$. \\
+    \midrule
+
+    % Caso 2
+    2 & Fallo Lectura \newline (Miss Blq. Limpio) & 
+    Inicio $\rightarrow$ Arbitraje \newline
+    $\hookrightarrow$ block\_transfer\_addr \newline
+    $\hookrightarrow$ block\_transfer\_data ($\times 4$) \newline
+    $\hookrightarrow$ Inicio (Hit) & 
+    Carga bloque de memoria. En la 4ª palabra escribe etiquetas y retorna. En el reinicio a Inicio salta el Hit. \\
+    \midrule
+
+    % Caso 3
+    3 & Fallo Lectura \newline (CopyBack) & 
+    Inicio $\rightarrow$ Arbitraje \newline
+    $\hookrightarrow$ block\_transfer\_addr \newline
+    $\hookrightarrow$ CopyBack ($\times 4$) \newline
+    $\hookrightarrow$ Inicio (Miss) \newline
+    \normalfont\textit{... [Repite Caso 2]} & 
+    Salva el bloque viejo a memoria y limpia la vía. Vuelve a Inicio a por el bloque nuevo. \\
+    \midrule
+
+    % Caso 4
+    4 & Fallo Escritura \newline (Write-Around) & 
+    Inicio $\rightarrow$ Arbitraje \newline
+    $\hookrightarrow$ single\_word\_transfer\_addr \newline
+    $\hookrightarrow$ single\_word\_transfer\_data \newline
+    $\hookrightarrow$ Inicio & 
+    Bypass a RAM. Se escribe en memoria sin alterar las etiquetas de la caché. \\
+    \midrule
+
+    % Caso 5
+    5 & Acceso \newline Non-Cacheable & 
+    Inicio $\rightarrow$ Arbitraje \newline
+    $\hookrightarrow$ single\_word\_transfer\_addr \newline
+    $\hookrightarrow$ single\_word\_transfer\_data \newline
+    $\hookrightarrow$ Inicio & 
+    Lee/Escribe 1 palabra en Scratchpad. Transición rápida. No suma miss (\texttt{inc\_m=0}). \\
+    \midrule
+
+    % Caso 6
+    6 & Timeout \newline (Error de Bus) & 
+    Inicio $\rightarrow$ Arbitraje \newline
+    $\hookrightarrow$ *\_transfer\_addr \newline
+    $\hookrightarrow$ Inicio (Error) & 
+    \texttt{DevSel=0}. Carga la dir. errónea, activa la señal de error y pone $ready=1$ al MIPS. \\
+    \bottomrule
+
+    \end{tabularx}
+    \end{table}
+
+    % -------------------------------------------------
+    \section{Verificación mediante Unit Tests}
+    % -------------------------------------------------
+
+    Se han diseñado \textit{testbenchs} específicos (ver directorio \texttt{ram-i}) para cubrir y demostrar el correcto funcionamiento de las transiciones de la FSM. A continuación, se resume el objetivo principal de cada prueba unitaria:
+
+    \begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabularx}{\textwidth}{@{} c >{\small\ttfamily}X >{\centering}p{2.5cm} X @{}}
+    \toprule
+    \textbf{\#} & \normalfont\textbf{Archivo RAM-I} & \textbf{Tipo} & \textbf{Objetivo del Test} \\
+    \midrule
+    1 & memoriaRAM_I_Test_1_Scratchpad.vhd & Unit & Accesos a zona no cacheable (lecturas y escrituras directas a \texttt{MD\_Scratch}). \\
+    2 & memoriaRAM_I_Test_2_Lecturas.vhd & Unit & Fallos de lectura limpios (reemplazo sin necesidad de \textit{Copy-Back}) y aciertos de lectura. \\
+    3 & memoriaRAM_I_Test_3_Escrituras.vhd & Unit & Aciertos de escritura (actualización del bit de \textit{dirty}) y fallos de escritura (\textit{Write-Around}). \\
+    4 & memoriaRAM_I_Test_4_CopyBack.vhd & Unit & Desalojo de bloques modificados previamente hacia memoria principal (tráfico en \textit{Copy-Back}). \\
+    5 & memoriaRAM_I_Test_5_Errores.vhd & Unit & Detección de \textit{Data Abort} (direcciones desalineadas, registros internos, o \textit{timeout} sin \texttt{DevSel}). \\
+    6 & memoriaRAM_I_Test_6_FIFO.vhd & Unit & Verificación de la política de reemplazo circular (FIFO) entre las dos vías del conjunto. \\
+    7 & memoriaRAM_I_Test_7_Arbitraje.vhd & Unit & Competencia en el bus de sistema entre el caché (\texttt{MC}) y el módulo externo (\texttt{IO\_Master}). \\
+    \midrule
+    8 & memoriaRAM_I_Test_8_Integracion.vhd & Integration & Test de integración con secuencia completa de programa (varios accesos y ráfagas). \\
+    9 & memoriaRAM_I_Test_8_WriteMissDirty.vhd & Integration & Caso específico: escritura en miss seguida de acceso que genera \textit{Write-Miss Dirty} (combinación CopyBack + Read). \\
+    10 & memoriaRAM_I_Test_9_HitVia1.vhd & Unit/Integration & Verificación de hits por vía 1 y comportamiento de coherencia en accesos consecutivos. \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Resumen de los tests disponibles en \texttt{proyecto2/ram-i}. Los casos marcados como \emph{Integration} son bancos de prueba que ejecutan secuencias completas; los \emph{Unit} son pruebas puntuales dirigidas a escenarios concretos.}
+    \end{table}
+
+    \subsection{Test 1: Accesos al Scratchpad}
+    Se verifica que las direcciones en el rango \texttt{0x10000000} activan la señal \texttt{addr\_non\_cacheable}. El controlador transiciona a \texttt{single\_word\_transfer}, realizando un bypass de la lógica de bloques.
+    
+    \begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{lllll}
+    \toprule
+    \textbf{Tiempo (ns)} & \textbf{Instrucción} & \textbf{Estado FSM} & \textbf{Acción en Bus} & \textbf{Resultado} \\
+    \midrule
+    65 & \texttt{lw \$8, 0x10000000} & Arbitraje & Req. Bus & Petición Simple \\
+    315 & - & Single\_addr & Enviar @ & DevSel Scratch \\
+    345 & - & Single\_data & TRDY = 1 & Dato en \$8 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \subsection{Test 2 y 3: Lecturas y Escrituras Nominales}
+    Demostración de la política \textit{Write-Around}: un fallo de escritura no reserva bloque. Se observa en simulación que una escritura fallida es seguida por un fallo de lectura a la misma dirección.
+    
+    \begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{lllll}
+    \toprule
+    \textbf{Escenario} & \textbf{Estado Inicial} & \textbf{Operación} & \textbf{Estado Final} & \textbf{Tráfico Bus} \\
+    \midrule
+    Hit Lectura & Bloque Válido & \texttt{lw} & Hit (1 ciclo) & Ninguno \\
+    Hit Escritura & Bloque Válido & \texttt{sw} & Hit + Dirty=1 & Ninguno \\
+    Miss Escritura & Bloque Ausente & \texttt{sw} & Miss (WA) & 1 Palabra a RAM \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \subsection{Test 4: Política de Copy-Back}
+    Este test fuerza el desalojo de un bloque previamente modificado (\texttt{dirty=1}). Se observa cómo la FSM, tras el \texttt{block\_transfer\_addr}, detecta la necesidad de salvar el bloque y salta a \texttt{CopyBack} antes de proceder con la carga del nuevo bloque.
+    
+    \textbf{Hito temporal clave:} En el intervalo [485ns - 625ns] se observa la ráfaga de escritura del bloque sucio (4 palabras) seguida de la ráfaga de lectura del bloque solicitado.
+
+    \subsection{Test 5: Excepciones y Timeouts (Data Abort)}
+    Se validan los tres casos de error:
+    \begin{enumerate}
+        \item \textbf{Desalineación:} Acceso a byte/media palabra no soportado.
+        \item \textbf{Escritura protegida:} Intento de escribir en registros internos de sólo lectura.
+        \item \textbf{Timeout:} Petición a una dirección de bus que no responde (\texttt{DevSel=0}).
+    \end{enumerate}
+    En todos los casos, la señal \texttt{Mem\_ERROR} se activa y el MIPS detiene su flujo normal.
+
+    \subsection{Test 6 y 7: Reemplazo FIFO y Arbitraje del Bus}
+    Se confirma que el bit de reemplazo alterna correctamente entre la vía 0 y la vía 1 tras cada fallo. En el Test 7, el \texttt{IO\_Master} aprovecha los ciclos en los que la caché no ocupa el bus para realizar sus propias transferencias al Scratchpad.
+
+    \subsection{Test 8: Integración (memoriaRAM\_I\_Test\_8\_Integracion.vhd)}
+    \textbf{Objetivo:} Ejecutar una secuencia representativa del programa completo que presenta accesos a memoria variados (lecturas cacheables, escrituras, accesos a scratchpad) para validar la interacción entre MIPS, UC, MC y MD.
+
+    \textbf{Qué medir y capturar:}
+    \begin{itemize}
+        \item Trazas completas de \texttt{bus\_req}, \texttt{bus\_grant}, \texttt{mc\_addr\_bus}, \texttt{mc\_data\_bus}, \texttt{bus\_trdy}.
+        \item Contadores finales: \texttt{inc\_r}, \texttt{inc\_w}, \texttt{inc\_m}, \texttt{cont\_cb}.
+        \item Latencias de miss (tiempo entre petición y ready).
+    \end{itemize}
+
+    \textbf{Tabla de instrucciones (ejemplo):}
+    \begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{ll}
+    \toprule
+    Instrucción & Comentario \\
+    \midrule
+    lw $8, 256($0) & Forzar miss y carga de bloque \\
+    sw $8, 4($0) & Escritura para provocar dirty en vía \\
+    lw $9, 0($8) & Acceso a scratchpad si $8 apunta a 0x10000000 \\
+    ... & Secuencia completa definida en el testbench \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \textbf{Paso a paso (qué observar):}
+    \begin{enumerate}
+        \item Iniciar simulación y observar tiempos de arbitraje iniciales.
+        \item Registrar cada miss y medir tiempo desde \texttt{bus\_req=1} hasta \texttt{ready=1}.
+        \item Comprobar que los contadores coinciden con el número de accesos realizados.
+    \end{enumerate}
+
+    Captura GTKWave: \pendiente\\
+
+    \subsection{Test 8 (caso específico): WriteMissDirty (memoriaRAM\_I\_Test\_8\_WriteMissDirty.vhd)}
+    \textbf{Objetivo:} Forzar el caso mixto donde una escritura en miss y una lectura posterior provocan un flujo que implica un \textit{CopyBack} y una lectura del nuevo bloque.
+
+    \textbf{Señales a capturar:} \texttt{dirty}, \texttt{copyback}, \texttt{mc\_addr\_bus}, \texttt{bus\_trdy}, \texttt{mc\_tags\_WE}.
+
+    \textbf{Resultado esperado:} Se observa primero la ráfaga de escritura del bloque sucio (CopyBack) y posteriormente la ráfaga de lectura del bloque solicitado; los contadores \texttt{cont\_cb} se incrementan en 1.
+
+    Captura GTKWave: \pendiente\\
+
+    \subsection{Test 9: Hit Via1 (memoriaRAM\_I\_Test\_9\_HitVia1.vhd)}
+    \textbf{Objetivo:} Verificar que los hits en la vía 1 se detectan correctamente y que la política FIFO mantiene la coherencia entre accesos consecutivos.
+
+    \textbf{Instrucciones:} Serie de accesos a direcciones que mapean al mismo conjunto pero a distintas etiquetas para provocar reemplazos y comprobar que la vía 1 entrega datos válidos cuando corresponde.
+
+    \textbf{Señales a capturar:} \texttt{way_select}, \texttt{valid[1]}, \texttt{tag_compare}, \texttt{mc\_data\_bus}.
+
+    Captura GTKWave: \pendiente\\
+
+    % -------------------------------------------------
+    \section{Análisis de Latencias y Rendimiento}
+    % -------------------------------------------------
+
+    Para evaluar el rendimiento del sistema, es esencial caracterizar las latencias de cada tipo de acceso a memoria. Las transferencias por el bus evitan la espera del arbitraje en las siguientes fórmulas, para las cuales supondremos una latencia media de arbitraje $C_{arb} = 1.5$ ciclos.
+
+    \subsection{Latencias Teóricas Extraídas de Simulación}
+    Los valores medidos en las simulaciones con una frecuencia de reloj de 100MHz (ciclo de 10ns) son:
+    \begin{itemize}
+        \item $C_{rB}(MD)$: ciclos para leer un bloque desde MD $= L + 3 \times R = 7 + 3 \times 2 = \mathbf{13}$ ciclos.
+        \item $C_{wW}(MD)$: ciclos para escribir una palabra en MD (\textit{Write-Around}) = \textbf{7} ciclos.
+        \item $C_{rW}(MDscratch)$: ciclos para leer de Scratchpad = \textbf{3} ciclos.
+        \item $C_{wW}(MDscratch)$: ciclos para escribir en Scratchpad = \textbf{3} ciclos.
+        \item $C_{rW}/C_{wW}(IO\_REG)$: ciclos para accesos a registros internos = \textbf{1} ciclo.
+    \end{itemize}
+
+    \subsection{Ciclos Medios por Acceso a Memoria}
+    El coste medio de un acceso a memoria ($C_{med}$) para instrucciones cacheables se formula como:
+
+    \begin{equation}
+        C_{med} = h \times 1 + (1 - h) \times [C_{arb} + C_{rB} + P(dirty) \times (C_{arb} + C_{CB})]
+    \end{equation}
+
+    Donde $h$ es la tasa de aciertos y $P(dirty)$ es la probabilidad de que la víctima esté sucia. Según nuestras mediciones:
+    \begin{itemize}
+        \item Coste de Fallo Limpio: $1.5 + 13 = 14.5$ ciclos.
+        \item Coste de Fallo con Copy-Back: $1.5 + 13 + 1.5 + 13 = 29$ ciclos.
+    \end{itemize}
+
+
+
+    % -------------------------------------------------
+    \section{Test de Integración y Análisis de Speedup}
+    % -------------------------------------------------
+
+    Se ha utilizado el programa \texttt{bucle\_lectura.P2} que realiza recorridos sistemáticos sobre vectores en memoria principal y accesos de control al Scratchpad.
+
+    \subsection{Cálculo de Speedup}
+    Se compara el tiempo de ejecución del programa sobre el sistema con caché frente a un sistema hipotético sin caché (donde cada acceso a MD cuesta $C_{arb} + L = 8.5$ ciclos).
+
+    \begin{table}[H]
+    \centering
+    \begin{tabular}{lccc}
+    \toprule
+    \textbf{Configuración} & \textbf{Accesos Totales} & \textbf{Ciclos Totales} & \textbf{CPI Memoria} \\
+    \midrule
+    Sin Caché (MD lenta) & 19 & 161.5 & 8.5 \\
+    Con Caché (MC + MD) & 19 & 151 & 7.95 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \begin{equation}
+        Speedup = \frac{T_{sin\_cache}}{T_{con\_cache}} = \frac{161.5}{151} = \mathbf{1.07}
+    \end{equation}
+
+    Nota: El speedup es moderado debido a la alta tasa de fallos inicial en un programa tan corto (19 accesos). En ejecuciones largas con mayor localidad temporal, el speedup tiende asintóticamente a valores superiores a 4.
+
+    % -------------------------------------------------
+    \section{Diario de Trabajo y Autoevaluación}
+    % -------------------------------------------------
+
+    \subsection{Registro de Horas}
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|}
+    \hline
+    \textbf{Tarea} & \textbf{Tahir Berga} & \textbf{Pablo Villa} & \textbf{Total} \\
+    \hline
+    Diseño de FSM (Papel) & - & - & - \\
+    Codificación VHDL (MC) & - & - & - \\
+    Testbenchs Unitarios & - & - & - \\
+    Depuración y GTKWave & - & - & - \\
+    Redacción de Memoria & - & - & - \\
+    \hline
+    \textbf{Total} & \textbf{-} & \textbf{-} & \textbf{-} \\
+    \hline
+    \end{tabular}
+    \caption{Distribución temporal del trabajo en el proyecto.}
+    \end{table}
+
+    \subsection{Autoevaluación}
+    \textbf{¿Consideráis cumplidos los objetivos de la práctica?} \\
+    \pendiente \textit{(Breve reflexión de grupo)}
+
+    \textbf{Calificación estimada:} \\
+    \pendiente \textit{(Nota sobre 10)}
+
+    \end{document}
