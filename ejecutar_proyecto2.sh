@@ -45,6 +45,7 @@ show_help() {
     echo "                         3_Escrituras"
     echo "                         4_CopyBack"
     echo "                         5_Errores"
+    echo "                         5_InternalError"
     echo "  - Las ondas se guardan en simulation/, que ya esta ignorado por git."
 }
 
@@ -71,7 +72,7 @@ ensure_tools() {
 
 clean_artifacts() {
     echo -e "${YELLOW}Limpiando artefactos de simulacion...${NC}"
-    rm -f "${PROJECT_DIR}/work-obj93.cf" "${WAVE_GHW}" "${WAVE_VCD}"
+    rm -f "${PROJECT_DIR}/work-obj93.cf" "${PROJECT_DIR}/work-obj08.cf" "${WAVE_GHW}" "${WAVE_VCD}"
     mkdir -p "$SIM_DIR"
     find "$SIM_DIR" -maxdepth 1 -type f \( -name '*.ghw' -o -name '*.vcd' \) -delete
     ghdl --clean >/dev/null 2>&1 || true
@@ -105,9 +106,10 @@ compile_project() {
             continue
         fi
         
-        # Otros filtros existentes para RAM-D
+        # Filtros para RAM-D:
+        # mantenemos la RAM principal del profesor (RAM_128_32) y
+        # excluimos solo la variante auxiliar de 64 palabras.
         case "$file" in
-            proyecto2/ram-d/memoriaRAM_128_32_2026_bucle_lectura.vhd|\
             proyecto2/ram-d/memoriaRAM_64_32_enable.vhd)
                 continue
                 ;;
@@ -220,25 +222,27 @@ fi
 # Menu interactivo si no es clean y no se ha especificado RAM_TEST
 if [ "$CLEAN_ONLY" -eq 0 ] && [ "$RAM_TEST_PROVIDED" -eq 0 ]; then
     echo -e "${YELLOW}==========================================${NC}"
-    echo -e "${YELLOW} Elige la prueba RAM-I a ejecutar (1-5):${NC}"
+    echo -e "${YELLOW} Elige la prueba RAM-I a ejecutar:${NC}"
     echo -e "${YELLOW}==========================================${NC}"
     echo " 1) 1_Scratchpad (Aciertos basicos)"
     echo " 2) 2_Lecturas (Fallos y aciertos)"
     echo " 3) 3_Escrituras (Write-Around / Hit)"
     echo " 4) 4_CopyBack (Reemplazo bloque sucio)"
     echo " 5) 5_Errores (Excepciones de bus)"
-    echo " 6) 6_FIFO (Estres de reemplazo)"
-    echo " 7) 7_Arbitraje (Conflicto de bus)"
-    echo " 8) 8_Bucle (Programa bucle_lectura original)"
+    echo " 6) 5_InternalError (Microtest de error interno)"
+    echo " 7) 6_FIFO (Estres de reemplazo)"
+    echo " 8) 7_Arbitraje (Conflicto de bus)"
+    echo " 9) 8_Bucle (Programa bucle_lectura original)"
     read -p "Opcion [por defecto 1]: " opcion_ram
     case "$opcion_ram" in
         2) RAM_TEST="2_Lecturas" ;;
         3) RAM_TEST="3_Escrituras" ;;
         4) RAM_TEST="4_CopyBack" ;;
         5) RAM_TEST="5_Errores" ;;
-        6) RAM_TEST="6_FIFO" ;;
-        7) RAM_TEST="7_Arbitraje" ;;
-        8) RAM_TEST="bucle_lectura" ;;
+        6) RAM_TEST="5_InternalError" ;;
+        7) RAM_TEST="6_FIFO" ;;
+        8) RAM_TEST="7_Arbitraje" ;;
+        9) RAM_TEST="bucle_lectura" ;;
         *) RAM_TEST="1_Scratchpad" ;;
     esac
 fi

@@ -25,6 +25,12 @@
     \usepackage{fancyhdr}
     \usepackage{tikz}
     \usetikzlibrary{automata, positioning, arrows.meta, fit, backgrounds, shapes.geometric}
+    \usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{float}       % Para el especificador [H]
+\usepackage{booktabs}    % Para líneas de tabla elegantes
+\usepackage[table,xcdraw]{xcolor} % Para colores en las filas
+\usepackage{tabularx}   % Para tablas que se ajustan al ancho
 
     % Fuentes Times New Roman en TODO
     \usepackage{newtxtext,newtxmath}
@@ -186,12 +192,29 @@
             Si la dirección de memoria no se encuentra en las vías, el controlador rechaza su ingesta. Hace una petición de Bus directa a la MD, y escribe la palabra sin alterar en ningún momento el contenido interno actual de la Caché.
     \end{itemize}
 
-    \subsection{Desglose de Direcciones (Address Breakdown)}
-    Teniendo en cuenta que la caché tiene 128 bytes (32 palabras) asociativa de 2 vías:
-    \begin{itemize}
-        \item \textbf{Bytes por vía:} $128 / 2 = 64$ bytes.
-        \item \textbf{Bloques por vía:} El tamaño de bloque es de 4 palabras (16 bytes). Así, hay $64 / 16 = 4$ conjuntos (sets).
-    \end{itemize}
+\subsection{Desglose de Direcciones (Address Breakdown)}
+
+Para determinar cómo se interpreta una dirección de memoria de 32 bits por el controlador de la caché, realizamos el análisis basado en las especificaciones hardware de nuestro diseño:
+
+\begin{itemize}[label=\small\color{blue!70!black}\textbullet]
+    \item \textbf{Capacidad Total:} 128 bytes (32 palabras de 32 bits).
+    \item \textbf{Asociatividad:} 2 vías ($s=2$).
+    \item \textbf{Tamaño de Bloque ($B$):} 4 palabras (16 bytes).
+\end{itemize}
+
+A partir de estos datos, calculamos la jerarquía de bits de la dirección:
+
+\begin{enumerate}
+    \item \textbf{Byte Offset (2 bits):} Dado que cada palabra es de 4 bytes, se requieren $\log_2(4) = 2$ bits para el desplazamiento de byte. En nuestro sistema alineado, estos bits ([1:0]) se utilizan para la detección de excepciones \textit{unaligned}.
+    \item \textbf{Word Offset (2 bits):} Con bloques de 4 palabras, necesitamos $\log_2(4) = 2$ bits ([3:2]) para seleccionar la palabra específica dentro del bloque durante una transferencia o acceso.
+    \item \textbf{Set Index (2 bits):} El número de conjuntos se calcula dividiendo el número total de bloques entre la asociatividad:
+    \begin{equation*}
+        \text{Sets} = \frac{\text{Capacidad / Bloque}}{\text{Asociatividad}} = \frac{128 / 16}{2} = 4 \text{ conjuntos} \implies \log_2(4) = \mathbf{2 \text{ bits [5:4]}}
+    \end{equation*}
+    \item \textbf{Tag (26 bits):} El resto de los bits de la dirección ($32 - 2 - 2 - 2 = 26$) forman la etiqueta necesaria para identificar el bloque en las comparaciones de \textit{Hit/Miss}.
+\end{enumerate}
+
+\newpage
     El formato de la dirección (32 bits) para acceder a la caché queda desglosado como sigue:
     \begin{center}
     \begin{tabular}{|c|c|c|c|}
@@ -203,16 +226,34 @@
     \end{tabular}
     \end{center}
 
-    \newpage
-    % -------------------------------------------------
-    \section{Unidad de Control: Diagrama y Resumen de Estados}
-    % -------------------------------------------------
 
-    \subsection{Diagrama de Estados de la Máquina (FSM Principal)}
+\section{Unidad de Control (UC)}
 
-    La máquina de estados finitos (FSM) que rige el controlador es la encargada de resolver las peticiones del procesador, manejando las ráfagas con la memoria y el acceso simple a la memoria Scratchpad.
+\subsection{Proceso de Diseño y Metodología}
+El diseño de la Unidad de Control se abordó inicialmente mediante un análisis exhaustivo en papel de todos los casos de uso posibles (aciertos, fallos con bloque limpio, fallos con bloque sucio y accesos no cacheables). 
 
-    \vspace{0.5cm}
+En las primeras iteraciones, la máquina de estados era considerablemente más compleja, con estados intermedios para la gestión de retardos de bus y bajadas de señales de control (como \texttt{Bus\_Frame}). Sin embargo, mediante un proceso de refactorización y optimización, logramos simplificar la FSM eliminando estados redundantes. Un ejemplo clave de esta simplificación es el retorno directo de \texttt{CopyBack} a \texttt{Inicio}: en lugar de encadenar la lectura del nuevo bloque inmediatamente, volvemos a \texttt{Inicio} para que la lógica de "Fallo de Lectura" vuelva a evaluar la petición, simplificando enormemente el camino de datos y la reutilización de estados.
+
+\subsubsection{FSM Principal (Funcionamiento)}
+Gestiona el ciclo de vida de cada petición del MIPS. Se divide en tres fases fundamentales:
+\begin{enumerate}
+    \item \textbf{Fase de Arbitraje:} El estado \texttt{Arbitraje} levanta \texttt{Bus\_req} y espera a que el árbitro conceda el bus (\texttt{Bus\_grant}).
+    \item \textbf{Fase de Direccionamiento:} Los estados \texttt{*\_addr} activan \texttt{MC\_send\_addr\_ctrl} y \texttt{Bus\_Frame}. Aquí se decide si la operación es de bloque (\texttt{block\_addr = '1'}) o de palabra simple.
+    \item \textbf{Fase de Datos:} En los estados \texttt{*\_data} y \texttt{CopyBack}, se monitoriza \texttt{Bus\_TRDY}. Se utiliza un contador de palabras interno para gestionar las ráfagas, activando \texttt{last\_word} al alcanzar la cuarta palabra para cerrar la transacción.
+\end{enumerate}
+
+\newpage
+\subsubsection{FSM de Errores (Secundaria)}
+Funciona en paralelo para detectar condiciones de **Data Abort** sin interrumpir la lógica de estados principal hasta que sea necesario. Detecta:
+\begin{itemize}
+    \item \textbf{Accesos Desalineados:} Mediante la señal \texttt{unaligned} (bits bajos de dirección).
+    \item \textbf{Timeout de Bus:} Si en la fase de direccionamiento \texttt{Bus\_DevSel} es '0', la FSM fuerza el salto a \texttt{Inicio} y activa \texttt{Mem\_ERROR}.
+    \item \textbf{Violación de Escritura:} Detecta intentos de escritura en registros de solo lectura (\texttt{internal\_addr} con \texttt{WE}).
+\end{itemize}
+
+\subsection{Diagramas de Estados}
+\subsubsection{Maquina FSM principal}
+  \vspace{0.5cm}
     \begin{center}
     \shorthandoff{<>}
     \resizebox{\textwidth}{!}{
@@ -275,40 +316,8 @@
     \shorthandon{<>}
     \end{center}
 
-    \subsection{Transiciones y Señales de la FSM Principal}
-
-    \begin{table}[H]
-    \centering
-    \footnotesize
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabularx}{\textwidth}{@{} l l X @{}}
-    \toprule
-    \textbf{Estado Actual} & \textbf{Estado Siguiente} & \textbf{Condición y Acciones Clave} \\
-    \midrule
-    \textbf{Inicio} & Inicio & \textbf{Hit (L/E) o Regs:} $ready=1$. Actualiza estadísticas (\texttt{inc\_r / inc\_w}) y \texttt{Update\_dirty}. \textbf{Error:} Activa $ready=1$ y \texttt{Mem\_ERROR=1}. \\
-                    & Arbitraje & \textbf{Miss o Non-Cacheable:} Se solicita el bus (\texttt{Bus\_req=1}). Suma \texttt{inc\_m} si es cacheable. \\
-    \midrule
-    \textbf{Arbitraje} & Arbitraje & \textbf{grant = 0:} Espera a que el árbitro conceda el bus. \\
-                        & single\_word\_transfer\_addr & \textbf{grant = 1 (WE=1 o Non-Cach):} Inicia acceso de una palabra. \\
-                        & block\_transfer\_addr & \textbf{grant = 1 (Fallo Lectura Cacheable):} Inicia acceso de bloque. \\
-    \midrule
-    \textbf{block\_transfer\_addr} & CopyBack & \textbf{DevSel = 1 y dirty = 1:} Bloque sucio. Manda escribir (\texttt{MC\_bus\_Write=1}). \\
-                                & block\_transfer\_data & \textbf{DevSel = 1 y dirty = 0:} Bloque limpio. Manda leer (\texttt{MC\_bus\_Read=1}). \\
-                                & Inicio & \textbf{DevSel = 0:} Aborta la transferencia. Activa error y $ready=1$. \\
-    \midrule
-    \textbf{CopyBack} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque volcado a memoria principal. Incrementa \texttt{cont\_cb}. Limpia el dirty bit (\texttt{Update\_dirty=1}) y retorna directamente para tratar el miss inicial. \\
-    \midrule
-    \textbf{block\_transfer\_data} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque cargado desde MD. Actualiza Etiquetas (\texttt{MC\_tags\_WE=1}) y retorna. \\
-    \midrule
-    \textbf{single\_word\_transfer\_addr} & single\_word\_transfer\_data & \textbf{DevSel = 1 o Scratch (\texttt{addr\_non\_cacheable=1}):} Transición rápida. \\
-                                        & Inicio & \textbf{DevSel = 0 y no Scratch:} Timeout. Aborta, activa error y $ready=1$. \\
-    \midrule
-    \textbf{single\_word\_transfer\_data} & Inicio & \textbf{TRDY=1:} Finaliza la lectura/escritura de 1 palabra. Se manda $ready=1$ al MIPS. \\
-    \bottomrule
-    \end{tabularx}
-    \end{table}
-
-    \subsection{Máquina de Estados de Errores (FSM Secundaria)}
+    
+    \subsubsection{Máquina de Estados de Errores (FSM Secundaria)}
 
     De forma concurrente, el controlador evalúa si el acceso actual produce algún tipo de excepción (Data Abort) como accesos no alineados, escrituras en zonas de sólo lectura o falta de respuesta en el bus.
 
@@ -348,6 +357,75 @@
         \caption{Máquina de estados secundaria concurrente para la gestión de errores.}
         \label{fig:fsm_error}
     \end{figure}
+
+\newpage
+ \subsection{Transiciones y Señales de la FSM Principal}
+
+
+    \begin{table}[H]
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{@{} l l X @{}}
+    \toprule
+    \textbf{Estado Actual} & \textbf{Estado Siguiente} & \textbf{Condición y Acciones Clave} \\
+    \midrule
+    \textbf{Inicio} & Inicio & \textbf{Hit (L/E) o Regs:} $ready=1$. Actualiza estadísticas (\texttt{inc\_r / inc\_w}) y \texttt{Update\_dirty}. \textbf{Error:} Activa $ready=1$ y \texttt{Mem\_ERROR=1}. \\
+                    & Arbitraje & \textbf{Miss o Non-Cacheable:} Se solicita el bus (\texttt{Bus\_req=1}). Suma \texttt{inc\_m} si es cacheable. \\
+    \midrule
+    \textbf{Arbitraje} & Arbitraje & \textbf{grant = 0:} Espera a que el árbitro conceda el bus. \\
+                        & single\_word\_transfer\_addr & \textbf{grant = 1 (WE=1 o Non-Cach):} Inicia acceso de una palabra. \\
+                        & block\_transfer\_addr & \textbf{grant = 1 (Fallo Lectura Cacheable):} Inicia acceso de bloque. \\
+    \midrule
+    \textbf{block\_transfer\_addr} & CopyBack & \textbf{DevSel = 1 y dirty = 1:} Bloque sucio. Manda escribir (\texttt{MC\_bus\_Write=1}). \\
+                                & block\_transfer\_data & \textbf{DevSel = 1 y dirty = 0:} Bloque limpio. Manda leer (\texttt{MC\_bus\_Read=1}). \\
+                                & Inicio & \textbf{DevSel = 0:} Aborta la transferencia. Activa error y $ready=1$. \\
+    \midrule
+    \textbf{CopyBack} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque volcado a memoria principal. Incrementa \texttt{cont\_cb}. Limpia el dirty bit (\texttt{Update\_dirty=1}) y retorna directamente para tratar el miss inicial. \\
+    \midrule
+    \textbf{block\_transfer\_data} & Inicio & \textbf{TRDY=1 y last\_word:} Bloque cargado desde MD. Actualiza Etiquetas (\texttt{MC\_tags\_WE=1}) y retorna. \\
+    \midrule
+    \textbf{single\_word\_transfer\_addr} & single\_word\_transfer\_data & \textbf{DevSel = 1 o Scratch (\texttt{addr\_non\_cacheable=1}):} Transición rápida. \\
+                                        & Inicio & \textbf{DevSel = 0 y no Scratch:} Timeout. Aborta, activa error y $ready=1$. \\
+    \midrule
+    \textbf{single\_word\_transfer\_data} & Inicio & \textbf{TRDY=1:} Finaliza la lectura/escritura de 1 palabra. Se manda $ready=1$ al MIPS. \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+
+
+\newpage
+\subsection{Tabla de Señales de Control}
+La siguiente tabla resume el valor de las señales clave en los estados principales de la UC:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{@{} l c c c c c X @{}}
+\toprule
+\textbf{Estado} & \textbf{req} & \textbf{Frame} & \textbf{Rd/Wr} & \textbf{TAG\_WE} & \textbf{Ready} & \textbf{Descripción} \\
+\midrule
+\rowcolor{gray!10} \textbf{Inicio} & 0 & 0 & 0 & 0 & Hit?1:0 & Reposo / Acierto inmediato. \\
+\textbf{Arbitraje} & 1 & 0 & 0 & 0 & 0 & Espera de \texttt{grant}. \\
+\rowcolor{gray!10} \textbf{Block\_Transfer} & 1 & 1 & 0 & 1* & 0 & Lectura de bloque (WE al final). \\
+\textbf{Single\_Transfer} & 1 & 1 & MIPS\_W & 0 & \texttt{TRDY} & Acceso a Scratchpad / Write-Around. \\
+\rowcolor{gray!10} \textbf{CopyBack} & 1 & 1 & 1 & 0 & 0 & Escritura de bloque sucio en RAM. \\
+\bottomrule
+\end{tabularx}
+\caption{Señales de control principales (1=Activo, 0=Inactivo).}
+\end{table}
+
+
+
+
+
+\subsection{Mejoras Identificadas (Future Work)}
+A pesar de que el diseño actual cumple todos los requisitos, se identificaron dos mejoras que optimizarían aún más el rendimiento:
+\begin{enumerate}
+    \item \textbf{Arbitraje Anticipado:} Se podría solicitar el bus (\texttt{Bus\_req}) directamente desde el estado \texttt{Inicio} al detectar un fallo, eliminando el ciclo de espera en el estado \texttt{Arbitraje}.
+    \item \textbf{Early Restart / Critical Word First:} En una transferencia de bloque por lectura, se podría identificar qué palabra específica de las cuatro necesita el MIPS y enviársela (\texttt{ready = '1'}) en cuanto llegue del bus, sin esperar a que se complete la carga de las cuatro palabras en la caché.
+\end{enumerate}
 
 
     % -------------------------------------------------
@@ -425,189 +503,954 @@
 
     \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.4}
-    \begin{tabularx}{\textwidth}{@{} c >{\small\ttfamily}X >{\centering}p{2.5cm} X @{}}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{@{} c >{\small\ttfamily}X X @{}}
     \toprule
-    \textbf{\#} & \normalfont\textbf{Archivo RAM-I} & \textbf{Tipo} & \textbf{Objetivo del Test} \\
+    \textbf{\#} & \normalfont\textbf{Archivo RAM-I} & \textbf{Objetivo del Test} \\
     \midrule
-    1 & memoriaRAM_I_Test_1_Scratchpad.vhd & Unit & Accesos a zona no cacheable (lecturas y escrituras directas a \texttt{MD\_Scratch}). \\
-    2 & memoriaRAM_I_Test_2_Lecturas.vhd & Unit & Fallos de lectura limpios (reemplazo sin necesidad de \textit{Copy-Back}) y aciertos de lectura. \\
-    3 & memoriaRAM_I_Test_3_Escrituras.vhd & Unit & Aciertos de escritura (actualización del bit de \textit{dirty}) y fallos de escritura (\textit{Write-Around}). \\
-    4 & memoriaRAM_I_Test_4_CopyBack.vhd & Unit & Desalojo de bloques modificados previamente hacia memoria principal (tráfico en \textit{Copy-Back}). \\
-    5 & memoriaRAM_I_Test_5_Errores.vhd & Unit & Detección de \textit{Data Abort} (direcciones desalineadas, registros internos, o \textit{timeout} sin \texttt{DevSel}). \\
-    6 & memoriaRAM_I_Test_6_FIFO.vhd & Unit & Verificación de la política de reemplazo circular (FIFO) entre las dos vías del conjunto. \\
-    7 & memoriaRAM_I_Test_7_Arbitraje.vhd & Unit & Competencia en el bus de sistema entre el caché (\texttt{MC}) y el módulo externo (\texttt{IO\_Master}). \\
-    \midrule
-    8 & memoriaRAM_I_Test_8_Integracion.vhd & Integration & Test de integración con secuencia completa de programa (varios accesos y ráfagas). \\
-    9 & memoriaRAM_I_Test_8_WriteMissDirty.vhd & Integration & Caso específico: escritura en miss seguida de acceso que genera \textit{Write-Miss Dirty} (combinación CopyBack + Read). \\
-    10 & memoriaRAM_I_Test_9_HitVia1.vhd & Unit/Integration & Verificación de hits por vía 1 y comportamiento de coherencia en accesos consecutivos. \\
+    1 & Test\_1\_Scratchpad.vhd & Accesos a zona no cacheable (lecturas y escrituras directas a \texttt{MD\_Scratch}). \\
+    2 & Test\_2\_Lecturas.vhd & Fallos de lectura limpios (reemplazo sin necesidad de \textit{Copy-Back}) y aciertos de lectura. \\
+    3 & Test\_3\_Escrituras.vhd & Aciertos de escritura (actualización del bit de \textit{dirty}) y fallos de escritura (\textit{Write-Around}). \\
+    4 & Test\_4\_CopyBack.vhd & Desalojo de bloques modificados previamente hacia memoria principal (tráfico en \textit{Copy-Back}). \\
+    5 & Test\_5\_Errores.vhd & Detección de \textit{Data Abort} (direcciones desalineadas, registros internos, o \textit{timeout} sin \texttt{DevSel}). \\
+    6 & Test\_6\_FIFO.vhd & Verificación de la política de reemplazo circular (FIFO) entre las dos vías del conjunto. \\
+    7 & Test\_7\_Arbitraje.vhd & Competencia en el bus de sistema entre el caché (\texttt{MC}) y el módulo externo (\texttt{IO\_Master}). \\
+    8 & Test\_8\_WriteMissDirty.vhd & . \\
+    9 & Test\_9\_HitVia1.vhd & . \\
+    
     \bottomrule
     \end{tabularx}
-    \caption{Resumen de los tests disponibles en \texttt{proyecto2/ram-i}. Los casos marcados como \emph{Integration} son bancos de prueba que ejecutan secuencias completas; los \emph{Unit} son pruebas puntuales dirigidas a escenarios concretos.}
+    \caption{Resumen de los Unit Tests desarrollados para la verificación del Controlador de Caché.}
     \end{table}
 
-    \subsection{Test 1: Accesos al Scratchpad}
-    Se verifica que las direcciones en el rango \texttt{0x10000000} activan la señal \texttt{addr\_non\_cacheable}. El controlador transiciona a \texttt{single\_word\_transfer}, realizando un bypass de la lógica de bloques.
+    \subsection{Metodología de Verificación Automatizada}
+
+Para garantizar la integridad del diseño y facilitar la ejecución de la batería de pruebas, se han desarrollado dos herramientas de automatización basadas en \textit{scripts} de \textit{shell} y \textit{Python}:
+
+\begin{itemize}
+    \item \textbf{\texttt{ejecutar\_proyecto2.sh}:} Un motor de simulación en \textit{Bash} que automatiza el flujo de trabajo con GHDL. Permite la limpieza del entorno, la compilación selectiva (enlazando dinámicamente el test de memoria RAM-I deseado) y la generación de archivos de ondas en formato \texttt{.vcd} o \texttt{.ghw}.
+    \item \textbf{\texttt{run\_tests.py} y \texttt{verify\_cache.py}:} Una \textit{suite} de testeo escrita en Python que actúa como orquestador. El script \texttt{run\_tests.py} permite ejecutar la batería completa de pruebas en modo CI (\textit{Continuous Integration}), mientras que \texttt{verify\_cache.py} realiza un \textbf{análisis estricto del archivo VCD}. Este último verifica mediante software que el número de \textit{misses}, \textit{hits}, ráfagas de bus y señales de error coinciden exactamente con las expectativas teóricas del protocolo implementado.
+\end{itemize}
+
+\\
+Cada test genera un informe detallado de eventos que se almacena en el directorio \texttt{/logs}. Estos archivos contienen la cronología exacta de las transiciones de la FSM, las concesiones del árbitro y el estado de los registros del MIPS. Para la validación de los resultados presentados en esta memoria, se hace referencia a los siguientes ficheros de log:
+
+% --- Relación de archivos de auditoría ---
+\begin{table}[H]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.3} % Mejora el espaciado
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Archivo de Log} & \textbf{Test y Funcionalidad Validada} \\ \hline
+\texttt{test\_1\_Scratchpad.txt} & Validación de accesos No Cacheables (lectura/escritura). \\ \hline
+\texttt{test\_2\_Lecturas.txt}   & Fallos de lectura, carga de bloques y aciertos en vía. \\ \hline
+\texttt{test\_3\_Escrituras.txt} & Política \textit{Write-Around} y actualización de bits de \textit{dirty}. \\ \hline
+\texttt{test\_4\_CopyBack.txt}   & Protocolo de desalojo (\textit{Write-Back}) de bloques modificados. \\ \hline
+\texttt{test\_5\_Errores.txt}    & Gestión de \textit{Data Abort} por alineamiento o \textit{timeout}. \\ \hline
+\texttt{test\_6\_FIFO.txt}       & Reemplazo circular entre las vías del conjunto. \\ \hline
+\texttt{test\_7\_Arbitraje.txt}  & Competencia y equidad (\textit{fairness}) entre MC e IO\_Master. \\ \hline
+\texttt{test\_HitVia1.txt}       & Verificación específica de aciertos en la vía secundaria (vía 1). \\ \hline
+\texttt{test\_WriteMissDirty.txt}& Gestión de fallo de escritura sobre bloque previamente modificado. \\ \hline
+\texttt{test\_bucle\_lectura.txt}& Ejecución del programa de prueba real sobre el SoC completo. \\ \hline
+\texttt{summary.txt}             & \textbf{Resumen ejecutivo de la batería total de pruebas.} \\ \hline
+\end{tabular}
+\caption{Relación completa de archivos de auditoría generados por la suite de verificación automatizada.}
+\label{tab:logs_verificacion}
+\end{table}
+
+\subsection{Detalles de la Implementación de los Scripts}
+
+Como se observa en los archivos de soporte proporcionados (\texttt{run\_tests.py} y \texttt{verify\_cache.py}), el sistema de validación automatizada opera bajo las siguientes premisas:
+
+\begin{itemize}
+    \item \textbf{Análisis de Expectativas:} Se utiliza un diccionario estructurado denominado \texttt{TEST\_EXPECTATIONS} que define, para cada test unitario, el número exacto de eventos de control esperados. Esto permite una validación cuantitativa inmediata tras cada simulación.
+    \item \textbf{Detección de Violaciones:} El script de verificación realiza un \textit{parsing} del flujo de señales en el archivo VCD generado por GHDL. El sistema es capaz de detectar incoherencias en el protocolo, tales como una activación de la señal \texttt{ready} sin haber cumplido los ciclos de latencia de bus necesarios o transferencias de datos sin la debida concesión (\texttt{bus\_grant}).
+    \item \textbf{Cálculo de Latencias:} Mediante el rastreo de los flancos de reloj entre la petición del MIPS y la respuesta del controlador, se extrae información precisa sobre el tiempo que tarda la jerarquía en resolver cada transacción. Estos datos se vuelcan en los logs individuales, facilitando un estudio de rendimiento posterior más allá de la mera corrección funcional.
+\end{itemize}
+
+    \subsection{Test 1: Accesos a Scratchpad (Zona No Cacheable)}
+
+Descripción: Este test tiene como objetivo validar la capacidad del controlador de caché para identificar direcciones fuera del rango de memoria principal (rango \texttt{0x1000XXXX}). Se busca verificar que, ante estas direcciones, el controlador activa la lógica de acceso "No Cacheable", realizando transferencias de una sola palabra (\textit{single word transfer}) directamente sobre el bus de sistema, sin afectar al contenido de las vías ni realizar cargas de bloques completos.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$8, 256(\$0)}  & \texttt{0x00000100} & Fallo $\rightarrow$ Send\_Addr & Miss (Carga Bloque) \\ \hline
+175 & (Carga de Bloque)          & \texttt{0x00000100} & Read\_Block           & Bus (4 words)       \\ \hline
+255 & \texttt{lw \$9, 0(\$8)}    & \texttt{0x10000000} & Single\_Word\_Addr    & Hit (Non-Cacheable) \\ \hline
+315 & \texttt{sw \$9, 4(\$8)}    & \texttt{0x10000004} & Single\_Word\_Addr    & Bus (Write Single)  \\ \hline
+\end{tabular}
+\caption{Cronograma de eventos y transiciones de la FSM para el Test 1.}
+\end{table}
+
+\subsubsection*{Definición de Capturas (GTKWave)}
+
+\textbf{Figura 1.A (Captura @ 45ns - Detección del Miss):}
+Se debe observar la activación de la señal de parada del procesador \texttt{stall\_mips='1'} y la petición al bus \texttt{bus\_req='1'}. Dado que es una dirección dentro del rango cacheable, la señal \texttt{addr\_non\_cacheable} debe permanecer en '0'.
+
+\begin{quote}
+Aquí se aprecia el flujo de datos desde la RAM-D hacia la caché. Se puede observar cómo, por cada pulso de la señal de reconocimiento \texttt{bus\_trdy}, el contador interno de palabras (\texttt{cont\_block}) incrementa su valor. Esto indica que el controlador de la caché está reconstruyendo el bloque de 4 palabras en su interior de forma secuencial. Es el momento clave donde se verifica que la jerarquía de memoria está resolviendo el fallo de lectura de forma síncrona con el bus del sistema.
+\end{quote}
+
+\textbf{Figura 1.B (Captura @ 175ns - Transferencia de Bloque):}
+Foco en el bus de sistema. Se observa la concesión del bus \texttt{bus\_grant='1'} y la señal \texttt{bus\_trdy} pulsando 4 veces consecutivas para validar cada palabra del bloque.
+
+\textbf{Figura 1.C (Captura @ 255ns y 385ns - Bypass de Caché):} 
+Captura de los accesos al Scratchpad. Se debe observar la señal \texttt{single\_word='1'} y la transición de la FSM al estado \texttt{single\_word\_transfer\_addr}.
+
+ En este punto se ve claramente el cambio de comportamiento: a diferencia del Miss anterior, el \texttt{stall\_mips} es mucho más breve. Se observa que la señal \texttt{addr\_non\_cacheable} se pone a '1', lo que ``puentea'' la lógica de etiquetas. La FSM ignora el estado de carga de bloques (\texttt{Read\_Block}) y ejecuta una transferencia directa de una única palabra, demostrando que el Scratchpad externo está respondiendo como una memoria de un solo ciclo de bus.
+
+\subsubsection*{Validación por Logs (\texttt{test\_1\_Scratchpad.txt})}
+
+El análisis automatizado del log \texttt{test\_1\_Scratchpad.txt} el cumplimiento del protocolo para zonas no cacheables. Inicialmente, a los \textbf{55 ns}, se detecta un \texttt{MISS} en la dirección \texttt{0x00000100}, lo que provoca que el MIPS solicite el bus (\texttt{DEBUG: MIPS pide bus... NC='0'}). Tras obtener el arbitraje a los \textbf{85 ns}, se observa la carga del bloque en las vías (\texttt{Data written in via 0}) finalizando a los \textbf{230 ns} con la actualización del registro \texttt{\$8} con el valor \texttt{0x10000000}.
+
+El punto clave del test ocurre a los \textbf{255 ns}: el MIPS accede a la dirección contenida en \texttt{\$8}. El log indica explícitamente \texttt{NC='1'} (Non-Cacheable). El controlador detecta que la dirección \texttt{0x10000000} pertenece al rango del Scratchpad y, en lugar de buscar en las etiquetas de la caché, inicia una transferencia de palabra única. Se observa que el bus es concedido inmediatamente al MIPS (\textbf{255 ns}) y el dato se escribe en el registro \texttt{\$9} a los \textbf{290 ns} sin realizar ráfagas. Posteriormente, a los \textbf{315 ns}, se repite el proceso para una escritura (\texttt{sw}) en \texttt{0x10000004}, validando que tanto la lectura como la escritura directa funcionan correctamente sin molestar a la caché.
+
+
+\subsubsection{Métricas del Test}
+
+Al finalizar la simulación (@1520ns), el \textit{testbench} genera un informe basado en los contadores internos del controlador de caché. Los resultados para este test específico se resumen en la siguiente tabla:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación del Evento} \\ \hline
+Misses Totales & 1 & Correspondiente al acceso inicial a \texttt{0x00000100}. \\ \hline
+Aciertos Lectura (r) & 1 & El acceso a la etiqueta tras cargar el bloque (Hit de confirmación). \\ \hline
+Aciertos Escritura (w) & 0 & No se realizan escrituras en el rango de memoria cacheable. \\ \hline
+Bloques Copy-Back & 0 & No hubo desalojos de bloques sucios (la vía estaba limpia). \\ \hline
+\end{tabular}
+\caption{Resultados de los contadores para el test1.}
+\label{tab:audit_test1}
+\end{table}
+
+
+\begin{itemize}
+    \item \textbf{Misses Totales (1):} Es el comportamiento esperado. Al arrancar el sistema, la caché está vacía (bits de validez a '0'). La primera instrucción \texttt{lw \$8, 256(\$0)} debe generar obligatoriamente un fallo para forzar la carga del bloque desde la RAM-D.
+    \item \textbf{Aciertos de Lectura (1):} Una vez que el bloque de 4 palabras se ha volcado en la vía, el controlador repite el acceso para entregar el dato al MIPS. Este segundo intento se contabiliza como un \textit{Hit}, confirmando que el bloque se ha indexado correctamente.
+    \item \textbf{Ausencia de Copy-Back (0):} El sistema utiliza una política \textit{Write-Back}. Dado que este test es de inicio en frío y no se han modificado datos previamente en esa línea, el bit de \textit{dirty} es '0', por lo que no es necesario escribir nada de vuelta a la memoria principal.
+\end{itemize}
+
+\newpage
+
+Este test es fundamental para garantizar que el sistema puede comunicarse con periféricos o memorias rápidas (Scratchpad) mapeadas en memoria, asegurando que el controlador diferencia correctamente entre tráfico de bloques y tráfico de palabras simples
+
+
+\subsection{Test 2: Aciertos y Fallos de Lectura (Localidad Espacial)}
+
+ Este test tiene como objetivo validar la gestión de la jerarquía de memoria ante fallos de lectura y la explotación de la localidad espacial. Se verifica que, tras un fallo de lectura (\textit{Read Miss}), el controlador cargue un bloque completo de 4 palabras en la vía correspondiente. Posteriormente, se comprueba que los accesos a direcciones contenidas en dicho bloque resulten en aciertos (\textit{Read Hit}) inmediatos, evitando peticiones redundantes al bus y eliminando ciclos de parada del procesador.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$8, 256(\$0)}  & \texttt{0x00000100} & Fallo $\rightarrow$ Send\_Addr & Miss (Carga Bloque) \\ \hline
+175 & (Carga de Bloque)          & \texttt{0x00000100} & Read\_Block\_Data     & Bus (4 words)       \\ \hline
+245 & \texttt{lw \$9, 260(\$0)}  & \texttt{0x00000104} & Inicio                & Hit (Espacial)      \\ \hline
+315 & \texttt{lw \$10, 16(\$0)}  & \texttt{0x00000010} & Fallo $\rightarrow$ Send\_Addr & Miss (Nuevo Bloque) \\ \hline
+\end{tabular}
+\caption{Cronograma de eventos y transiciones de la FSM para el Test 2.}
+\end{table}
+
+\subsubsection{ Capturas (GTKWave)}
+
+\textbf{Figura 2.A (Captura @ 45ns - Detección del Fallo Inicial):} \\
+Se debe observar la activación de la señal de parada del procesador \texttt{stall\_mips='1'} y la petición al bus \texttt{bus\_req='1'}. La señal \texttt{ready} cae a '0' mientras la FSM detecta que la etiqueta no coincide con el contenido actual de las vías.
+\begin{quote}
+    \textit{Interpretación visual:} El pipeline del MIPS se congela al acceder a la dirección \texttt{0x100} (vía fría). Se evidencia que el controlador inicia correctamente el protocolo de arbitraje para traer el bloque desde la memoria principal.
+\end{quote}
+
+\textbf{Figura 2.B (Captura @ 155ns a 215ns - Transferencia en Ráfaga):} \\
+Foco en la señal de reconocimiento \texttt{bus\_trdy} y el contador interno \texttt{palabra}. Se observa la escritura en la vía (\texttt{mc\_we0='1'}) de forma secuencial palabra a palabra.
+\begin{quote}
+    \textit{Interpretación visual:} Se aprecia la carga síncrona del bloque. Cada pulso de \texttt{bus\_trdy} indica que una palabra de la RAM-D se está indexando. A los \textbf{215 ns} se observa el pulso de \texttt{mc\_tags\_we}, lo que confirma que el bloque ya es válido en la caché.
+\end{quote}
+
+\textbf{Figura 2.C (Captura @ 245ns - Validación del Hit Espacial):} \\
+Captura del acceso a la dirección \texttt{0x104}. Se debe observar \texttt{hit='1'}, \texttt{ready='1'} y \texttt{stall\_mips='0'}.
+\begin{quote}
+     Este es el punto clave: el MIPS solicita la palabra contigua. Como el controlador cargó 4 palabras anteriormente, el dato ya está presente. Se observa que el procesador NO se detiene, demostrando una latencia de acceso de un solo ciclo.
+\end{quote}
+
+\subsubsection{Validación por Logs (\texttt{test\_2\_Lecturas.txt})}
+
+El análisis del log de simulación permite reconstruir el comportamiento del controlador y validar la eficiencia de la carga por bloques:
+
+\begin{itemize}
+\item \textbf{Fallo en Frío y Arbitraje (@55ns - 85ns):} Al inicio, se detecta un \texttt{MISS} en la dirección \texttt{0x00000100}. A los \textbf{65ns}, el sistema genera un reporte de \texttt{DEBUG} indicando que el MIPS solicita el bus para una dirección cacheable (\texttt{NC='0'}). Tras un breve periodo de arbitraje, a los \textbf{85ns} el bus es concedido al MIPS (\texttt{Bus concedido al MIPS}), permitiendo que la señal \texttt{busReq} de la UC sea atendida.
+
+\item \textbf{Carga del Bloque en Ráfaga (@155ns - 215ns):} Se observa la ejecución de la ráfaga de bus. Los reportes de \texttt{Via\_2026\_CB.vhd} muestran cuatro escrituras consecutivas en la \textbf{vía 0} (conjunto 0) en los tiempos \textbf{155ns, 175ns, 195ns y 215ns}. Esto confirma que el controlador gestiona correctamente los pulsos de \texttt{bus\_trdy} para reconstruir el bloque de 4 palabras. A los \textbf{215ns}, se registra la escritura de la etiqueta (\texttt{Tag written in via 0}), validando el bloque completo con el valor de etiqueta \texttt{4}.
+
+\item \textbf{Acierto por Localidad Espacial (@245ns):} Tras finalizar la carga anterior, el registro \texttt{\$8} se actualiza con el primer dato (@230ns). Inmediatamente, el MIPS solicita la dirección \texttt{0x00000104}. Es importante de observar ya que \textbf{no existe una nueva petición de bus} ni mensajes de arbitraje entre los 230ns y 245ns. El sistema sirve el dato internamente desde la caché, demostrando que la palabra ya residía en la línea cargada previamente (Hit Espacial).
+
+\item \textbf{Fallo por Cambio de Línea (@245ns - 255ns):} A los \textbf{245ns} se produce un nuevo evento de \texttt{MISS} para la dirección \texttt{0x00000010}. Al pertenecer a un bloque distinto (\texttt{conjunto 1}, etiqueta \texttt{0}), la UC debe repetir el ciclo de parada. A los \textbf{255ns} se genera la petición al bus (\texttt{NC='0'}), obteniendo el arbitraje en el mismo ciclo.
+
+\item \textbf{Finalización y Registro (@390ns - 400ns):} La segunda ráfaga concluye satisfactoriamente, volcando los datos en la vía 0 del conjunto 1. Los registros \texttt{\$9} y \texttt{\$10} se actualizan consecutivamente con los valores extraídos de la caché (\texttt{2736} y \texttt{1} respectivamente), cerrando el flujo del test con éxito.
+\end{itemize}
+\newpage
+\subsubsection{Métricas del Test}
+
+Al finalizar la simulación (@1520ns), los contadores internos del controlador arrojan \\los siguientes resultados:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación del Evento} \\ \hline
+Misses Totales & 2 & Fallos en los bloques \texttt{0x100} y \texttt{0x010}. \\ \hline
+Aciertos Lectura (r) & 3 & Aciertos de confirmación y el hit espacial de \texttt{0x104}. \\ \hline
+Aciertos Escritura (w) & 0 & No se realizaron operaciones de escritura. \\ \hline
+Bloques Copy-Back & 0 & No hubo desalojos de bloques modificados. \\ \hline
+\end{tabular}
+\caption{Resultados de los contadores para el Test 2.}
+\label{tab:audit_test2}
+\end{table}
+
+\begin{itemize}
+    \item \textbf{Misses Totales (2):} Representan los fallos inevitables al acceder a dos líneas de caché diferentes (distintas etiquetas) que no estaban mapeadas previamente.
+    \item \textbf{Aciertos de Lectura (3):} Incluye el acceso exitoso a la dirección \texttt{0x104}. Este valor demuestra que la carga de bloques de 4 palabras reduce efectivamente la tasa de fallos en accesos secuenciales.
+\end{itemize}\\
+
+\\
+
+\newline
+\\
+\\
+El Test 2 valida la implementación de la localidad espacial y la eficiencia del protocolo de ráfaga en el controlador. Los resultados demuestran que la carga de bloques de cuatro palabras minimiza las penalizaciones por fallo, permitiendo que los accesos a direcciones contiguas se resuelvan en un único ciclo de reloj sin intervención del bus. Este comportamiento confirma una sincronización óptima de la FSM con la memoria principal y una gestión eficaz de los ciclos de parada del procesador.
+
+\newpage
+
+\subsection{Test 3: Políticas de Escritura y Coherencia (Write-Around y Dirty Bit)}
+
+Descripción: Este test valida el comportamiento del controlador frente a diferentes escenarios de escritura. Primero, se verifica la política \textit{Write-Around} ante un fallo de escritura (\textit{Write Miss}), donde el dato debe enviarse a memoria principal sin cargar el bloque en caché. Segundo, se comprueba el protocolo \textit{Write-Back} ante un acierto de escritura (\textit{Write Hit}), validando la actualización local del dato y la activación del bit de modificación (\textit{dirty bit}).
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{sw \$2, 32(\$0)}   & \texttt{0x00000020} & Single\_Word\_Transfer & Miss (Write-Around) \\ \hline
+175 & \texttt{lw \$3, 32(\$0)}   & \texttt{0x00000020} & Read\_Block\_Data      & Miss (Carga Bloque) \\ \hline
+355 & \texttt{sw \$3, 36(\$0)}   & \texttt{0x00000024} & Inicio                 & Hit (Update Dirty)  \\ \hline
+\end{tabular}
+\caption{Cronograma de eventos y transiciones de la FSM para el Test 3.}
+\end{table}
+
+\subsubsection{ Capturas (GTKWave)}
+
+
+\textbf{Figura 3.A (Captura @ 45ns - Fallo de Escritura):} \\
+Se debe observar \texttt{hit='0'} y la activación de \texttt{one\_word='1'} junto a \texttt{mc\_bus\_write='1'}. 
+
+Se valida la política \textbf{Write-Around}. El controlador detecta que el bloque no está en caché y, en lugar de traerlo, realiza una transferencia de palabra única hacia el bus. La caché permanece inalterada, optimizando el tráfico al evitar una carga de bloque innecesaria.
+
+\vspace{1em} % Espacio entre figuras
+
+\textbf{Figura 3.B (Captura @ 175ns - Carga de Bloque):} \\
+Observar la ráfaga de bus (\texttt{bus\_trdy}) y la activación de \texttt{mc\_we0='1'}. 
+
+La instrucción \texttt{lw} fuerza la entrada del bloque \texttt{0x20} a la caché. Se observa cómo se puebla la vía 0 para preparar el escenario del siguiente acceso de escritura, cargando las cuatro palabras mediante el protocolo de ráfaga.
+
+\vspace{1em}
+
+\textbf{Figura 3.C (Captura @ 355ns - Acierto de Escritura):} \\
+Foco en las señales \texttt{hit='1'}, \texttt{mc\_we0='1'} y, crucialmente, \texttt{update\_dirty='1'}.
+
+Al detectarse un acierto de escritura, el dato se actualiza directamente en la memoria de datos de la caché (\texttt{RAM\_64\_32}). La activación de \texttt{update\_dirty} indica que el bloque ha sido modificado y ahora difiere de la memoria principal, cumpliendo estrictamente con la política \textbf{Write-Back}.
+\newpage
+\newpage
+\subsubsection{Validación por Logs (\texttt{test\_3\_Escrituras.txt})}
+
+El log de simulación permite confirmar la transición de estados de la FSM y la correcta aplicación de las políticas de escritura (\textit{Write-Around} y \textit{Write-Back}):
+
+\begin{itemize}
+    \item \textbf{Gestión del Fallo de Escritura (Write-Around) [@55ns - 155ns]:} 
+    A los \textbf{55ns} se produce el primer evento de \texttt{MISS} de escritura en la dirección \texttt{0x20}. El reporte del sistema a los \textbf{65ns} indica que el MIPS solicita el bus.Al tratarse de una instrucción \texttt{sw}, la FSM activa la señal \texttt{one\_word}, indicando que no se debe realizar una carga de bloque. El reporte de la RAM-D a los \textbf{155ns} (\texttt{Data written: 0, in ADDR = 32}) confirma que el dato ha pasado de la caché yse ha escrito directamente en el nivel inferior de la jerarquía sin alterar el contenido de las vías.
+
+    \item \textbf{Sincronización de Carga y Validación [@175ns - 325ns]:} 
+    Ante la instrucción \texttt{lw}, se detecta un fallo de lectura a los \textbf{175ns}. En este caso, la FSM sí inicia el protocolo de ráfaga para cumplir con la política en lectura. El log de \texttt{Via\_2026\_CB.vhd} muestra el volcado secuencial de datos en el conjunto 2. A los \textbf{325ns}, se registra la escritura del Tag (\texttt{Tag written in via 0}), dejando el bloque en estado válido y \textit{limpio} (\textit{dirty} = 0).
+
+    \item \textbf{Acierto de Escritura y Marcado de Dirty [@355ns]:} 
+    Al ejecutar la instrucción \texttt{sw \$3, 36}, el controlador detecta un \texttt{HIT} puesto que la dirección pertenece al bloque \texttt{0x20} cargado en el paso anterior. El log registra una escritura en la \textbf{vía 0} a los \textbf{355ns}. A diferencia del evento de los 155ns, \textbf{no se observa tráfico hacia la RAM-D} en los logs posteriores. Esto valida el funcionamiento de la política \textit{Write-Back}: la actualización es puramente local en la caché y el bloque queda marcado internamente como \textit{dirty}, delegando la actualización de la memoria principal a un futuro evento de Copy Back.
+\end{itemize}
+
+\subsubsection{Métricas de Rendimiento del Test 3}
+
+La auditoría final a los \textbf{1520ns} refleja con precisión el flujo de control diseñado para las políticas de escritura:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 2 & Fallo de escritura inicial y fallo de lectura posterior. \\ \hline
+Aciertos Lectura (r) & 1 & Confirmación del dato tras la carga del bloque \texttt{0x20}. \\ \hline
+Aciertos Escritura (w) & 1 & Escritura local exitosa en el bloque residente (@355ns). \\ \hline
+Bloques Copy-Back & 0 & No se ha requerido desalojo por reemplazo en este test. \\ \hline
+\end{tabular}
+\caption{Resultados de los contadores de rendimiento para el Test 3.}
+\end{table}
+
+
+El Test 3 demuestra la robustez del controlador al manejar la coherencia mediante \textit{dirty bit}. Se ha validado que el sistema ahorra ancho de banda del bus mediante la política \textbf{Write-Around} en fallos de escritura y garantiza la velocidad de ejecución mediante \textbf{Write-Back} en los aciertos, manteniendo la integridad del dato en la jerarquía.
+\newpage
+\subsection{Test 4: Desalojo de Bloque Sucio (Copy-Back y Reemplazo FIFO)}
+
+Descripción: Este test representa la validación más exhaustiva del controlador de caché. Su objetivo es verificar el funcionamiento de la política de escritura \textit{Write-Back} en combinación con el algoritmo de reemplazo FIFO. Se busca validar que, ante un fallo de lectura en un conjunto con todas sus vías ocupadas, el controlador identifique correctamente la vía a reemplazar y, si esta contiene un bloque modificado (\textit{dirty bit} activo), ejecute una fase de \texttt{Copy-Back} para actualizar la memoria principal antes de cargar el nuevo bloque de datos.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$2, 0(\$0)}    & \texttt{0x00000000} & Fallo $\rightarrow$ Read\_Block & Miss (Carga Vía 0) \\ \hline
+245 & \texttt{sw \$2, 0(\$0)}    & \texttt{0x00000000} & Inicio                 & Hit (Mark Dirty)   \\ \hline
+265 & \texttt{lw \$2, 64(\$0)}   & \texttt{0x00000040} & Fallo $\rightarrow$ Read\_Block & Miss (Carga Vía 1) \\ \hline
+485 & \texttt{lw \$2, 128(\$0)}  & \texttt{0x00000080} & Copy\_Back\_Addr       & Miss + Copy-Back   \\ \hline
+715 & (Carga bloque 8)           & \texttt{0x00000080} & Read\_Block\_Data      & Bus (Carga final)  \\ \hline
+\end{tabular}
+\caption{Cronograma de eventos y transiciones de la FSM para el Test 4.}
+\end{table}
+
+\subsubsection*{Definición de Capturas (GTKWave)}
+
+\textbf{Figura 4.A (Captura @ 245ns - Marcado de Bloque Sucio):} \\
+Se debe observar \texttt{hit='1'}, \texttt{update\_dirty='1'} y el estado de la FSM en \texttt{Inicio}.
+\begin{quote}
+     Al realizar la escritura en el bloque 0, el controlador no pide el bus. Simplemente actualiza el dato localmente y levanta el bit de modificación. Es el paso previo necesario para forzar el posterior \textit{Copy-Back}.
+\end{quote}
+
+\textbf{Figura 4.B (Captura @ 545ns - Fase de Copy-Back):} \\
+Foco en las señales \texttt{mc\_bus\_write='1'}, \texttt{send\_dirty='1'} y \texttt{mux\_origen='1'}.
+\begin{quote}
+     Se aprecia el desalojo. El FIFO ha elegido la Vía 0 (la más antigua) para dejar sitio al Bloque 8. Al estar sucia, la UC extrae las 4 palabras de la caché y las envía a la RAM-D. Se observa cómo la dirección en el bus corresponde al Bloque 0 (\texttt{0x0000}).
+\end{quote}
+
+\textbf{Figura 4.C (Captura @ 715ns - Carga del Nuevo Bloque):} \\
+Observar \texttt{block\_copied\_back='1'} seguido de la transición a \texttt{mc\_bus\_read='1'}.
+\begin{quote}
+   Una vez que la RAM-D ha sido actualizada, el controlador limpia el bit \textit{dirty} y procede, por fin, a leer el Bloque 8 desde la memoria principal para ubicarlo en la Vía 0. El proceso de reemplazo completo ha finalizado con éxito.
+\end{quote}
+
+\subsubsection{Validación por Logs (\texttt{test\_4\_CopyBack.txt})}
+
+El log de auditoría confirma la compleja secuencia de eventos necesaria para mantener la coherencia de datos durante el reemplazo:
+
+\begin{itemize}
+    \item \textbf{Llenado y Modificación (@55ns - 245ns):} Tras la carga inicial del Bloque 0, el log de \texttt{Via\_2026\_CB.vhd} registra una escritura síncrona a los \textbf{245ns} sin reporte de peticiones al bus. Esto confirma que el protocolo \textit{Write-Back} se realizó localmente, dejando el bloque en dirty.
+    \item \textbf{Conflicto de Vías y Reemplazo (@485ns - 615ns):} Al solicitar la dirección \texttt{0x80}, el controlador detecta que ambas vías del conjunto 0 están ocupadas. El log muestra el evento de  \texttt{COPY-BACK} a los \textbf{615ns}. El reporte de la RAM-D confirma: \texttt{Data written: 1, in ADDR = 0}, lo que prueba que el bloque modificado a los 245ns ha sido salvaguardado en la memoria física justo antes de ser sobrescrito por el nuevo dato.
+    \item \textbf{Resolución (@800ns):} Tras completar el desalojo y la carga de ráfaga, el registro \texttt{\$2} se actualiza finalmente con el valor \texttt{16} (dato perteneciente al Bloque 8). El sistema ha resuelto un fallo doble (escritura en RAM + lectura de RAM) de forma totalmente transparente para el procesador.
+\end{itemize}
+
+\subsubsection{Métricas del Test 4}
+
+La auditoría de rendimiento final refleja el impacto del desalojo y la efectividad del algoritmo de reemplazo:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 3 & Fallos iniciales en bloques 0, 4 y 8 (reemplazo). \\ \hline
+Aciertos Lectura (r) & 3 & Hits de confirmación tras cada carga de bloque. \\ \hline
+Aciertos Escritura (w) & 1 & Acierto en el bloque 0 que activó el \textit{dirty bit}. \\ \hline
+Bloques Copy-Back & 1 & \textbf{Validación del desalojo exitoso del bloque 0.} \\ \hline
+\end{tabular}
+\caption{Resultados de los contadores de rendimiento para el Test 4.}
+\label{tab:audit_test4}
+\end{table}
+
+El Test 4 demuestra que el controlador gestiona correctamente estados de alta complejidad. La política FIFO selecciona la vía más antigua de forma determinista y la FSM coordina las fases de escritura en RAM (Copy-Back) y lectura de RAM (Carga) de manera secuencial, garantizando que nunca se produzca pérdida de información modificada durante un reemplazo de línea.
+
+\newpage
+
+\subsection{Test 5: Excepciones y Timeouts (Data Abort)}
+
+Este test valida la robustez del controlador ante condiciones de error y accesos ilegales, enfatizando especialmente el ciclo de vida del error y su recuperación. Se evalúan tres escenarios críticos: errores de alineamiento, violaciones de permisos de escritura y fallos por \textit{timeout} (ausencia de \texttt{DevSel}). El objetivo principal es demostrar que el sistema no queda bloqueado tras una excepción; mediante el uso de un registro interno de diagnóstico (\texttt{Addr\_Error\_Reg}), el controlador captura la dirección causante del fallo y mantiene la señal \texttt{Mem\_ERROR} activa hasta que el software realiza una lectura de dicho registro. Este mecanismo garantiza una recuperación controlada, permitiendo al procesador identificar la causa del \textit{Data Abort} antes de restaurar el flujo normal de ejecución.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+55  & \texttt{lw \$2, 1(\$0)}    & \texttt{0x00000001} & Inicio (Bypass)    & Error: Unaligned   \\ \hline
+105 & \texttt{lw \$8, 264(\$0)}  & \texttt{0x00000108} & Read\_Block        & Miss (Carga Bloque) \\ \hline
+335 & \texttt{sw \$9, 0(\$8)}    & \texttt{0x01000000} & Inicio (Bypass)    & Error: Read Only   \\ \hline
+520 & \texttt{lw \$9, 0(\$8)}    & \texttt{0x01000000} & Inicio             & Clear Error Reg    \\ \hline
+535 & \texttt{lw \$9, 0x4000}    & \texttt{0x00004000} & Send\_Addr         & Error: Bus Timeout \\ \hline
+\end{tabular}
+\caption{Cronograma de detección de excepciones y gestión de registros de error.}
+\end{table}
+
+\subsubsection{ Capturas (GTKWave)}
+
+\textbf{Figura 5.A (Captura @ 65ns - Error de Alineamiento):} \\
+Se debe observar la señal \texttt{unaligned='1'} activa y la respuesta de excepción \texttt{Mem\_ERROR='1'}. 
+\begin{quote}
+    \textit El controlador detecta de forma combinacional que los bits \texttt{ADDR[1:0]} no son cero. El procesador recibe \texttt{ready='1'} de inmediato junto con la señal de aborto, cancelando la operación sin llegar a realizar ninguna petición al bus.
+\end{quote}
+
+\textbf{Figura 5.B (Captura @ 335ns - Protección de Escritura):} \\
+Foco en las señales internas \texttt{internal\_addr='1'} y la señal de escritura del MIPS \texttt{WE='1'}.
+\begin{quote}
+    \textit El MIPS intenta escribir en la dirección \texttt{0x01000000} (registro de dirección de error). Al ser un registro mapeado como "Solo Lectura", la lógica de control bloquea la escritura y levanta \texttt{Mem\_ERROR}, impidiendo la corrupción de registros internos.
+\end{quote}
+
+\textbf{Figura 5.C (Captura @ 545ns - Timeout por falta de DevSel):} \\
+Observar \texttt{bus\_req='1'} y \texttt{bus\_grant='1'} seguidos de una espera sin respuesta en \texttt{Bus\_DevSel}.
+\begin{quote}
+    \textit El controlador pide el bus para una dirección fuera de rango (\texttt{0x4000}). Tras agotar el tiempo de espera sin que ningún esclavo active la selección de dispositivo, el controlador aborta la transacción y activa la excepción por \textit{timeout}.
+\end{quote}
+
+\subsubsection{Validación por Logs (\texttt{test\_5\_Errores.txt})}
+
+El log de simulación documenta una gestión precisa de la lógica de excepciones y la persistencia de los datos:
+
+\begin{itemize}
+    \item \textbf{Detección Inmediata y Protección (@65ns):} Tras el acceso desalineado, el log lanza la nota de \texttt{[ALERTA] MEMORY ERROR}. A los \textbf{60ns} el registro \texttt{\$2} se escribe con \texttt{0}. Esto confirma que el controlador bloqueó el paso de cualquier dato de la memoria, protegiendo la integridad de los registros del MIPS.
     
-    \begin{table}[H]
-    \centering
-    \small
-    \begin{tabular}{lllll}
-    \toprule
-    \textbf{Tiempo (ns)} & \textbf{Instrucción} & \textbf{Estado FSM} & \textbf{Acción en Bus} & \textbf{Resultado} \\
-    \midrule
-    65 & \texttt{lw \$8, 0x10000000} & Arbitraje & Req. Bus & Petición Simple \\
-    315 & - & Single\_addr & Enviar @ & DevSel Scratch \\
-    345 & - & Single\_data & TRDY = 1 & Dato en \$8 \\
-    \bottomrule
-    \end{tabular}
-    \end{table}
-
-    \subsection{Test 2 y 3: Lecturas y Escrituras Nominales}
-    Demostración de la política \textit{Write-Around}: un fallo de escritura no reserva bloque. Se observa en simulación que una escritura fallida es seguida por un fallo de lectura a la misma dirección.
+    \item \textbf{Carga de Dirección de Diagnóstico (@290ns):} Tras un MISS convencional en \texttt{0x108}, el registro \texttt{\$8} recibe el valor \texttt{0x01000000} (dirección base de los registros de control). Este paso es necesario para saber dónde acudir para gestionar el error previo.
     
-    \begin{table}[H]
-    \centering
-    \small
-    \begin{tabular}{lllll}
-    \toprule
-    \textbf{Escenario} & \textbf{Estado Inicial} & \textbf{Operación} & \textbf{Estado Final} & \textbf{Tráfico Bus} \\
-    \midrule
-    Hit Lectura & Bloque Válido & \texttt{lw} & Hit (1 ciclo) & Ninguno \\
-    Hit Escritura & Bloque Válido & \texttt{sw} & Hit + Dirty=1 & Ninguno \\
-    Miss Escritura & Bloque Ausente & \texttt{sw} & Miss (WA) & 1 Palabra a RAM \\
-    \bottomrule
-    \end{tabular}
-    \end{table}
-
-    \subsection{Test 4: Política de Copy-Back}
-    Este test fuerza el desalojo de un bloque previamente modificado (\texttt{dirty=1}). Se observa cómo la FSM, tras el \texttt{block\_transfer\_addr}, detecta la necesidad de salvar el bloque y salta a \texttt{CopyBack} antes de proceder con la carga del nuevo bloque.
+    \item \textbf{Bloqueo de Escritura en Registro Read-Only (@335ns):} El MIPS intenta \texttt{sw \$9, 0(\$8)}. El log muestra que, aunque el MIPS pide bus, el controlador detecta que la dirección es interna y de solo lectura. Se activa de nuevo la excepción sin llegar a modificar el hardware, demostrando que el estado de error es persistente.
     
-    \textbf{Hito temporal clave:} En el intervalo [485ns - 625ns] se observa la ráfaga de escritura del bloque sucio (4 palabras) seguida de la ráfaga de lectura del bloque solicitado.
+    \item \textbf{Mecanismo de Recuperación y Limpieza (@520ns - 560ns):} Se ejecuta \texttt{lw \$9, 0(\$8)}. El log registra \texttt{Data written: 1, in Reg = 9}. El valor \textbf{1} es precisamente la dirección desalineada del primer error. Al realizar esta lectura, el controlador interpreta que se ha atendido el fallo. El log de auditoría confirma que la señal de abort se desactiva, permitiendo que el siguiente acceso (@535ns) proceda sin errores previos.
+    
+    \item \textbf{Fallo por Timeout de Bus (@545ns):} El último acceso a \texttt{0x4000} genera una petición con \texttt{NC='0'}. Al no haber respuesta de \texttt{DevSel}, el log final contabiliza un nuevo error por \textit{timeout}, demostrando que el controlador sigue activo tras haberse recuperado del error anterior.
+\end{itemize}
 
-    \subsection{Test 5: Excepciones y Timeouts (Data Abort)}
-    Se validan los tres casos de error:
-    \begin{enumerate}
-        \item \textbf{Desalineación:} Acceso a byte/media palabra no soportado.
-        \item \textbf{Escritura protegida:} Intento de escribir en registros internos de sólo lectura.
-        \item \textbf{Timeout:} Petición a una dirección de bus que no responde (\texttt{DevSel=0}).
-    \end{enumerate}
-    En todos los casos, la señal \texttt{Mem\_ERROR} se activa y el MIPS detiene su flujo normal.
+\subsubsection{Métricas del Test 5}
 
-    \subsection{Test 6 y 7: Reemplazo FIFO y Arbitraje del Bus}
-    Se confirma que el bit de reemplazo alterna correctamente entre la vía 0 y la vía 1 tras cada fallo. En el Test 7, el \texttt{IO\_Master} aprovecha los ciclos en los que la caché no ocupa el bus para realizar sus propias transferencias al Scratchpad.
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 3 & Fallos en \texttt{0x108}, \texttt{0x000} y el timeout de \texttt{0x4000}. \\ \hline
+Aciertos Lectura (r) & 2 & Cargas exitosas de bloques y lectura del registro interno. \\ \hline
+Aciertos Escritura (w) & 0 & No hubo escrituras válidas (la escritura ilegal se bloqueó). \\ \hline
+Bloques Copy-Back & 0 & No se produjeron desalojos de bloques modificados. \\ \hline
+\end{tabular}
+\caption{Resultados de la auditoría de errores para el Test 5.}
+\label{tab:audit_test5}
+\end{table}
 
-    \subsection{Test 8: Integración (memoriaRAM\_I\_Test\_8\_Integracion.vhd)}
-    \textbf{Objetivo:} Ejecutar una secuencia representativa del programa completo que presenta accesos a memoria variados (lecturas cacheables, escrituras, accesos a scratchpad) para validar la interacción entre MIPS, UC, MC y MD.
+El Test 5 confirma que el controlador actúa como una unidad de protección de memoria. Se ha validado la detección de errores de alineamiento, violaciones de permisos de escritura y fallos de direccionamiento externo (\textit{timeout}), asegurando que el procesador MIPS sea notificado mediante una excepción de \textit{Data Abort} ante cualquier operación ilegal o fallida.
 
-    \textbf{Qué medir y capturar:}
-    \begin{itemize}
-        \item Trazas completas de \texttt{bus\_req}, \texttt{bus\_grant}, \texttt{mc\_addr\_bus}, \texttt{mc\_data\_bus}, \texttt{bus\_trdy}.
-        \item Contadores finales: \texttt{inc\_r}, \texttt{inc\_w}, \texttt{inc\_m}, \texttt{cont\_cb}.
-        \item Latencias de miss (tiempo entre petición y ready).
+\newpage
+
+\subsection{Test 6: Política de Reemplazo FIFO}
+
+ Este test tiene como objetivo validar la política de reemplazo circular (FIFO) del controlador de caché en una organización asociativa por conjuntos de dos vías. Se busca verificar que, ante una secuencia de fallos de lectura que sature un conjunto específico, el controlador desaloje de forma determinista la vía más antigua para dejar espacio al nuevo bloque, garantizando el flujo cíclico de las vías sin recurrir a desalojos aleatorios.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$2, 0(\$0)}    & \texttt{0x00000000} & Fallo $\rightarrow$ Read\_Block & Miss (Carga Vía 0) \\ \hline
+235 & \texttt{lw \$3, 64(\$0)}   & \texttt{0x00000040} & Fallo $\rightarrow$ Read\_Block & Miss (Carga Vía 1) \\ \hline
+405 & \texttt{lw \$4, 128(\$0)}  & \texttt{0x00000080} & Fallo $\rightarrow$ Read\_Block & Miss (Expulsa Vía 0) \\ \hline
+575 & \texttt{lw \$5, 0(\$0)}    & \texttt{0x00000000} & Fallo $\rightarrow$ Read\_Block & Miss (Expulsa Vía 1) \\ \hline
+740 & \texttt{lw \$6, 128(\$0)}  & \texttt{0x00000080} & Inicio                 & Hit (Residente Vía 0) \\ \hline
+\end{tabular}
+\caption{Cronograma de accesos para la validación de la política FIFO.}
+\end{table}
+
+\subsubsection{Capturas (GTKWave)}
+
+\textbf{Figura 6.A (Captura @ 405ns - Primer Reemplazo FIFO):} \\
+Se debe observar la señal \texttt{via\_2\_rpl} apuntando a la Vía 0 y la activación de \texttt{mc\_we0='1'}.
+\begin{quote}
+    \textit En este punto, ambas vías del conjunto 0 están llenas (Bloque 0 en Vía 0 y Bloque 4 en Vía 1). Al solicitar el Bloque 8, se observa cómo el puntero FIFO selecciona la Vía 0 por ser la más antigua, sobrescribiendo su contenido.
+\end{quote}
+
+\textbf{Figura 6.B (Captura @ 575ns - Segundo Reemplazo FIFO):} \\
+Se debe observar la señal \texttt{via\_2\_rpl} conmutando hacia la Vía 1 y la activación de \texttt{mc\_we1='1'}.
+\begin{quote}
+    \textit El controlador necesita cargar de nuevo el Bloque 0. Siguiendo el orden circular, el FIFO ahora señala a la Vía 1 (que contenía el Bloque 4). Se confirma el desalojo de la Vía 1, validando el comportamiento secuencial de la lógica de reemplazo.
+\end{quote}
+
+\textbf{Figura 6.C (Captura @ 740ns - Validación de Residencia):} \\
+Foco en \texttt{hit='1'} y la ausencia de peticiones al bus (\texttt{bus\_req='0'}).
+\begin{quote}
+    \textit Se accede al Bloque 8 cargado previamente en el tiempo 405ns. Como el reemplazo posterior (575ns) afectó a la Vía 1, el Bloque 8 sigue residiendo en la Vía 0. El sistema resuelve el acceso con un HIT, confirmando que la política FIFO no expulsó el bloque equivocado.
+\end{quote}
+
+\newpage
+\subsubsection{Análisis por Logs (\texttt{test\_6\_FIFO.txt})}
+
+El log documenta la progresión del llenado y desalojo de las vías del conjunto 0:
+
+\begin{itemize}
+    \item \textbf{Saturación de Vías (@55ns - 385ns):} A los \textbf{155ns} se registra la carga del Bloque 0 en la \textbf{vía 0}. Posteriormente, a los \textbf{325ns}, se registra la carga del Bloque 64 (\texttt{0x40}) en la \textbf{vía 1}. En este momento, el conjunto 0 está completamente ocupado.
+    
+    \item \textbf{Ejecución del Reemplazo Circular (@495ns):} Al producirse el fallo de lectura para el Bloque 128 (\texttt{0x80}), el log de \texttt{Via\_2026\_CB.vhd} muestra una nueva escritura en la \textbf{vía 0}. Esto demuestra que el algoritmo FIFO ha identificado correctamente la vía 0 como la primera en entrar y procede a su reemplazo.
+    
+    \item \textbf{Conmutación del Puntero FIFO (@665ns):} Tras solicitar de nuevo el Bloque 0, el log registra la escritura en la \textbf{vía 1}. Esto confirma que tras el reemplazo de la vía 0, el puntero avanzó correctamente hacia la vía 1, cumpliendo el ciclo FIFO.
+    
+    \item \textbf{Confirmación de Hit Post-Reemplazo (@750ns):} El log registra la actualización de \texttt{Reg = 6} con el valor \texttt{16}. Este dato proviene del Bloque 128 que fue cargado a los 495ns. El hecho de que sea un HIT (sin nueva ráfaga de bus reportada) confirma que el bloque se mantuvo a salvo en la vía 0 durante la rotación del FIFO.
+\end{itemize}
+
+\subsubsection{Métricas del Test 6}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 4 & Fallos en bloques 0, 64, 128 y la re-entrada del 0. \\ \hline
+Aciertos Lectura (r) & 5 & Confirmaciones tras carga y el hit final del bloque 128. \\ \hline
+Aciertos Escritura (w) & 0 & No se realizaron operaciones de escritura. \\ \hline
+Bloques Copy-Back & 0 & Todas las vías expulsadas estaban "limpias" (\textit{dirty}=0). \\ \hline
+\end{tabular}
+\caption{Resultados de la auditoría de reemplazo para el Test 6.}
+\label{tab:audit_test6}
+\end{table}
+
+El Test 6 valida que el mecanismo de reemplazo circular (FIFO) opera de forma robusta y determinista. Se ha comprobado que el controlador es capaz de gestionar el llenado total de un conjunto y alternar el desalojo de vías siguiendo estrictamente el orden de llegada, lo que optimiza el uso de la caché en patrones de acceso repetitivos y evita conflictos de reemplazo ineficientes.
+
+\subsection{Test 7: Arbitraje (MIPS vs IO\_Master)}
+
+ Este test tiene como objetivo validar el protocolo de arbitraje del bus de sistema y la política de equidad (\textit{fairness}) entre maestros. Se ejecuta un bucle infinito de lecturas no cacheables al Scratchpad (\texttt{0x10000000}), generando una demanda constante de bus por parte del MIPS. Simultáneamente, el módulo \texttt{IO\_Master} solicita el bus para sus propias transferencias. Se busca verificar que el árbitro alterna correctamente la concesión del bus, evitando el bloqueo de cualquier maestro y garantizando que ambos puedan progresar en su ejecución.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$8, 256(\$0)}  & \texttt{0x00000100} & Fallo $\rightarrow$ Send\_Addr & Miss (Carga Inicial) \\ \hline
+255 & \texttt{lw \$9, 0(\$8)}    & \texttt{0x10000000} & Single\_Word\_Addr    & Petición Bus (MIPS) \\ \hline
+295 & (Arbitraje)                & -                  & Inicio                & Concesión a IO\_Master \\ \hline
+325 & \texttt{lw \$9, 0(\$8)}    & \texttt{0x10000000} & Single\_Word\_Addr    & Re-intento y Concesión \\ \hline
+... & \textit{Bucle Infinito}    & \texttt{0x10000000} & \textit{Alternancia}  & Arbitraje Equitativo \\ \hline
+\end{tabular}
+\caption{Cronograma de peticiones y alternancia de maestros en el bus.}
+\end{table}
+
+\subsubsection{Capturas (GTKWave)}
+
+\textbf{Figura 7.A (Captura @ 225ns - Prioridad Inicial):} \\
+Se debe observar la señal \texttt{bus\_grant} pasando de MIPS a \texttt{IO\_Master} justo tras finalizar la carga del bloque \texttt{0x100}.
+\begin{quote}
+    \textit El árbitro detecta que el MIPS ha terminado su ráfaga y cede el bus al \texttt{IO\_Master}, que ha estado esperando. Esto demuestra que el árbitro no permite que un solo maestro monopolice el canal permanentemente.
+\end{quote}
+
+\textbf{Figura 7.B (Captura @ 255ns a 325ns - Alternancia bajo Carga):} \\
+Foco en las señales \texttt{bus\_req} de ambos maestros y la señal \texttt{bus\_grant} conmutando entre ellos.
+\begin{quote}
+    \textit Se aprecia el patrón de "Round Robin". A pesar de que el MIPS solicita el bus en cada iteración del bucle (instrucción @8), el árbitro inserta ciclos para el \texttt{IO\_Master} (@295ns), obligando al MIPS a esperar en estado \texttt{Arbitraje} hasta que le corresponde su turno.
+\end{quote}
+
+\subsubsection*{Análisis por Logs (\texttt{test\_7\_Arbitraje.txt})}
+
+El log de simulación proporciona una prueba numérica de la alternancia constante entre los dispositivos:
+
+\begin{itemize}
+    \item \textbf{Carga Inicial y Cesión (@55ns - 225ns):} El test comienza con un \texttt{MISS} en \texttt{0x100}. Una vez que la caché termina de escribir el Tag (@215ns), el log registra inmediatamente: \texttt{>>> [ARBITRAJE] Bus concedido al IO\_MASTER} a los \textbf{225ns}. Esto valida que el árbitro aprovecha los tiempos muertos de la caché para dar paso al otro maestro.
+    
+    \item \textbf{Competición en el Bucle (@255ns - 325ns):} El MIPS entra en el bucle y pide el bus para una dirección no cacheable (\texttt{NC='1'}). El log muestra que el MIPS obtiene el bus a los \textbf{255ns}, pero tras terminar su palabra única, el árbitro concede el bus de nuevo al \texttt{IO\_MASTER} a los \textbf{295ns}. A los \textbf{325ns}, el MIPS vuelve a pedir y obtener el bus.
+    
+    \item \textbf{Patrón de Equidad Persistente:} Entre los \textbf{325ns} y los \textbf{1515ns}, el log repite cíclicamente la secuencia: \textit{MIPS pide bus $\rightarrow$ Concedido $\rightarrow$ Fin de palabra $\rightarrow$ Concedido al IO\_MASTER}. Se contabilizan más de 20 alternancias de bus en apenas 1.5 $\mu$s, lo que confirma un algoritmo de arbitraje dinámico y justo.
+\end{itemize}
+
+\subsubsection{Métricas de Rendimiento del Test 7}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 1 & Solo la carga inicial del datos en \texttt{0x100}. \\ \hline
+Aciertos Lectura (r) & 1 & Confirmación tras la primera carga de bloque. \\ \hline
+Alternancias de Bus & $>$20 & \textbf{Validación de la política de equidad del árbitro.} \\ \hline
+Bloques Copy-Back & 0 & No hay desalojos; el tráfico es de palabras simples (NC). \\ \hline
+\end{tabular}
+\caption{Resultados de la auditoría de arbitraje para el Test 7.}
+\label{tab:audit_test7}
+\end{table}
+
+El Test 7 confirma el correcto diseño del árbitro de bus. Se ha demostrado que, incluso ante un bucle de alta demanda por parte del procesador, el sistema garantiza el acceso al bus para periféricos externos (\texttt{IO\_Master}). Esta alternancia es crítica para evitar la inanición de los módulos de E/S y asegura el determinismo temporal en las comunicaciones del SoC.
+
+\subsection{Test 8: Write Miss con Víctima Dirty}
+
+Este test valida la interacción entre la política \textit{Write-Around} y el estado de las vías de la caché. El escenario busca confirmar que, ante un fallo de escritura (\textit{Write Miss}) donde el algoritmo FIFO selecciona como víctima teórica una vía que contiene un bloque modificado (\textit{dirty}), el controlador ignora el estado sucio de dicha vía (ya que no existe un reemplazo físico ni carga de bloque en un fallo de escritura) y realiza la transferencia directa al bus. El objetivo es verificar la correcta contabilización de eventos y la ausencia de desalojos innecesarios en este caso.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$2, 0(\$0)}    & \texttt{0x00000000} & Read\_Block        & Miss (Vía 0 limpia) \\ \hline
+245 & \texttt{sw \$2, 0(\$0)}    & \texttt{0x00000000} & Inicio             & Hit (Vía 0 Dirty)  \\ \hline
+275 & \texttt{lw \$3, 64(\$0)}   & \texttt{0x00000040} & Read\_Block        & Miss (Vía 1 limpia) \\ \hline
+485 & \texttt{sw \$4, 128(\$0)}  & \texttt{0x00000080} & Single\_Word\_Addr & \textbf{Write Miss (FIFO: Vía 0)} \\ \hline
+\end{tabular}
+\caption{Cronograma de eventos para el escenario de fallo de escritura con víctima dirty.}
+\end{table}
+
+\subsubsection{Capturas (GTKWave)}
+
+\textbf{Figura 8.A (Captura @ 245ns - Marcado de Vía como Dirty):} \\
+Se debe observar la activación de la señal \texttt{update\_dirty='1'} tras el acierto de escritura en el bloque \texttt{0x00}. 
+\begin{quote}
+    \textit La vía 0 se marca como modificada. Según el algoritmo de reemplazo FIFO, al ser la vía que entró primero, será la próxima candidata a ser desalojada en caso de conflicto en el conjunto 0.
+\end{quote}
+
+\textbf{Figura 8.B (Captura @ 485ns - Omisión de Copy-Back en Write Miss):} \\
+Foco en \texttt{hit='0'}, \texttt{one\_word='1'} y la señal \texttt{dirty\_bit\_rpl='1'}.
+\begin{quote}
+    \textit A pesar de que el FIFO apunta a una vía sucia, se observa que la FSM transiciona directamente a \texttt{single\_word\_transfer\_addr} sin pasar por estados de \textit{Copy-Back}. Esto valida que la política \textbf{Write-Around} tiene prioridad, enviando el dato al bus sin penalizar el sistema con un desalojo, ya que el bloque no se va a reemplazar.
+\end{quote}
+
+\subsubsection{Análisis por Logs (\texttt{test\_WriteMissDirty.txt})}
+
+El análisis del log confirma que el controlador gestiona correctamente las prioridades de las políticas de escritura:
+
+\begin{itemize}
+    \item \textbf{Estado de Saturación del Conjunto (@255ns - 445ns):} Tras la escritura inicial, el log de \texttt{Via\_2026\_CB.vhd} confirma que el Bloque 0 es \textit{dirty} en la Vía 0. A los \textbf{445ns}, se registra la carga del Bloque 64 (\texttt{0x40}) en la Vía 1. En este punto, ambas vías del conjunto 0 están ocupadas.
+    \item \textbf{Fallo de Escritura  (@615ns):} Al ejecutarse la instrucción \texttt{sw \$4, 128}, la RAM-D reporta: \texttt{Data written: 0, in ADDR = 128}. Esta escritura se realiza mediante transferencia de palabra única.  hay ausencia total del mensaje de EVENTO: COPY-BACK en los logs, lo que demuestra que el hardware no ha expulsado el Bloque 0 sucio.
+\end{itemize}
+
+\subsubsection{Métricas del Test 8}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 3 & Bloques \texttt{0x00}, \texttt{0x40} y el write miss en \texttt{0x80}. \\ \hline
+Aciertos Lectura (r) & 2 & Confirmaciones tras las cargas de los bloques 0 y 64. \\ \hline
+Aciertos Escritura (w) & 1 & Acierto en el bloque 0 que activó el estado \textit{dirty}. \\ \hline
+Bloques Copy-Back & 0 & \textbf{Confirmación: El Write-Around no activa el Copy Back.} \\ \hline
+\end{tabular}
+\caption{Resultados de la auditoría de rendimiento para el Test 8.}
+\label{tab:audit_test8}
+\end{table}
+
+El Test 8 demuestra que el controlador implementa con precisión la jerarquía de prioridades entre políticas. Se ha validado que un fallo de escritura se resuelve siempre mediante \textbf{Write-Around}, ignorando el estado \textit{dirty} de la vía que el FIFO elegiría para un reemplazo físico. Esta optimización evita ráfagas de bus innecesarias, manteniendo la integridad del bloque sucio en la caché para futuros accesos.
+
+\subsection{Test 9 (Hit en Vía 1)}
+
+Este test tiene como objetivo validar la correcta lógica de selección de vía en la organización asociativa. Se busca verificar que, una vez que un bloque ha sido cargado en la Vía 1, los accesos posteriores a dicha dirección resultan en aciertos (\textit{Hit}). Se evalúan tanto los aciertos de lectura como los de escritura en la Vía 1, asegurando que el multiplexado de salida y la señalización del bit de modificación (\textit{dirty}) operan de forma independiente para cada una de las vías del conjunto.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Tiempo (ns)} & \textbf{Instrucción MIPS} & \textbf{Dirección} & \textbf{Estado FSM} & \textbf{Evento} \\ \hline
+45  & \texttt{lw \$2, 0(\$0)}    & \texttt{0x00000000} & Read\_Block        & Miss (Carga Vía 0) \\ \hline
+255 & \texttt{lw \$3, 64(\$0)}   & \texttt{0x00000040} & Read\_Block        & Miss (Carga Vía 1) \\ \hline
+485 & \texttt{lw \$4, 64(\$0)}   & \texttt{0x00000040} & Inicio             & \textbf{Hit Lectura Vía 1} \\ \hline
+505 & \texttt{sw \$5, 64(\$0)}   & \texttt{0x00000040} & Inicio             & \textbf{Hit Escritura Vía 1} \\ \hline
+\end{tabular}
+\caption{Cronograma de accesos para validar la operatividad de la Vía 1.}
+\end{table}
+
+\subsubsection{Capturas (GTKWave)}
+
+\textbf{Figura 9.A (Captura @ 385ns - Carga en Vía Secundaria):} \\
+Se debe observar la activación de \texttt{mc\_we1='1'} durante la ráfaga de bus de la dirección \texttt{0x40}.
+\begin{quote}
+    \textit Como la Vía 0 ya está ocupada por el bloque \texttt{0x00}, el algoritmo de reemplazo asigna el bloque \texttt{0x40} a la Vía 1. Se observa el flujo de datos entrando específicamente en la segunda memoria de datos del conjunto.
+\end{quote}
+
+\textbf{Figura 9.B (Captura @ 485ns - Hit de Lectura en Vía 1):} \\
+Foco en \texttt{hit='1'} y la señal interna de comparación de etiquetas de la Vía 1.
+\begin{quote}
+    \textit El MIPS solicita \texttt{0x40}. El controlador detecta que la etiqueta coincide con la Vía 1. Se observa que el multiplexor de salida (\texttt{mux\_output}) selecciona los datos de la Vía 1 para entregarlos al procesador sin ciclos de parada.
+\end{quote}
+
+\textbf{Figura 9.C (Captura @ 505ns - Marcado Dirty en Vía 1):} \\
+Observar \texttt{hit='1'}, \texttt{mc\_we1='1'} y \texttt{update\_dirty='1'}.
+\begin{quote}
+\newpage
+    \textit Se realiza un \textit{sw} a la Vía 1. La UC activa la señal de escritura específica para la Vía 1 y levanta su bit \textit{dirty} correspondiente. Esto confirma que el estado de modificación se gestiona de forma independiente por vía.
+\end{quote}
+
+\subsubsection*{Análisis por Logs (\texttt{test\_HitVia1.txt})}
+
+El log confirma la total simetría funcional de las vías:
+
+\begin{itemize}
+    \item \textbf{Asignación de Vías (@155ns - 385ns):} El log de \texttt{Via\_2026\_CB.vhd} muestra la primera escritura en la \textbf{vía 0} a los 155ns. Posteriormente, tras el fallo en \texttt{0x40}, se registra explícitamente: \texttt{Data written in via 1: 1, in Dir\_cjto = 0} a los \textbf{385ns}. Esto valida que el conjunto 0 tiene ahora dos bloques distintos en vías diferentes.
+    
+    \item \textbf{Validación de Hit de Lectura (@490ns):} El log del banco de registros muestra \texttt{Data written: 1, in Reg = 4}. Este valor corresponde al dato cargado en la Vía 1. La ausencia de peticiones de bus en este intervalo confirma que el acceso se resolvió internamente como un acierto en vía secundaria.
+    
+    \item \textbf{Acierto de Escritura en Vía 1 (@505ns):} Se observa una escritura en la \textbf{vía 1} en el tiempo \textbf{505ns}. El log no reporta actividad en la RAM-D para esta dirección, lo que confirma que el protocolo \textit{Write-Back} opera correctamente sobre la Vía 1, marcándola como sucia localmente.
+\end{itemize}
+
+\subsubsection{Métricas del Test 9}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Control} & \textbf{Valor} & \textbf{Justificación Técnica} \\ \hline
+Misses Totales & 2 & Fallos en bloques 0 y 64 (llenado de ambas vías). \\ \hline
+Aciertos Lectura (r) & 3 & Incluye el hit en la Vía 1 para la instrucción en \texttt{0x18}. \\ \hline
+Aciertos Escritura (w) & 1 & Acierto de escritura en Vía 1 para la instrucción en \texttt{0x20}. \\ \hline
+Bloques Copy-Back & 0 & No hubo desalojos durante el test. \\ \hline
+\end{tabular}
+\caption{Resultados de la auditoría para el Test de Aciertos en Vía 1.}
+\label{tab:audit_test9}
+\end{table}
+
+El Test 9 garantiza que la asociatividad por conjuntos es plenamente operativa. Se ha demostrado que el controlador gestiona con éxito la lectura y escritura sobre la \textbf{Vía 1}, manteniendo la independencia del \textit{dirty bit} y la integridad de los datos. Esta funcionalidad es crítica para reducir los fallos por conflicto y maximizar la tasa de aciertos de la jerarquía.
+
+\newpage
+
+\section{Test de Integración Final y Evaluación de Rendimiento}
+
+Este test somete al controlador a un escenario de ejecución intensiva y cíclica, encadenando todas las funcionalidades validadas previamente. El objetivo es verificar la estabilidad del sistema bajo estrés, asegurar que no existan efectos laterales en la gestión de etiquetas tras múltiples reemplazos y obtener métricas reales de rendimiento. Este test integra el uso del Scratchpad, ráfagas de Copy-Back, políticas de Write-Around y un ciclo completo de excepciones de memoria.
+
+\subsection{Cronograma y Fases Operativas}
+
+Dada la complejidad del bucle de integración, el flujo de trabajo se divide en las siguientes fases lógicas que se repiten cíclicamente:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|l|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Fase} & \textbf{Operaciones MIPS} & \textbf{Comportamiento de la Caché} \\ \hline
+\textbf{1} & Acceso a Scratchpad & Tráfico directo a memoria interna (Bypass de caché). \\ \hline
+\textbf{2} & Llenado (Bloques 0-3) & Misses de lectura: Ocupación total de las vías 0 y 1. \\ \hline
+\textbf{3} & Dirty  (Hits SW) & Hits de escritura: Marcado de bloques como \textit{Dirty}. \\ \hline
+\textbf{4} & Write-Around (Bloques 4-5) & Fallos de escritura: Tráfico directo a RAM-D (sin carga). \\ \hline
+\textbf{5} & \textbf{Copy-Back} (Bloques 8-11) & Desalojo de bloques sucios para permitir nuevas cargas. \\ \hline
+\textbf{6} & Ciclo de Excepciones & Detección de errores y recuperación del registro de aborto. \\ \hline
+\end{tabular}
+\caption{Resumen de las etapas de ejecución del test de integración.}
+\end{table}
+
+\subsection{Análisis Detallado de Logs}
+
+El análisis de los logs de simulación permite verificar la robustez del controlador ante la ejecución encadenada de instrucciones. A diferencia de las pruebas unitarias, aquí se observa cómo la Unidad de Control (UC) gestiona la persistencia de estados y la coherencia de datos en un entorno de alta demanda.
+
+\begin{itemize}
+    \item \textbf{Gestión de Conflictos:} 
+    Los logs muestran que, cuando el procesador solicita un bloque en un conjunto cuyas vías están totalmente ocupadas, la lógica de reemplazo FIFO identifica correctamente la vía "víctima". Si dicha vía está marcada como \textit{dirty}, el sistema bloquea el avance del MIPS mediante la señal \texttt{stall\_mips} e inicia una fase de salvaguarda de datos antes de proceder con la nueva carga.
+    
+    \item \textbf{Atomicidad de la Operación de Copy-Back:} 
+    Se observa en las trazas de ráfaga que el controlador mantiene la propiedad del bus durante la transición entre el desalojo de un bloque sucio y la carga del bloque entrante. Esta atomicidad es fundamental para evitar condiciones de carrera y asegurar que el procesador retome la ejecución con el dato correcto una vez liberada la detención del pipeline.
+    
+    \item \textbf{Eficiencia de la Política Write-Around:} 
+    Los logs confirman que los fallos de escritura  no alteran el contenido de la caché ni disparan reemplazos innecesarios. El sistema encamina el dato directamente al bus de sistema, optimizando la ocupación de las vías y reservando el espacio de la caché para bloques con alta probabilidad de reutilización en lectura.
+    
+    \item \textbf{Recuperación tras Excepciones de Memoria:} 
+    Un aspecto detectado en los logs es la capacidad de resiliencia del sistema. Tras un \textit{Data Abort}, el controlador persiste la dirección del error en el registro y reanuda el servicio normal inmediatamente después de que el software realiza la lectura de limpieza, validando un ciclo de vida de excepción completo y seguro.
+\end{itemize}
+
+\subsection{Métricas Globales de Rendimiento}
+
+Tras la finalización del tiempo de simulación y múltiples iteraciones del bucle, los contadores de hardware arrojan los siguientes resultados acumulados:
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|c|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Métrica de Auditoría} & \textbf{Identificador} & \textbf{Valor (Dec)} & \textbf{Significado Técnico} \\ \hline
+Misses Totales & \texttt{m\_count} & 100 & Fallos por arranque frío y reemplazos. \\ \hline
+Aciertos de Lectura & \texttt{r\_count} & 155 & Eficiencia en la reutilización de bloques. \\ \hline
+Aciertos de Escritura & \texttt{w\_count} & 64 & Escrituras locales mediante Write-Back. \\ \hline
+Bloques Copy-Back & \texttt{cb\_count} & 15 & Desalojos de bloques modificados a RAM. \\ \hline
+\end{tabular}
+\caption{Estadísticas finales de rendimiento del Test de Integración.}
+\label{tab:audit_final}
+\end{table}
+
+La ejecución del test de integración demuestra la robustez y madurez del diseño. Se ha verificado que el controlador no solo es funcional en casos aislados, sino que gestiona de forma determinista la presión sobre el bus de sistema. La alternancia equilibrada entre maestros, la gestión segura de excepciones y la eficiencia del protocolo de ráfaga para el Copy-Back confirman que el sistema está optimizado para actuar como una jerarquía de memoria fiable en un entorno SoC real.
+
+\newpage
+
+
+\newpage
+
+
+\newpage
+
+% -------------------------------------------------
+\section{Análisis de Latencias y Rendimiento}
+% -------------------------------------------------
+
+Para evaluar la eficiencia del sistema de memoria, se han analizado las latencias de transferencia en el bus y el impacto de los diferentes eventos de caché. Los datos se han extraído mediante la observación directa de las señales en el \textit{Test 8 (Integración)}.
+
+\subsection{Caracterización de las Latencias de Transferencia}
+
+Las latencias de transferencia (excluyendo el arbitraje) dependen de los parámetros de diseño del controlador de memoria: $L$ (latencia inicial) y $R$ (latencia de ráfaga).
+
+\begin{itemize}
+    \item \textbf{CrB(MD) - Lectura de bloque (4 palabras): 14 ciclos.}
+    Derivado de la fórmula $1 \text{ (addr)} + L + 3 \times R + 1 \text{ (ready)}$. En la simulación, desde la concesión del bus (@75ns) hasta la liberación del procesador (@215ns) transcurren 14 ciclos. Esto confirma que \textbf{L = 6} y \textbf{R = 2}.
+    
+    \item \textbf{CwW(MD) - Escritura de palabra (MD): 7 ciclos.}
+    Corresponde al tiempo necesario para enviar una dirección y un dato único a la Memoria Principal. La simulación muestra que MD tarda 6 ciclos en procesar la escritura tras la dirección.
+    
+    \item \textbf{CrW/CwW (MD Scratch): 3 / 2 ciclos.}
+    Al ser una memoria SRAM rápida integrada, la latencia es mínima. El sistema requiere 1 ciclo de dirección y 1 o 2 ciclos de respuesta dependiendo de si es lectura o escritura.
+    
+    \item \textbf{CrW/CwW (IO\_REG): 1 ciclo.}
+    Los registros internos de la MC (como \texttt{Addr\_Error}) no utilizan el bus externo, por lo que el acierto es instantáneo en el mismo ciclo de la dirección.
+\end{itemize}
+
+\subsection{Formulación del Coste Medio de Acceso}
+
+El costo medio de acceso ($C_{avg}$) se calcula ponderando los eventos por su probabilidad de ocurrencia. Asumiendo una latencia media de arbitraje $C_{arb} = 1.5$ ciclos, los costes por evento son:
+
+\begin{equation}
+    C_{avg} = P_{hit} \cdot C_{hit} + P_{miss} \cdot C_{penalty} + P_{scratch} \cdot C_{scratch} + P_{internal} \cdot C_{internal}
+\end{equation}
+
+Donde los costes específicos verificados por simulación son:
+\begin{enumerate}
+    \item \textbf{Acierto ($C_{hit}$): 1 ciclo.} La caché entrega el dato en el ciclo inmediatamente posterior a la petición.
+    
+    \item \textbf{Fallo con Víctima Limpia ($C_{miss\_clean}$): 15.5 ciclos.}
+    Calculado como $C_{arb} + CrB(MD) = 1.5 + 14$.
+    \newpage
+    
+    \item \textbf{Fallo con Víctima Sucia ($C_{copyback}$): 31 ciclos.}
+    Requiere dos operaciones de bus: vaciar el bloque sucio y cargar el nuevo.
+    $C_{copyback} = (C_{arb} + CbB(MD)) + (C_{arb} + CrB(MD)) = 15.5 + 15.5$.
+    
+    \item \textbf{Acceso Scratchpad ($C_{scratch}$): 4.5 ciclos.}
+    Calculado como $C_{arb} + CrW(MDscratch) = 1.5 + 3$.
+\end{enumerate}
+
+$$Ciclos_{total} = (219 \times 1) + (85 \times 15.5) + (15 \times 31) + (16 \times 4.5)$$ $$Ciclos_{total} = 219 + 1317.5 + 465 + 72 = \mathbf{2073.5 \text{ ciclos}}$$
+
+\subsubsection{Coste Medio ($C_{avg}$):}
+Dividimos por el total de accesos ($219+100+16 = 335$): $$C_{avg} = \frac{2073.5}{335} = \mathbf{6.19 \text{ ciclos/acceso}}$$
+
+\subsection{Verificación Experimental}
+
+La validez de estas fórmulas se confirma en el ciclo @45ns-@215ns del Test 8. El procesador solicita una dirección, se produce un fallo, el arbitraje consume 2 ciclos reales y la transferencia 14 ciclos adicionales. El total de 16 ciclos medidos coincide exactamente con la suma de $C_{arb\_real} + CrB(MD)$, lo que demuestra la precisión del modelo de costes propuesto.
+
+
+\section{Análisis de Speedup y Eficiencia}
+
+En esta sección se cuantifica la mejora de rendimiento obtenida mediante la integración de la jerarquía de memoria (MC + MD Scratch). El análisis se basa en la comparación entre el sistema completo y un modelo teórico sin caché que utiliza la misma Memoria Principal (MD).
+
+\subsection{Cálculo Analítico del Escenario Base (Sin Caché)}
+
+Para determinar el coste del sistema sin caché, analizamos el flujo de ejecución del programa de integración (\texttt{memoriaRAM\_I\_Test\_8}). Este programa consta de un bucle de 23 instrucciones** (de la 0 a la 22) que generan un total de 22 accesos a datos (operaciones LW/SW), sumando 45 accesos a memoria por iteración.
+
+\newpage 
+El coste de cada acceso individual a MD se deriva del protocolo de bus implementado en la \texttt{UC\_MC\_CB}, donde para una lectura simple se requieren:
+\begin{itemize}
+    \item 1.5 ciclos de arbitraje medio ($C_{arb}$).
+    \item 1 ciclo de fase de dirección.
+    \item 6 ciclos de latencia de MD ($L=6$, según traza @85ns).
+    \item 1 ciclo de sincronización de datos (\texttt{ready}).
+\end{itemize}
+Esto resulta en un coste unitario de \textbf{9.5 ciclos}. Por tanto, el tiempo de ejecución estimado para una iteración sin caché es:
+\begin{equation}
+    T_{sin\_cache} = 45 \text{ accesos} \times 9.5 \text{ ciclos/acc} \times 10 \text{ ns/ciclo} = \mathbf{4.275 \text{ ns}}
+\end{equation}
+
+\subsection{Resultados con Memoria Caché}
+
+Utilizando los logs de la simulación (\texttt{test\_8\_Integracion\_verify.txt}), se observa cómo la caché optimiza este tiempo mediante la amortización de los fallos iniciales.
+
+\begin{enumerate}
+    \item \textbf{(1ª Iteración):} El tiempo medido desde el inicio hasta el primer salto del bucle es de 2.415 ns. Este tiempo es elevado debido a los 53 fallos de carga de bloque (\texttt{BLOCK\_LOADED}) necesarios para poblar las dos vías de la caché.
+    \item \textbf{(2ª Iteración):} Una vez los bloques de instrucciones están en la MC, el tiempo de la iteración cae a 1.220 ns. En este estado, la mayoría de los 45 accesos son aciertos (\textit{Hits}) de 1 ciclo, y solo se penalizan los fallos inevitables (Write-Around y Copy-Back).
+\end{enumerate}
+
+\subsection{Cálculo del Speedup Real}
+
+El Speedup global ($S_{global}$) de la jerarquía de memoria frente al sistema básico se calcula comparando el tiempo de la segunda fase frente al base:
+
+\begin{equation}
+    S_{global} = \frac{T_{sin\_cache}}{T_{2Iteracion}} = \frac{4.275 \text{ ns}}{1.220 \text{ ns}} = \mathbf{3,50}
+\end{equation}
+
+La ganancia de 3,50x se justifica por la alta tasa de acierto en instrucciones y el uso del \textit{MD Scratchpad}, que desvía los accesos críticos de datos fuera del bus principal. El uso de la política \textit{Copy-Back} evita escrituras redundantes en MD, permitiendo que el procesador MIPS trabaje a su máxima frecuencia durante el 85\% de la ejecución del bucle, confirmando la robustez y eficiencia del diseño implementado.
+
+\newpage
+
+    % -------------------------------------------------
+    \section{Conclusiones}
+    % -------------------------------------------------
+
+    Tras el desarrollo, simulación y análisis exhaustivo del subsistema de memoria para el procesador MIPS, se extraen las siguientes conclusiones principales:
+
+    \begin{itemize}[leftmargin=1.5em]
+        \item \textbf{Robustez del Diseño:} Se ha logrado implementar una Unidad de Control (UC) capaz de gestionar un protocolo de bus semi-síncrono complejo, integrando con éxito políticas de \textit{Copy-Back} y \textit{Write-Around}. Las pruebas de estrés del Test de Integración demuestran que el sistema es estable ante secuencias arbitrarias de lectura y escritura, manteniendo la coherencia de datos en todo momento.
+        
+        \item \textbf{Optimización del Rendimiento:} Los resultados experimentales confirman la eficacia de la jerarquía. El salto de un coste de acceso de \textbf{9.5 ciclos} (en un sistema sin caché) a un coste medio de \textbf{6.19 ciclos} valida el diseño. El \textbf{Speedup global de 3.50x} demuestra que la caché asociativa de 2 vías amortiza con creces las penalizaciones por fallo, permitiendo al procesador MIPS operar cerca de su rendimiento optimo.
+        
+        \item \textbf{Gestión Eficiente del Bus:} La implementación del arbitraje dinámico y el soporte de ráfagas para la carga de bloques de 4 palabras han resultado críticos. El sistema minimiza la ocupación del bus al filtrar los aciertos internamente, lo que incrementa la disponibilidad del canal para otros maestros como el \texttt{IO\_Master}, mejorando la eficiencia global del SoC.
+        
+        \item \textbf{Seguridad y Resiliencia:} El diseño no solo se centra en la velocidad, sino también en la integridad del sistema. La detección de excepciones (\textit{Data Abort}) por desalineamiento, errores de bus o violaciones de permisos, junto con el mecanismo de diagnóstico mediante registros internos, asegura que el sistema pueda recuperarse de condiciones de error de forma controlada y predecible.
     \end{itemize}
 
-    \textbf{Tabla de instrucciones (ejemplo):}
-    \begin{table}[H]
-    \centering
-    \small
-    \begin{tabular}{ll}
-    \toprule
-    Instrucción & Comentario \\
-    \midrule
-    lw $8, 256($0) & Forzar miss y carga de bloque \\
-    sw $8, 4($0) & Escritura para provocar dirty en vía \\
-    lw $9, 0($8) & Acceso a scratchpad si $8 apunta a 0x10000000 \\
-    ... & Secuencia completa definida en el testbench \\
-    \bottomrule
-    \end{tabular}
-    \end{table}
+    En definitiva, el proyecto ha permitido consolidar los conceptos de jerarquía de memoria, protocolos de bus y máquinas de estados concurrentes, resultando en un subsistema de memoria de alto rendimiento que cumple con todos los requisitos funcionales y métricas de eficiencia exigidas.
 
-    \textbf{Paso a paso (qué observar):}
-    \begin{enumerate}
-        \item Iniciar simulación y observar tiempos de arbitraje iniciales.
-        \item Registrar cada miss y medir tiempo desde \texttt{bus\_req=1} hasta \texttt{ready=1}.
-        \item Comprobar que los contadores coinciden con el número de accesos realizados.
-    \end{enumerate}
-
-    Captura GTKWave: \pendiente\\
-
-    \subsection{Test 8 (caso específico): WriteMissDirty (memoriaRAM\_I\_Test\_8\_WriteMissDirty.vhd)}
-    \textbf{Objetivo:} Forzar el caso mixto donde una escritura en miss y una lectura posterior provocan un flujo que implica un \textit{CopyBack} y una lectura del nuevo bloque.
-
-    \textbf{Señales a capturar:} \texttt{dirty}, \texttt{copyback}, \texttt{mc\_addr\_bus}, \texttt{bus\_trdy}, \texttt{mc\_tags\_WE}.
-
-    \textbf{Resultado esperado:} Se observa primero la ráfaga de escritura del bloque sucio (CopyBack) y posteriormente la ráfaga de lectura del bloque solicitado; los contadores \texttt{cont\_cb} se incrementan en 1.
-
-    Captura GTKWave: \pendiente\\
-
-    \subsection{Test 9: Hit Via1 (memoriaRAM\_I\_Test\_9\_HitVia1.vhd)}
-    \textbf{Objetivo:} Verificar que los hits en la vía 1 se detectan correctamente y que la política FIFO mantiene la coherencia entre accesos consecutivos.
-
-    \textbf{Instrucciones:} Serie de accesos a direcciones que mapean al mismo conjunto pero a distintas etiquetas para provocar reemplazos y comprobar que la vía 1 entrega datos válidos cuando corresponde.
-
-    \textbf{Señales a capturar:} \texttt{way_select}, \texttt{valid[1]}, \texttt{tag_compare}, \texttt{mc\_data\_bus}.
-
-    Captura GTKWave: \pendiente\\
-
-    % -------------------------------------------------
-    \section{Análisis de Latencias y Rendimiento}
-    % -------------------------------------------------
-
-    Para evaluar el rendimiento del sistema, es esencial caracterizar las latencias de cada tipo de acceso a memoria. Las transferencias por el bus evitan la espera del arbitraje en las siguientes fórmulas, para las cuales supondremos una latencia media de arbitraje $C_{arb} = 1.5$ ciclos.
-
-    \subsection{Latencias Teóricas Extraídas de Simulación}
-    Los valores medidos en las simulaciones con una frecuencia de reloj de 100MHz (ciclo de 10ns) son:
-    \begin{itemize}
-        \item $C_{rB}(MD)$: ciclos para leer un bloque desde MD $= L + 3 \times R = 7 + 3 \times 2 = \mathbf{13}$ ciclos.
-        \item $C_{wW}(MD)$: ciclos para escribir una palabra en MD (\textit{Write-Around}) = \textbf{7} ciclos.
-        \item $C_{rW}(MDscratch)$: ciclos para leer de Scratchpad = \textbf{3} ciclos.
-        \item $C_{wW}(MDscratch)$: ciclos para escribir en Scratchpad = \textbf{3} ciclos.
-        \item $C_{rW}/C_{wW}(IO\_REG)$: ciclos para accesos a registros internos = \textbf{1} ciclo.
-    \end{itemize}
-
-    \subsection{Ciclos Medios por Acceso a Memoria}
-    El coste medio de un acceso a memoria ($C_{med}$) para instrucciones cacheables se formula como:
-
-    \begin{equation}
-        C_{med} = h \times 1 + (1 - h) \times [C_{arb} + C_{rB} + P(dirty) \times (C_{arb} + C_{CB})]
-    \end{equation}
-
-    Donde $h$ es la tasa de aciertos y $P(dirty)$ es la probabilidad de que la víctima esté sucia. Según nuestras mediciones:
-    \begin{itemize}
-        \item Coste de Fallo Limpio: $1.5 + 13 = 14.5$ ciclos.
-        \item Coste de Fallo con Copy-Back: $1.5 + 13 + 1.5 + 13 = 29$ ciclos.
-    \end{itemize}
-
-
-
-    % -------------------------------------------------
-    \section{Test de Integración y Análisis de Speedup}
-    % -------------------------------------------------
-
-    Se ha utilizado el programa \texttt{bucle\_lectura.P2} que realiza recorridos sistemáticos sobre vectores en memoria principal y accesos de control al Scratchpad.
-
-    \subsection{Cálculo de Speedup}
-    Se compara el tiempo de ejecución del programa sobre el sistema con caché frente a un sistema hipotético sin caché (donde cada acceso a MD cuesta $C_{arb} + L = 8.5$ ciclos).
-
-    \begin{table}[H]
-    \centering
-    \begin{tabular}{lccc}
-    \toprule
-    \textbf{Configuración} & \textbf{Accesos Totales} & \textbf{Ciclos Totales} & \textbf{CPI Memoria} \\
-    \midrule
-    Sin Caché (MD lenta) & 19 & 161.5 & 8.5 \\
-    Con Caché (MC + MD) & 19 & 151 & 7.95 \\
-    \bottomrule
-    \end{tabular}
-    \end{table}
-
-    \begin{equation}
-        Speedup = \frac{T_{sin\_cache}}{T_{con\_cache}} = \frac{161.5}{151} = \mathbf{1.07}
-    \end{equation}
-
-    Nota: El speedup es moderado debido a la alta tasa de fallos inicial en un programa tan corto (19 accesos). En ejecuciones largas con mayor localidad temporal, el speedup tiende asintóticamente a valores superiores a 4.
-
+\newpage
     % -------------------------------------------------
     \section{Diario de Trabajo y Autoevaluación}
     % -------------------------------------------------

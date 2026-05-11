@@ -1,27 +1,76 @@
-[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
 [*]
-[timestart] 0
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Mon May 11 19:04:23 2026
+[*]
+[dumpfile] "/home/tahir/AOC2/proyecto2/Proyecto2_AOC2/simulation/aoc2_p2_testbench.ghw"
+[dumpfile_mtime] "Mon May 11 19:01:15 2026"
+[dumpfile_size] 148888
+[savefile] "/home/tahir/AOC2/proyecto2/Proyecto2_AOC2/proyecto2/ondas_cache.gtkw"
+[timestart] 610350000
 [size] 1854 1001
-[pos] -1 -1
+[pos] -27 -24
+*-24.219265 327800000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.testbench.
 [treeopen] top.testbench.uut.
 [treeopen] top.testbench.uut.io_mem.
-[treeopen] top.testbench.uut.io_mem.mc.
-[treeopen] top.testbench.uut.io_mem.mc.unidad_control.
+[treeopen] top.testbench.uut.io_mem.cont_io.
+[treeopen] top.testbench.uut.io_mem.mc.info_fifo.
+[treeopen] top.testbench.uut.io_mem.mc.unidad_control.word_counter.
+[treeopen] top.testbench.uut.io_mem.mc.via_0.
+[treeopen] top.testbench.uut.io_mem.modulo_io.
 [sst_width] 278
-[signals_width] 350
+[signals_width] 661
 [sst_expanded] 1
 [sst_vpaned_height] 700
-
-@200
--==================== SEÑALES GLOBALES ====================
 @28
 top.testbench.clk
-top.testbench.reset
 top.testbench.uut.io_mem.mc.unidad_control.state
 top.testbench.uut.io_mem.mc.unidad_control.error_state
+top.testbench.uut.mips_core.re
+top.testbench.uut.mips_core.we
+@29
+top.testbench.uut.io_mem.mc.unidad_control.load_addr_error
+@28
+top.testbench.uut.io_mem.mc.unidad_control.internal_addr
+top.testbench.uut.io_mem.mc.hit0
+top.testbench.uut.io_mem.mc.hit1
+top.testbench.uut.io_mem.mc.addr_non_cacheable
+top.testbench.uut.mips_core.stall_mips
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.bus_trdy
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_read
+top.testbench.uut.io_mem.mc.unidad_control.count_enable
+top.testbench.uut.io_mem.mc.unidad_control.last_word
+top.testbench.uut.io_mem.mc.unidad_control.mc_we0
+top.testbench.uut.io_mem.mc.unidad_control.mc_we1
+top.testbench.uut.io_mem.mc.unidad_control.mc_tags_we
+top.testbench.uut.io_mem.mc.block_addr
+top.testbench.uut.io_mem.mc.unidad_control.via_2_rpl
+top.testbench.uut.io_mem.mc.unidad_control.one_word
+top.testbench.uut.io_mem.mc.unidad_control.dirty_bit_rpl
+top.testbench.uut.io_mem.mc.unidad_control.mc_bus_write
+top.testbench.uut.io_mem.mc.unidad_control.send_dirty
+top.testbench.uut.io_mem.mc.ready
+top.testbench.uut.io_mem.mc.unidad_control.update_dirty
+top.testbench.uut.io_mem.mc.unidad_control.bus_grant
+top.testbench.uut.io_mem.modulo_io.io_m_bus_grant
+top.testbench.uut.io_mem.arbitraje.grant1
+top.testbench.uut.io_mem.arbitraje.grant0
+top.testbench.uut.io_mem.mc.internal_addr
+top.testbench.uut.io_mem.mc.unidad_control.unaligned
+top.testbench.uut.io_mem.mc.unidad_control.mem_error
+@420
+top.testbench.uut.io_mem.mc.unidad_control.error_state
+@28
+top.testbench.uut.io_mem.mc.unidad_control.dirty_bit_rpl
+top.testbench.uut.io_mem.mc.unidad_control.mux_origen
+top.testbench.uut.io_mem.mc.unidad_control.block_copied_back
+top.testbench.uut.io_mem.mc.unidad_control.bus_grant
+top.testbench.reset
+top.testbench.uut.io_mem.mc_bus_grant
 @200
+-==================== SEÑALES GLOBALES ====================
 -
 -==================== ESTADO: Inicio ====================
 -  --- Entradas (Decisiones IF) ---
@@ -188,3 +237,7 @@ top.testbench.uut.io_mem.mc.ready
 @28
 top.testbench.uut.io_mem.mc.unidad_control.frame
 top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.re
+top.testbench.uut.io_mem.mc.re
+[pattern_trace] 1
+[pattern_trace] 0
